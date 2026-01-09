@@ -1,410 +1,272 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Coach - Training Session</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <style>
-    /* ===== Reset & Base ===== */
-    :root{
-      --bg:#0f0f0f;
-      --panel:#1a1a1a;
-      --muted:#666;
-      --accent:#00ffcc;
-      --danger:#ff4d4d;
-      --card:#2b2b2b;
-      --border:#333;
-      --text:#ffffff;
-      --glass: rgba(255,255,255,0.03);
-      --radius:12px;
-      --max-width:1400px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0;font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif}
-    html,body{height:100%}
-    body{
-      background:var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.4;
-      padding-bottom:40px;
-    }
-    a{color:inherit;text-decoration:none}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Coach AI - Pro Training</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+    
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg-dark: #0d1117;
+            --card-dark: #161b22;
+            --text-main: #f0f6fc;
+            --accent: #00d4ff;
+        }
 
-    /* ===== Navigation ===== */
-    nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:14px 20px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      border-bottom:1px solid var(--border);
-      position:sticky;
-      top:0;
-      z-index:40;
-      backdrop-filter: blur(6px);
-    }
-    .logo{font-weight:700;font-size:18px;color:var(--accent);letter-spacing:0.6px}
-    .nav-links{display:flex;gap:18px;align-items:center}
-    .nav-links a{font-size:14px;color:var(--text);opacity:0.95}
-    .nav-links a.logout{color:var(--danger);font-weight:600}
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
 
-    /* ===== Layout ===== */
-    .container{
-      max-width:var(--max-width);
-      margin:20px auto;
-      padding:16px;
-      display:grid;
-      grid-template-columns: 1fr 360px;
-      gap:20px;
-    }
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 6%; background: rgba(22, 27, 34, 0.9);
+            backdrop-filter: blur(10px); border-bottom: 1px solid #30363d;
+            position: sticky; top: 0; z-index: 1000;
+        }
 
-    /* ===== Video Section ===== */
-    .video-section{
-      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .video-player{
-      width:100%;
-      border-radius:10px;
-      overflow:hidden;
-      background:#000;
-      aspect-ratio:16/9;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .video-player iframe{width:100%;height:100%;display:block;border:0}
-    .video-info{display:flex;flex-direction:column;gap:10px}
-    .video-info h2{font-size:20px;color:var(--text)}
-    .controls{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      padding:10px 16px;border-radius:999px;border:none;cursor:pointer;font-weight:700;
-      display:inline-flex;align-items:center;gap:8px;
-    }
-    .btn.prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
-    .btn.next{background:var(--accent);color:#000}
-    .btn.view{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+        .logo { font-weight: 800; color: var(--primary); letter-spacing: 1px; }
 
-    /* ===== AI Sidebar ===== */
-    .ai-sidebar{
-      background:var(--panel);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      display:flex;
-      flex-direction:column;
-      height:calc(80vh - 40px);
-      min-height:420px;
-      overflow:hidden;
-    }
-    .chat-header{
-      padding:14px 16px;
-      border-bottom:1px solid var(--border);
-      color:var(--accent);
-      font-weight:700;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-    }
-    .chat-header .status{font-size:13px;color:var(--muted);font-weight:600}
-    .chat-messages{
-      padding:14px;
-      flex:1;
-      overflow-y:auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      scroll-behavior:smooth;
-    }
-    .chat-footer{
-      padding:12px;
-      border-top:1px solid var(--border);
-      background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
-    }
+        .main-wrapper {
+            max-width: 1200px; margin: 30px auto; padding: 0 20px;
+            display: grid; grid-template-columns: 1.6fr 1fr; gap: 25px;
+        }
 
-    /* Message bubbles */
-    .bubble{
-      max-width:85%;
-      padding:10px 12px;
-      border-radius:12px;
-      font-size:14px;
-      line-height:1.3;
-      word-wrap:break-word;
-    }
-    .bubble.ai{
-      background:var(--card);
-      border-left:4px solid var(--accent);
-      align-self:flex-start;
-      color:var(--text);
-    }
-    .bubble.user{
-      background:var(--accent);
-      color:#000;
-      align-self:flex-end;
-    }
-    .meta{font-size:12px;color:var(--muted);margin-top:6px}
+        .video-card {
+            background: var(--card-dark); border-radius: 24px; padding: 15px;
+            border: 2px solid #30363d; position: relative;
+        }
 
-    /* Templates area */
-    .templates{
-      padding:12px 16px;
-      border-top:1px dashed rgba(255,255,255,0.03);
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-      background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
-    }
-    .tpl-btn{
-      background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text);
-      padding:8px 10px;border-radius:10px;font-size:13px;cursor:pointer;
-    }
-    .tpl-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+        .video-container {
+            position: relative; width: 100%; aspect-ratio: 16/9;
+            background: #000; border-radius: 18px; overflow: hidden;
+        }
 
-    /* Input row */
-    .input-row{display:flex;gap:8px;align-items:center}
-    .input-row input[type="text"]{
-      flex:1;padding:10px 12px;border-radius:10px;border:1px solid #444;background:transparent;color:var(--text);
-      outline:none;font-size:14px;
-    }
-    .send-btn{
-      width:44px;height:44px;border-radius:10px;border:none;background:var(--accent);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
-    }
-    .send-btn svg{display:block}
+        video, canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            transform: scaleX(-1); /* Mirror effect */
+        }
 
-    /* Small helper */
-    .muted{color:var(--muted);font-size:13px}
+        .stats-card {
+            background: var(--card-dark); border-radius: 24px; padding: 30px;
+            border: 1px solid #30363d; text-align: center;
+        }
 
-    /* ===== Responsive ===== */
-    @media (max-width:1100px){
-      .container{grid-template-columns: 1fr 340px;padding:12px;gap:14px}
-      .ai-sidebar{height:70vh;min-height:380px}
-    }
-    @media (max-width:900px){
-      .container{grid-template-columns:1fr;padding:12px}
-      .ai-sidebar{order:2;height:auto;min-height:320px}
-      .video-section{order:1}
-      .chat-messages{max-height:46vh}
-    }
-    @media (max-width:520px){
-      nav{padding:10px}
-      .logo{font-size:16px}
-      .chat-header{padding:10px}
-      .templates{padding:10px}
-      .video-info h2{font-size:18px}
-      .btn{padding:8px 12px;font-size:13px}
-    }
+        .rep-circle {
+            width: 180px; height: 180px; border: 6px solid var(--primary);
+            border-radius: 50%; margin: 20px auto;
+            display: flex; flex-direction: column; justify-content: center;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
 
-    /* Scrollbar (subtle) */
-    .chat-messages::-webkit-scrollbar{width:8px}
-    .chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.04);border-radius:8px}
-  </style>
+        .rep-value { font-size: 80px; font-weight: 800; color: var(--primary); }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #000; border: none; padding: 15px 40px;
+            border-radius: 50px; font-weight: bold; cursor: pointer;
+            font-size: 1.1rem; margin-top: 20px; transition: 0.3s;
+        }
+
+        .btn-start:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--primary); }
+
+        .checklist-container {
+            background: #ffffff; color: #1a1a1a; padding: 25px;
+            border-radius: 24px; margin-top: 20px;
+        }
+
+        .item-done { text-decoration: line-through; color: #a0a0a0; opacity: 0.6; }
+
+        .alert-overlay {
+            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 100; background: #ef4444; color: white;
+            padding: 10px 20px; border-radius: 10px; display: none; font-weight: bold;
+        }
+
+        @media (max-width: 900px) { .main-wrapper { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo">SMART COACH</div>
-    <div class="nav-links" role="navigation" aria-label="Main navigation">
-      <a href="index.html">Home</a>
-      <a href="#" class="logout">Log Out</a>
+<nav>
+    <div class="logo">SMART COACH AI</div>
+    <div style="color: #8b949e;">Status: <span id="ai-status">Ready</span></div>
+</nav>
+
+<div class="main-wrapper">
+    <div class="container-left">
+        <div class="video-card">
+            <div id="face-alert" class="alert-overlay">WAJAH TIDAK TERLIHAT!</div>
+            <div class="video-container">
+                <video id="video" playsinline></video>
+                <canvas id="canvas"></canvas>
+            </div>
+            <center><button id="start-btn" class="btn-start" onclick="init()">MULAI LATIHAN</button></center>
+        </div>
+
+        <div class="checklist-container">
+            <h3 style="margin: 0 0 15px 0;">Menu Latihan</h3>
+            <div id="task-pushup" style="display: flex; align-items: center; gap: 10px; font-weight: bold;">
+                <div id="dot-pushup" style="width:15px; height:15px; border:2px solid #ccc; border-radius:3px;"></div>
+                Push-up (Target: 5 Reps)
+            </div>
+        </div>
     </div>
-  </nav>
 
-  <main class="container" role="main">
-    <!-- Video / Content -->
-    <section class="video-section" aria-labelledby="videoTitle">
-      <div class="video-player" aria-hidden="false">
-        <iframe src="https://www.youtube.com/embed/IODxDxX7oi4?si=u8alX7IPHpWdHSZG" title="Beginner Training – Push-Up Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
+    <div class="container-right">
+        <div class="stats-card">
+            <div id="timer" style="font-size: 2rem; color: #f87171; font-weight: 800;">00:30</div>
+            <p style="color: #8b949e;">Waktu Sesi</p>
+            
+            <div class="rep-circle">
+                <span style="font-size: 0.8rem; color: #8b949e;">REPS</span>
+                <div class="rep-value" id="rep-count">0</div>
+            </div>
 
-      <div class="video-info">
-        <h2 id="videoTitle">Beginner Training – Push-Up Tutorial</h2>
-        <p class="muted">Durasi: 5:12 • Level: Pemula</p>
-
-        <div class="controls" role="group" aria-label="Kontrol latihan">
-          <button class="btn prev" id="prevPractice" type="button">← Previous Practice</button>
-          <a href="ai check.html"><button class="btn next" type="button">Next Practice →</button></a>
-          <a href="insight.html"><button class="btn view" type="button">View Insight</button></a>
+            <h2 id="ai-instruction" style="color: var(--primary);">Tekan Start</h2>
+            <p id="move-warning" style="color: #f87171; visibility: hidden;">Ayo Gerak!</p>
         </div>
-      </div>
-    </section>
+    </div>
+</div>
 
-    <!-- AI Chat Sidebar -->
-    <aside class="ai-sidebar" aria-label="AI Coach">
-      <div class="chat-header">
-        <div>
-          <div style="font-weight:700">Tanya AI Coach</div>
-          <div class="status">Siap membantu</div>
-        </div>
-        <div class="muted" aria-hidden="true">AI</div>
-      </div>
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const repDisplay = document.getElementById('rep-count');
+    const aiStatus = document.getElementById('ai-status');
+    const instr = document.getElementById('ai-instruction');
 
-      <div id="chatMessages" class="chat-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+    let count = 0;
+    let stage = 'up'; 
+    let isRunning = false;
 
-      <div class="templates" id="templates" aria-hidden="false">
-        <button class="tpl-btn">Bagaimana posisi tangan saat push-up?</button>
-        <button class="tpl-btn">Berapa repetisi pemula per set?</button>
-        <button class="tpl-btn">Tips agar punggung tidak melengkung</button>
-        <button class="tpl-btn">Pemanasan singkat sebelum latihan</button>
-      </div>
+    // Ambang Batas (Sesuaikan dengan posisi kamera)
+    const UP_LIMIT = 180;   
+    const DOWN_LIMIT = 300; 
 
-      <div class="chat-footer">
-        <form id="chatForm" class="input-row" onsubmit="return false;" aria-label="Form kirim pesan ke AI">
-          <input id="chatInput" type="text" placeholder="Tanyakan sesuatu pada AI..." aria-label="Tanyakan sesuatu pada AI" autocomplete="off" />
-          <button id="sendBtn" class="send-btn" aria-label="Kirim pesan" title="Kirim (Enter)">
-            <!-- Send icon -->
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-              <path d="M22 2L11 13" stroke="#000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M22 2L15 22L11 13L2 9L22 2Z" fill="#000" opacity="0.12"></path>
-              <path d="M22 2L11 13" stroke="#00ffcc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-          </button>
-        </form>
-      </div>
-    </aside>
-  </main>
-
-  <script>
-    /* ===== Elements ===== */
-    const chatMessages = document.getElementById('chatMessages');
-    const chatInput = document.getElementById('chatInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const tplButtons = document.querySelectorAll('.tpl-btn');
-    const chatForm = document.getElementById('chatForm');
-
-    /* ===== Helpers ===== */
-    function timeNow() {
-      const d = new Date();
-      return d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    }
-
-    function appendBubble(text, who='ai', opts={meta:false}) {
-      const wrap = document.createElement('div');
-      wrap.className = 'bubble ' + (who === 'user' ? 'user' : 'ai');
-      wrap.textContent = text;
-      const container = document.createElement('div');
-      container.style.display = 'flex';
-      container.style.flexDirection = 'column';
-      container.style.alignItems = who === 'user' ? 'flex-end' : 'flex-start';
-      container.appendChild(wrap);
-      if (opts.meta) {
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.textContent = opts.meta;
-        container.appendChild(meta);
-      }
-      chatMessages.appendChild(container);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    /* ===== Simple rule-based AI (demo) ===== */
-    function simpleAiReply(message) {
-      const m = message.toLowerCase();
-      if (m.includes('posisi tangan') || m.includes('tangan saat push') || m.includes('posisi tangan saat')) {
-        return 'Letakkan tangan selebar bahu, jari-jari menghadap ke depan, dan tekan telapak tangan kuat ke lantai. Pastikan siku sedikit menyudut ke belakang saat turun.';
-      }
-      if (m.includes('repetisi') || m.includes('berapa repetisi') || m.includes('set')) {
-        return 'Untuk pemula coba 3 set x 8–12 repetisi. Istirahat 60–90 detik antar set. Fokus pada teknik sebelum menambah jumlah.';
-      }
-      if (m.includes('punggung') || m.includes('melengkung') || m.includes('pinggul')) {
-        return 'Aktifkan core: tarik pusar ke arah tulang belakang, jaga garis lurus dari kepala sampai tumit, dan hindari pinggul turun atau naik berlebihan.';
-      }
-      if (m.includes('pemanasan') || m.includes('warm up')) {
-        return 'Pemanasan 5–10 menit: jalan cepat, dynamic stretch, arm circles, dan beberapa gerakan mobilitas bahu.';
-      }
-      if (m.includes('istirahat') || m.includes('istirahat antar set')) {
-        return 'Istirahat 60–90 detik untuk pemula; jika tujuan kekuatan, istirahat bisa lebih lama (2–3 menit).';
-      }
-      // fallback
-      return 'Pertanyaan bagus. Bisa jelaskan sedikit lebih spesifik atau pilih salah satu template. Saya bisa bantu teknik, repetisi, atau pemanasan.';
-    }
-
-    /* ===== Simulasi panggilan ke AI nyata =====
-       Ganti isi fungsi ini untuk memanggil backend Anda (fetch / websocket).
-       Pastikan server mengembalikan teks jawaban.
-    */
-    async function sendToRealAI(message) {
-      // Demo: delay lalu gunakan simpleAiReply
-      await new Promise(r => setTimeout(r, 600));
-      return simpleAiReply(message);
-    }
-
-    /* ===== Send handler ===== */
-    let isSending = false;
-    async function handleSend() {
-      const text = chatInput.value.trim();
-      if (!text || isSending) return;
-      isSending = true;
-      appendBubble(text, 'user', {meta: timeNow()});
-      chatInput.value = '';
-      // placeholder
-      appendBubble('Menjawab...', 'ai');
-      // keep reference to placeholder to replace
-      const placeholder = chatMessages.lastElementChild.querySelector('.bubble.ai');
-
-      try {
-        const reply = await sendToRealAI(text);
-        // replace placeholder
-        placeholder.textContent = reply;
-        // add meta time
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.textContent = timeNow();
-        chatMessages.lastElementChild.appendChild(meta);
-      } catch (err) {
-        placeholder.textContent = 'Maaf, terjadi kesalahan saat memproses jawaban.';
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.textContent = timeNow();
-        chatMessages.lastElementChild.appendChild(meta);
-      } finally {
-        isSending = false;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
-    }
-
-    /* ===== Events ===== */
-    sendBtn.addEventListener('click', handleSend);
-    chatForm.addEventListener('submit', (e) => { e.preventDefault(); handleSend(); });
-
-    chatInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        handleSend();
-      }
-    });
-
-    tplButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        chatInput.value = btn.textContent;
-        chatInput.focus();
-      });
-    });
-
-    /* ===== Init welcome message ===== */
-    appendBubble('Halo! Saya AI Coach. Pilih template atau ketik pertanyaan ringan tentang latihanmu.', 'ai', {meta: timeNow()});
-
-    /* ===== Optional: keyboard accessibility for templates (space/enter) ===== */
-    document.querySelectorAll('.tpl-btn').forEach(b => {
-      b.setAttribute('tabindex','0');
-      b.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          b.click();
+    async function init() {
+        if(isRunning) return;
+        document.getElementById('start-btn').style.display = 'none';
+        aiStatus.innerText = "Membuka Kamera...";
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { width: 640, height: 480 } 
+            });
+            video.srcObject = stream;
+            video.play();
+            
+            aiStatus.innerText = "Memuat AI...";
+            const net = await posenet.load();
+            aiStatus.innerText = "AI Aktif";
+            isRunning = true;
+            
+            speak("Latihan dimulai. Posisikan tubuh kamu.");
+            detect(net);
+            runTimer(30);
+        } catch (e) {
+            alert("Kamera tidak diizinkan!");
         }
-      });
-    });
+    }
 
-    /* ===== Optional: preserve scroll position on new messages for mobile keyboards ===== */
-    window.addEventListener('resize', () => {
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
-  </script>
+    async function detect(net) {
+        canvas.width = 640;
+        canvas.height = 480;
+
+        async function loop() {
+            if(!isRunning) return;
+            const pose = await net.estimateSinglePose(video);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Gambar Garis Guide
+            drawGuides();
+
+            const nose = pose.keypoints[0];
+            if (nose.score > 0.5) {
+                document.getElementById('face-alert').style.display = 'none';
+                const y = nose.position.y;
+
+                // Visual dot untuk hidung (Helper)
+                ctx.fillStyle = "white";
+                ctx.beginPath();
+                ctx.arc(nose.position.x, y, 5, 0, 2*Math.PI);
+                ctx.fill();
+
+                // LOGIKA HITUNG PUSH UP
+                if (y > DOWN_LIMIT && stage === 'up') {
+                    stage = 'down';
+                    instr.innerText = "NAIK!";
+                    instr.style.color = var(--accent);
+                }
+                
+                if (y < UP_LIMIT && stage === 'down') {
+                    stage = 'up';
+                    count++;
+                    repDisplay.innerText = count;
+                    instr.innerText = "TURUN!";
+                    instr.style.color = var(--primary);
+                    speak(count.toString()); // Suara Coach
+                    checkGoal();
+                }
+            } else {
+                document.getElementById('face-alert').style.display = 'block';
+            }
+
+            requestAnimationFrame(loop);
+        }
+        loop();
+    }
+
+    function drawGuides() {
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.setLineDash([5, 5]);
+        // Garis Atas
+        ctx.beginPath(); ctx.moveTo(0, UP_LIMIT); ctx.lineTo(640, UP_LIMIT); ctx.stroke();
+        // Garis Bawah
+        ctx.beginPath(); ctx.moveTo(0, DOWN_LIMIT); ctx.lineTo(640, DOWN_LIMIT); ctx.stroke();
+    }
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        msg.lang = 'id-ID';
+        window.speechSynthesis.speak(msg);
+    }
+
+    function checkGoal() {
+        if (count >= 5) {
+            document.getElementById('task-pushup').classList.add('item-done');
+            document.getElementById('dot-pushup').style.backgroundColor = "#00ff88";
+            instr.innerText = "TARGET SELESAI!";
+            speak("Luar biasa! Target tercapai.");
+        }
+    }
+
+    function runTimer(sec) {
+        let time = sec;
+        const countdown = setInterval(() => {
+            let m = Math.floor(time / 60);
+            let s = time % 60;
+            document.getElementById('timer').innerText = 
+                `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            if (time <= 0) {
+                clearInterval(countdown);
+                isRunning = false;
+                speak("Waktu habis.");
+            }
+            time--;
+        }, 1000);
+    }
+</script>
+
 </body>
 </html>
