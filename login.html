@@ -3,85 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="icon" type="image/png" href="favicon.png">
-
+    <link rel="icon" type="image/png" href="favicon.png">
     <title>SmartCoach AI | Auth</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { height: 100vh; overflow: hidden; }
-        .container { display: flex; height: 100vh; }
+        :root {
+            --primary-blue: #3182ce;
+            --dark-navy: #0d1b2a;
+            --accent-green: #38ed70;
+        }
 
-.logo { width: 70px; }
-        /* Panel Kiri */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            background: #f7fafc; 
+            min-height: 100vh;
+        }
+
+        .container { 
+            display: flex; 
+            min-height: 100vh; 
+            flex-direction: row; /* Default Desktop */
+        }
+
+        /* Panel Kiri (Banner) */
         .left-panel {
             flex: 1.2;
-            background-color: #0d1b2a;
+            background-color: var(--dark-navy);
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 60px;
+            padding: 40px;
         }
-        .content-wrapper { max-width: 500px; }
+        
+        .content-wrapper { max-width: 450px; }
+        
         .logo-box {
             background: #162431;
-            width: 80px; height: 80px;
+            width: 70px; height: 70px;
             display: flex; justify-content: center; align-items: center;
-            border-radius: 12px; margin-bottom: 30px;
+            border-radius: 12px; margin-bottom: 25px;
         }
-        h1 { font-size: 2.5rem; margin-bottom: 15px; line-height: 1.2; }
-        .features { list-style: none; margin-top: 30px; }
-        .features li { display: flex; margin-bottom: 20px; color: #cbd5e0; }
-        .features i { color: #38ed70; margin-right: 15px; margin-top: 5px; }
+        .logo { width: 50px; }
 
-        /* Panel Kanan */
+        h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 15px; line-height: 1.2; }
+        
+        .features { list-style: none; margin-top: 30px; }
+        .features li { display: flex; margin-bottom: 20px; color: #cbd5e0; font-size: 0.95rem; }
+        .features i { color: var(--accent-green); margin-right: 15px; margin-top: 5px; }
+
+        /* Panel Kanan (Form) */
         .right-panel {
             flex: 1;
             background: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px;
-            position: relative;
+            padding: 40px 20px;
         }
-        .form-container { width: 100%; max-width: 400px; }
         
-        /* Toggle Form */
-        .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .form-container { width: 100%; max-width: 380px; }
+        
+        /* Tab Styling */
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 30px; background: #edf2f7; padding: 5px; border-radius: 10px; }
         .tab-btn {
-            flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;
-            background: white; cursor: pointer; font-weight: 600; transition: 0.3s;
+            flex: 1; padding: 10px; border-radius: 8px; border: none;
+            background: transparent; cursor: pointer; font-weight: 600; transition: 0.3s; color: #4a5568;
         }
-        .tab-btn.active { background: #3182ce; color: white; border-color: #3182ce; }
+        .tab-btn.active { background: white; color: var(--primary-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         
-        /* Form Element */
-        .form-content { display: none; }
+        .form-content { display: none; animation: fadeIn 0.4s ease; }
         .form-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         
-        h2 { font-size: 2rem; margin-bottom: 10px; }
+        h2 { font-size: 1.8rem; margin-bottom: 8px; color: #2d3748; }
         .subtitle { color: #718096; margin-bottom: 25px; font-size: 0.9rem; }
         
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; color: #4a5568; }
         .input-group input {
-            width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none;
+            width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 10px; outline: none; transition: 0.3s;
         }
+        .input-group input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1); }
         
         .btn-main {
-            width: 100%; padding: 14px; background: #3182ce; color: white;
-            border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin-top: 10px;
+            width: 100%; padding: 14px; background: var(--primary-blue); color: white;
+            border: none; border-radius: 30px; font-weight: bold; cursor: pointer; 
+            margin-top: 10px; transition: 0.3s; font-size: 1rem;
         }
+        .btn-main:hover { background: #2b6cb0; transform: translateY(-1px); }
 
         .face-id-btn {
-            width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px;
-            background: white; margin-bottom: 15px; cursor: pointer; display: flex;
-            align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px;
+            background: #f8fafc; margin-bottom: 20px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; gap: 10px; font-weight: 600; color: #2d3748; transition: 0.3s;
+        }
+        .face-id-btn:hover { background: #edf2f7; }
+
+        .switch-link { text-align: center; margin-top: 25px; font-size: 0.9rem; color: #718096; }
+        .switch-link a { color: var(--primary-blue); text-decoration: none; font-weight: bold; }
+
+        /* ---------- MEDIA QUERIES (RESPONSIF) ---------- */
+        @media (max-width: 900px) {
+            .container { flex-direction: column; overflow-y: auto; }
+            .left-panel { padding: 60px 20px; flex: none; text-align: center; }
+            .content-wrapper { display: flex; flex-direction: column; align-items: center; }
+            .features li { text-align: left; }
+            .right-panel { flex: none; min-height: 600px; padding: 40px 20px; border-radius: 30px 30px 0 0; margin-top: -30px; }
         }
 
-        .switch-link { text-align: center; margin-top: 20px; font-size: 0.9rem; }
-        .switch-link a { color: #3182ce; text-decoration: none; font-weight: bold; }
+        @media (max-width: 480px) {
+            h1 { font-size: 1.6rem; }
+            .left-panel { padding: 50px 20px 70px; }
+            .right-panel { padding: 40px 15px; }
+        }
     </style>
 </head>
 <body>
@@ -90,12 +130,13 @@
     <div class="left-panel">
         <div class="content-wrapper">
             <div class="logo-box">
-                <img src="favicon.png" alt="Logo" class="logo"> </div>
+                <img src="favicon.png" alt="Logo" class="logo">
+            </div>
             <h1>Build Your Skills With SmartCoach AI</h1>
             <ul class="features">
-                <li><i class="fas fa-check"></i> <div><strong>AI Football Training:</strong> Analisis gerakan real-time.</div></li>
-                <li><i class="fas fa-check"></i> <div><strong>Smart Analysis:</strong> Statistik mendalam perkembangan Anda.</div></li>
-                <li><i class="fas fa-check"></i> <div><strong>Personalized Coaching:</strong> Program latihan otomatis.</div></li>
+                <li><i class="fas fa-check"></i> <div><strong>AI Football Training:</strong> Analisis gerakan real-time melalui kamera.</div></li>
+                <li><i class="fas fa-check"></i> <div><strong>Smart Analysis:</strong> Statistik perkembangan atletik Anda.</div></li>
+                <li><i class="fas fa-check"></i> <div><strong>Personalized Coaching:</strong> Program yang menyesuaikan skill Anda.</div></li>
             </ul>
         </div>
     </div>
@@ -104,44 +145,49 @@
         <div class="form-container">
             
             <div class="auth-tabs">
-                <button class="tab-btn active" onclick="showForm('login')">Login</button>
-                <button class="tab-btn" onclick="showForm('signup')">Sign Up</button>
+                <button class="tab-btn active" id="tab-login" onclick="showForm('login')">Login</button>
+                <button class="tab-btn" id="tab-signup" onclick="showForm('signup')">Sign Up</button>
             </div>
 
             <div id="login-form" class="form-content active">
                 <h2>Welcome Back!</h2>
-                <p class="subtitle">Please login to your account.</p>
-                <button class="face-id-btn" onclick="window.location.href='face.html'"><i class="far fa-smile"></i> Face ID Login</button>
-                <form action="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3MtTeSAjHCK_hD9b8eezJrWqzsxnW1cHi6Q&s" target="_balnk">
+                <p class="subtitle">Please login to continue your training.</p>
+                
+                <button class="face-id-btn" onclick="window.location.href='face.html'">
+                    <i class="far fa-smile"></i> Face ID Login
+                </button>
+
+                <form onsubmit="event.preventDefault(); alert('Login logic here');">
                     <div class="input-group">
-                        <label>Email</label>
-                        <input type="email" placeholder="Enter your email">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="name@example.com" required>
                     </div>
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" placeholder="Enter your password">
+                        <input type="password" placeholder="••••••••" required>
                     </div>
-                    <button type="submit" class="btn-main">Login</button>
+                    <button type="submit" class="btn-main">Login to Dashboard</button>
                 </form>
             </div>
 
             <div id="signup-form" class="form-content">
                 <h2>Create Account</h2>
-                <p class="subtitle">Join the SmartCoach community today.</p>
-                <form action="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCZW88Hj_oBT9AjMaAWS-XOMSV6h5Tb3Pkfw&s" target="_balnk">
+                <p class="subtitle">Start your journey to become a pro athlete.</p>
+                
+                <form onsubmit="event.preventDefault(); alert('Signup logic here');">
                     <div class="input-group">
-                        <label>Nama Lengkap</label>
-                        <input type="text" placeholder="Enter your full name">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="John Doe" required>
                     </div>
                     <div class="input-group">
-                        <label>Email</label>
-                        <input type="email" placeholder="Enter your email">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="name@example.com" required>
                     </div>
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" placeholder="Create password">
+                        <input type="password" placeholder="Create a strong password" required>
                     </div>
-                    <button type="submit" class="btn-main">Sign Up</button>
+                    <button type="submit" class="btn-main">Create Account</button>
                 </form>
             </div>
 
@@ -157,20 +203,21 @@
     function showForm(type) {
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
-        const tabs = document.querySelectorAll('.tab-btn');
+        const tabLogin = document.getElementById('tab-login');
+        const tabSignup = document.getElementById('tab-signup');
         const toggleText = document.getElementById('toggle-text');
 
         if (type === 'login') {
             loginForm.classList.add('active');
             signupForm.classList.remove('active');
-            tabs[0].classList.add('active');
-            tabs[1].classList.remove('active');
+            tabLogin.classList.add('active');
+            tabSignup.classList.remove('active');
             toggleText.innerHTML = 'Don\'t have an account? <a href="javascript:void(0)" onclick="showForm(\'signup\')">Sign up</a>';
         } else {
             signupForm.classList.add('active');
             loginForm.classList.remove('active');
-            tabs[1].classList.add('active');
-            tabs[0].classList.remove('active');
+            tabSignup.classList.add('active');
+            tabLogin.classList.remove('active');
             toggleText.innerHTML = 'Already have an account? <a href="javascript:void(0)" onclick="showForm(\'login\')">Login</a>';
         }
     }
@@ -178,8 +225,3 @@
 
 </body>
 </html>
-
-
-
-
-
