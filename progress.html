@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+    <title>Smart Coach - Training Session</title>
+    <style>
+        /* Reset & General Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f0f0f; color: white; }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+        .logo { font-weight: bold; font-size: 20px; color: #00ffcc; }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { color: #00ffcc; }
+        .logout-btn { color: #ff4d4d !important; }
+
+        /* Layout Container */
+        .main-container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Video Section (Left) */
+        .video-section { flex: 3; }
+        .video-player {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+        }
+        .video-info { margin-top: 15px; }
+        .video-info h2 { font-size: 22px; margin-bottom: 10px; }
+
+        /* Controls (Next/Prev) */
+        .training-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-control {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .prev-btn { background-color: #333; color: white; }
+        .next-btn { background-color: #00ffcc; color: #000; }
+        .btn-control:hover { opacity: 0.8; }
+
+        /* AI Chat Sidebar (Right) */
+        .ai-sidebar {
+            flex: 1;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            border: 1px solid #333;
+        }
+        .chat-header {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        .ai-bubble {
+            background-color: #2b2b2b;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00ffcc;
+        }
+        .chat-input-area {
+            padding: 15px;
+            border-top: 1px solid #333;
+        }
+        .chat-input-area input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #0f0f0f;
+            color: white;
+            outline: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; }
+            .ai-sidebar { height: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SMART COACH</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#" class="logout-btn">Log Out</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        
+        <div class="video-section">
+            <div class="video-player">
+                <p style="color: #666;">
+<video width="750" height="425" controls>
+    <source src="C:\Users\osisa\OneDrive\fia\intro tatwir.mp4" type="video/mp4">
+    Browser Anda tidak mendukung video.
+</video>
+</p>
+            </div>
+            
+            <div class="video-info">
+                <h2>Beginner Training – Push-Up Tutorial</h2>
+                <div class="training-controls">
+                    <button class="btn-control prev-btn">← Previous Practice</button>
+                    <button class="btn-control next-btn">Next Practice →</button>
+		    <a href="insight.html">
+		    <button class="btn-control next-btn">View Insight</button>
+		   </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-sidebar">
+            <div class="chat-header">Tanya AI Coach</div>
+            <div class="chat-messages">
+                <div class="ai-bubble">
+                    <strong>AI Coach:</strong> Pastikan sentuhan kaki ringan dan posisi badan seimbang saat melakukan gerakan ini.
+                </div>
+                </div>
+            <div class="chat-input-area">
+                <input type="text" placeholder="Tanyakan sesuatu pada AI...">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

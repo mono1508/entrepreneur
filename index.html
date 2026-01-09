@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Coach Trainer</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #0b0f1a;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* ---------- NAVBAR ---------- */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(11, 15, 26, 0.8);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 60px;
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 900;
+      color: #00ff88;
+    }
+
+    nav a {
+      margin-left: 28px;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background: #00ff88;
+      transition: 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #00ff88, #00ccff);
+      color: #000;
+      font-weight: 700;
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      min-height: 100vh;
+      padding: 140px 80px 80px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .hero h2 {
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 30px;
+    }
+
+    .hero-buttons a {
+      margin-right: 20px;
+    }
+
+    .hero-visual {
+      height: 420px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #00ff88, #00ccff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-size: 20px;
+      font-weight: 800;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+
+    /* ---------- SECTION ---------- */
+    section {
+      padding: 120px 80px;
+    }
+
+    section h3 {
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+
+    section p.section-desc {
+      color: #94a3b8;
+      max-width: 700px;
+      margin-bottom: 60px;
+    }
+
+    /* ---------- CARDS ---------- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: #12172a;
+      border-radius: 24px;
+      padding: 32px;
+      transition: 0.4s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,255,136,0.15);
+    }
+
+    .card h4 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #00ff88;
+ text-decoration: none;
+    }
+
+    .card p {
+      color: #cbd5e1;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ---------- PRICING ---------- */
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+    }
+
+    .price-box {
+      background: linear-gradient(180deg, #12172a, #0b0f1a);
+      border-radius: 28px;
+      padding: 40px;
+      border: 1px solid #1f2937;
+    }
+
+    .price-box h4 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .price-box ul {
+      margin-top: 20px;
+      list-style: none;
+    }
+
+    .price-box ul li {
+      margin-bottom: 12px;
+      color: #cbd5e1;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      padding: 60px;
+      text-align: center;
+      color: #64748b;
+      border-top: 1px solid #1f2937;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>SMART COACH</h1>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#training">Training Camp</a>
+    <a href="#nutrition">Eating Management</a>
+    <a href="#instruction">Instruction</a>
+    <a href="login.html" class="btn">Sign Up / SSO</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h2>Train Like a Pro.<br>Powered by AI.</h2>
+    <p>
+      Platform latihan sepak bola berbasis <b>AI, Face ID Validation, Video Analysis,</b>
+      dan <b>Nutrisi Atlet</b> untuk mencetak pemain masa depan.
+    </p>
+    <div class="hero-buttons">
+      <a href="#pricing" class="btn">Start Training</a>
+      <a href="#features">Explore Features</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    AI Face Tracking & Performance Monitoring
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <h3>Core Platform Features</h3>
+  <p class="section-desc">
+    Sistem terintegrasi dari login, Face ID, AI monitoring, hingga nutrisi atlet.
+    Dirancang scalable untuk web & mobile.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Smart Login & Face ID</h4>
+      <p>
+        Registrasi akun dengan email, password, data diri, dan Face ID.
+        Setiap login diverifikasi ulang menggunakan AI facial validation.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>AI Video Training</h4>
+      <p>
+        Materi teknik & fisik dari pemain profesional.
+        Tersedia kolom pertanyaan di setiap video, dijawab AI otomatis.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>AI Video Call Monitoring</h4>
+      <p>
+        AI melakukan monitoring latihan secara real-time melalui video call,
+        menilai postur, gerakan, dan progres pemain.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING -->
+<section id="training">
+  <h3>Training Camp System</h3>
+  <p class="desc">
+    Sistem bertingkat — pemula gratis, lanjutan berbasis langganan.
+  </p>
+
+  <div class="cards">
+
+    <!-- BEGINNER -->
+    <div class="card">
+      <h4><a href="progress.html">Beginner (Unlocked)</a></h4>
+      <p>Contoh halaman training aktif.</p>
+      <ul>
+        <li>🎥 Video Coach Teknik Dasar</li>
+        <li>🤖 AI Q&amp;A di setiap video</li>
+        <li>📞 AI Video Call koreksi gerakan</li>
+        <li>📅 Daily / Weekly / Monthly Plan</li>
+      </ul>
+      <p class="price">FREE</p>
+    </div>
+
+    <!-- PRO -->
+    <div class="card locked">
+      <h4>Pro (Locked)</h4>
+      <ul>
+        <li>🔒 AI Video Call Intensif</li>
+        <li>🔒 Teknik &amp; Fisik Lanjutan</li>
+        <li>🔒 Progress Analytics</li>
+      </ul>
+      <p class="price">Rp149.000 / bulan</p>
+    </div>
+
+    <!-- ELITE -->
+    <div class="card locked">
+      <h4>Elite (Locked)</h4>
+      <ul>
+        <li>🔒 WO &amp; Gym Training</li>
+        <li>🔒 Bib-Test Fisik</li>
+        <li>🔒 AI Performance Prediction</li>
+      </ul>
+      <p class="price">Rp299.000 / bulan</p>
+    </div>
+
+  </div>
+</section>
+<!-- NUTRITION -->
+<section id="nutrition">
+  <h3>Eating Management</h3>
+  <p class="section-desc">
+    Nutrisi atlet berbasis data dan AI.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Nutrisi Analysis</h4>
+      <p>
+        Analisis kebutuhan kalori & nutrisi sesuai aktivitas latihan.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Meal Guidance</h4>
+      <p>
+        Panduan pola makan sehat dan bergizi untuk atlet.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Expert Video Tutor</h4>
+      <p>
+        Video edukasi langsung dari ahli gizi profesional.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTION -->
+<section id="instruction">
+  <h3>Instruction & Injury Prevention</h3>
+  <p class="section-desc">
+    Arahan pelatih profesional dan panduan resmi sepak bola.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Position Guide</h4>
+      <p>
+        Arahan khusus tiap posisi, lengkap dengan trik & tips profesional.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Injury Prevention</h4>
+      <p>
+        Instruksi pencegahan cedera sebelum, saat, dan setelah latihan.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Football Rules</h4>
+      <p>
+        Daftar peraturan dasar hingga lanjutan sepak bola.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <h3>Training Levels</h3>
+  <p class="section-desc">
+    Dari pemula hingga elite, siap scale ke sistem startup nasional.
+  </p>
+
+  <div class="pricing">
+    <div class="price-box">
+      <h4>Beginner</h4>
+      <ul>
+        <li>Video Training Dasar</li>
+        <li>AI Q&amp;A</li>
+        <li>Jadwal Daily / Weekly</li>
+      </ul>
+    </div>
+
+    <div class="price-box">
+      <h4>Pro</h4>
+      <ul>
+        <li>AI Video Call Monitoring</li>
+        <li>Latihan Teknik &amp; Fisik</li>
+        <li>Progress Tracking</li>
+      </ul>
+    </div>
+
+    <div class="price-box">
+      <h4>Elite</h4>
+      <ul>
+        <li>WO &amp; Gym Training</li>
+        <li>Bib-Test Fisik</li>
+        <li>AI Performance Analytics</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 AI Football Training Platform — Built for Future Athletes
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+<link rel="icon" type="image/png" href="favicon.png">
+ <title>Face Login | SmartCoach AI</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-options {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.btn-login-tab {
+    flex: 1;
+    padding: 12px;
+    background: #3182ce;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-face-id {
+    flex: 1;
+    padding: 12px;
+    background: white;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.switch-text {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #4a5568;
+    margin-bottom: 25px;
+}
+
+.switch-text a { color: #3182ce; text-decoration: none; font-weight: bold; }
+
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Bagian Kiri */
+.left-panel {
+    flex: 1;
+    background-color: #0b1a2a; /* Warna biru gelap */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.content-wrapper {
+    max-width: 500px;
+}
+
+.logo {
+    width: 80px;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.description {
+    margin-bottom: 30px;
+    color: #cbd5e0;
+}
+
+.features {
+    list-style: none;
+}
+
+.features li {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.features i {
+    color: #38ed70; /* Warna hijau neon */
+    margin-right: 15px;
+    margin-top: 5px;
+}
+
+/* Bagian Kanan */
+.right-panel {
+    flex: 1;
+    background-color: #f7fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-box h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #1a202c;
+}
+
+.login-box p {
+    color: #718096;
+    margin-bottom: 40px;
+}
+
+/* Ilustrasi Face Scan */
+.face-scan-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.outer-ring {
+    width: 200px;
+    height: 200px;
+    border: 2px solid #38ed70;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.inner-circle {
+    width: 100%;
+    height: 100%;
+    background: #a0aec0;
+    border-radius: 50%;
+    border: 8px solid #cbd5e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.core-circle {
+    width: 40%;
+    height: 40%;
+    border: 4px solid #718096;
+    border-radius: 50%;
+}
+
+/* Tombol */
+.btn-activate {
+    background-color: #38ed70;
+    color: #0b1a2a;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 80%;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.btn-activate:hover {
+    transform: scale(1.05);
+}
+
+.troubleshoot {
+    display: block;
+    color: #38ed70;
+    text-decoration: none;
+    font-size: 0.9rem;
+}</style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="content-wrapper">
+                <img src="favicon.png" alt="SmartCoach Logo" class="logo">
+                <h1>Build Your Skills With SmartCoach AI</h1>
+                <p class="description">Tingkatkan performa olahraga Anda dengan platform pelatihan berbasis kecerdasan buatan terbaik.</p>
+                
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> <strong>AI Football Training:</strong> Analisis gerakan sepak bola secara real-time untuk teknik yang lebih sempurna.</li>
+                    <li><i class="fas fa-check"></i> <strong>Smart Analysis:</strong> Statistik mendalam mengenai perkembangan fisik dan taktik Anda di lapangan.</li>
+                    <li><i class="fas fa-check"></i> <strong>Personalized Coaching:</strong> Program latihan yang disesuaikan secara otomatis oleh model AI SmartCoach.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="login-box">
+               
+
+ <h2>Welcome Back!</h2>
+
+                <div class="auth-options">
+                    <button class="btn-face-id" onclick="window.location.href='login.html'">Login</button>
+                    <button class="btn-login-tab">
+                        <i class="far fa-smile"></i> Face ID Login
+                    </button>
+                </div>
+                <p>Scan your face to login.</p>
+                
+                <div class="face-scan-container">
+                    <div class="outer-ring">
+                        <div class="inner-circle">
+                            <div class="core-circle"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-activate">Activate Camera</button>
+                <a href="#" class="troubleshoot">Troubleshoot Face ID hover-unidnlgie</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
