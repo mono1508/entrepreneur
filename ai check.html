@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Coach AI - Training Mode</title>
-    
-    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Smart Coach AI - Pro Training</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
@@ -21,240 +19,119 @@
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
+            overflow-x: hidden;
         }
 
-        /* NAVIGATION BAR */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 6%;
-            background: rgba(22, 27, 34, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #30363d;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 6%; background: rgba(22, 27, 34, 0.9);
+            backdrop-filter: blur(10px); border-bottom: 1px solid #30363d;
+            position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .logo { font-weight: 800; color: var(--primary); letter-spacing: 1px; }
 
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-
-        .nav-links a {
-            color: #8b949e;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover { color: var(--primary); }
-
-        .btn-auth {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #000;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 0.85rem;
-        }
-
-        /* LAYOUT */
         .main-wrapper {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1.6fr 1fr;
-            gap: 25px;
+            max-width: 1200px; margin: 30px auto; padding: 0 20px;
+            display: grid; grid-template-columns: 1.6fr 1fr; gap: 25px;
         }
 
-        .container-left, .container-right {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* CAMERA SECTION */
         .video-card {
-            background: var(--card-dark);
-            border-radius: 24px;
-            padding: 15px;
-            border: 2px solid #30363d;
-            position: relative;
-            overflow: hidden;
+            background: var(--card-dark); border-radius: 24px; padding: 15px;
+            border: 2px solid #30363d; position: relative;
         }
 
         .video-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #000;
-            border-radius: 18px;
-            overflow: hidden;
+            position: relative; width: 100%; aspect-ratio: 16/9;
+            background: #000; border-radius: 18px; overflow: hidden;
         }
 
         video, canvas {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            transform: scaleX(-1);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            transform: scaleX(-1); /* Mirror effect */
         }
 
-        /* HUD & ALERTS */
-        .alert-overlay {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            padding: 10px 25px;
-            border-radius: 12px;
-            font-weight: bold;
-            display: none;
-            animation: pulse 1s infinite;
-        }
-
-        .alert-orange { background: #d97706; color: white; }
-
-        /* STATS CARD */
         .stats-card {
-            background: var(--card-dark);
-            border-radius: 24px;
-            padding: 30px;
-            border: 1px solid #30363d;
-            text-align: center;
+            background: var(--card-dark); border-radius: 24px; padding: 30px;
+            border: 1px solid #30363d; text-align: center;
         }
 
         .rep-circle {
-            width: 180px;
-            height: 180px;
-            border: 6px solid var(--primary);
-            border-radius: 50%;
-            margin: 20px auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            width: 180px; height: 180px; border: 6px solid var(--primary);
+            border-radius: 50%; margin: 20px auto;
+            display: flex; flex-direction: column; justify-content: center;
             box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
         }
 
-        .rep-value { font-size: 80px; font-weight: 800; color: var(--primary); line-height: 1; }
+        .rep-value { font-size: 80px; font-weight: 800; color: var(--primary); }
 
-        /* CHECKLIST SECTION (WHITE STYLE) */
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #000; border: none; padding: 15px 40px;
+            border-radius: 50px; font-weight: bold; cursor: pointer;
+            font-size: 1.1rem; margin-top: 20px; transition: 0.3s;
+        }
+
+        .btn-start:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--primary); }
+
         .checklist-container {
-            background: #ffffff;
-            color: #1a1a1a;
-            padding: 25px;
-            border-radius: 24px;
-            margin-top: 10px;
+            background: #ffffff; color: #1a1a1a; padding: 25px;
+            border-radius: 24px; margin-top: 20px;
         }
 
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid #f0f0f0;
-            font-weight: 600;
+        .item-done { text-decoration: line-through; color: #a0a0a0; opacity: 0.6; }
+
+        .alert-overlay {
+            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 100; background: #ef4444; color: white;
+            padding: 10px 20px; border-radius: 10px; display: none; font-weight: bold;
         }
 
-        .dot {
-            width: 18px; height: 18px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            transition: 0.3s;
-        }
-
-        .item-done .dot {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .item-done span {
-            text-decoration: line-through;
-            color: #a0a0a0;
-        }
-
-        .timer-text { color: #f87171; font-size: 1.5rem; font-weight: 800; }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
-        @media (max-width: 900px) {
-            .main-wrapper { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 900px) { .main-wrapper { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo-area">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.36.18-.57.18s-.41-.09-.57-.18l-7.9-4.44A.991.991 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.36-.18.57-.18s.41.09.57.18l7.9 4.44c.32.17.53.5.53.88v9z"/></svg>
-        Smart Coach
-    </div>
-    <div class="nav-links">
-        <a href="index.html#features">Features</a>
-        <a href="index.html#training">Training Camp</a>
-        <a href="index.html#nutrition">Diet Plan</a>
-        <a href="index.html#intruction">Intructions</a>
-    </div>
-    <a href="login.html" class="btn-auth">Sign Up / SSO</a>
+    <div class="logo">SMART COACH AI</div>
+    <div style="color: #8b949e;">Status: <span id="ai-status">Ready</span></div>
 </nav>
 
 <div class="main-wrapper">
     <div class="container-left">
         <div class="video-card">
-            <div id="face-alert" class="alert-overlay alert-orange">HADAP KE DEPAN!</div>
+            <div id="face-alert" class="alert-overlay">WAJAH TIDAK TERLIHAT!</div>
             <div class="video-container">
                 <video id="video" playsinline></video>
                 <canvas id="canvas"></canvas>
             </div>
-            <div style="margin-top: 15px; font-size: 0.8rem; color: #8b949e;">
-                Status: <span id="ai-status" style="color: var(--primary);">Menunggu Izin Kamera...</span>
-            </div>
+            <center><button id="start-btn" class="btn-start" onclick="init()">MULAI LATIHAN</button></center>
         </div>
 
         <div class="checklist-container">
-            <h3 style="margin-top: 0; color: #000;">Daftar Latihan - Part 1</h3>
-            <div class="checklist-item item-done">
-                <div class="dot"></div> <span>Pemanasan Dinamis (Done)</span>
-            </div>
-            <div id="task-pushup" class="checklist-item">
-                <div class="dot" id="dot-pushup"></div> <span>Push-up (Target: 5 Reps)</span>
-            </div>
-            <div class="checklist-item" style="opacity: 0.4;">
-                <div class="dot"></div> <span>Sit-up (Locked)</span>
+            <h3 style="margin: 0 0 15px 0;">Menu Latihan</h3>
+            <div id="task-pushup" style="display: flex; align-items: center; gap: 10px; font-weight: bold;">
+                <div id="dot-pushup" style="width:15px; height:15px; border:2px solid #ccc; border-radius:3px;"></div>
+                Push-up (Target: 5 Reps)
             </div>
         </div>
     </div>
 
     <div class="container-right">
         <div class="stats-card">
-            <div class="timer-text" id="timer">00:30</div>
-            <p style="color: #8b949e; margin-bottom: 0;">Sesi Berjalan</p>
+            <div id="timer" style="font-size: 2rem; color: #f87171; font-weight: 800;">00:30</div>
+            <p style="color: #8b949e;">Waktu Sesi</p>
             
             <div class="rep-circle">
-                <span style="font-size: 0.8rem; color: #8b949e;">TOTAL REPS</span>
+                <span style="font-size: 0.8rem; color: #8b949e;">REPS</span>
                 <div class="rep-value" id="rep-count">0</div>
             </div>
 
-            <h4 id="ai-instruction" style="color: var(--primary);">Posisikan Wajah di Tengah</h4>
-            <p id="move-warning" style="color: #f87171; visibility: hidden; font-weight: bold;">GERAK SEKARANG!</p>
+            <h2 id="ai-instruction" style="color: var(--primary);">Tekan Start</h2>
+            <p id="move-warning" style="color: #f87171; visibility: hidden;">Ayo Gerak!</p>
         </div>
     </div>
 </div>
@@ -265,27 +142,38 @@
     const ctx = canvas.getContext('2d');
     const repDisplay = document.getElementById('rep-count');
     const aiStatus = document.getElementById('ai-status');
-    const faceAlert = document.getElementById('face-alert');
+    const instr = document.getElementById('ai-instruction');
 
     let count = 0;
     let stage = 'up'; 
-    let lastMoveTime = Date.now();
+    let isRunning = false;
 
-    async function startApp() {
+    // Ambang Batas (Sesuaikan dengan posisi kamera)
+    const UP_LIMIT = 180;   
+    const DOWN_LIMIT = 300; 
+
+    async function init() {
+        if(isRunning) return;
+        document.getElementById('start-btn').style.display = 'none';
+        aiStatus.innerText = "Membuka Kamera...";
+        
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { width: 640, height: 480 } 
+            });
             video.srcObject = stream;
             video.play();
             
-            aiStatus.innerText = "Memuat AI PoseNet...";
+            aiStatus.innerText = "Memuat AI...";
             const net = await posenet.load();
-            aiStatus.innerText = "AI Online & Scanning";
+            aiStatus.innerText = "AI Aktif";
+            isRunning = true;
             
+            speak("Latihan dimulai. Posisikan tubuh kamu.");
             detect(net);
             runTimer(30);
         } catch (e) {
-            aiStatus.innerText = "Gagal Akses Kamera!";
-            aiStatus.style.color = "#f87171";
+            alert("Kamera tidak diizinkan!");
         }
     }
 
@@ -294,53 +182,42 @@
         canvas.height = 480;
 
         async function loop() {
+            if(!isRunning) return;
             const pose = await net.estimateSinglePose(video);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Garis bantu deteksi (Threshold)
-            ctx.strokeStyle = "rgba(0, 255, 136, 0.3)";
-            ctx.setLineDash([10, 10]);
-            ctx.strokeRect(100, 150, 440, 200); // Kotak area kerja
+            // Gambar Garis Guide
+            drawGuides();
 
             const nose = pose.keypoints[0];
-
-            if (nose.score > 0.6) {
-                lastMoveTime = Date.now();
-                document.getElementById('move-warning').style.visibility = "hidden";
-                
+            if (nose.score > 0.5) {
+                document.getElementById('face-alert').style.display = 'none';
                 const y = nose.position.y;
 
-                // LOGIKA HITUNG PUSH-UP (Berdasarkan pergerakan Vertikal Hidung)
-                // Jika hidung turun ke bawah garis 320px
-                if (y > 320 && stage === 'up') {
+                // Visual dot untuk hidung (Helper)
+                ctx.fillStyle = "white";
+                ctx.beginPath();
+                ctx.arc(nose.position.x, y, 5, 0, 2*Math.PI);
+                ctx.fill();
+
+                // LOGIKA HITUNG PUSH UP
+                if (y > DOWN_LIMIT && stage === 'up') {
                     stage = 'down';
-                    document.getElementById('ai-instruction').innerText = "NAIK SEKARANG!";
-                    document.getElementById('ai-instruction').style.color = "#00d4ff";
+                    instr.innerText = "NAIK!";
+                    instr.style.color = var(--accent);
                 }
                 
-                // Jika hidung naik kembali ke atas 220px
-                if (y < 220 && stage === 'down') {
+                if (y < UP_LIMIT && stage === 'down') {
                     stage = 'up';
                     count++;
                     repDisplay.innerText = count;
-                    document.getElementById('ai-instruction').innerText = "TURUN LAGI!";
-                    document.getElementById('ai-instruction').style.color = "#00ff88";
+                    instr.innerText = "TURUN!";
+                    instr.style.color = var(--primary);
+                    speak(count.toString()); // Suara Coach
                     checkGoal();
                 }
-
-                // DETEKSI HADAP DEPAN (Cek keseimbangan mata)
-                const eyeL = pose.keypoints[1].position.x;
-                const eyeR = pose.keypoints[2].position.x;
-                if (Math.abs(eyeL - eyeR) < 35) {
-                    faceAlert.style.display = "block";
-                } else {
-                    faceAlert.style.display = "none";
-                }
-            }
-
-            // Warning jika diam terlalu lama
-            if (Date.now() - lastMoveTime > 4000) {
-                document.getElementById('move-warning').style.visibility = "visible";
+            } else {
+                document.getElementById('face-alert').style.display = 'block';
             }
 
             requestAnimationFrame(loop);
@@ -348,28 +225,47 @@
         loop();
     }
 
+    function drawGuides() {
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.setLineDash([5, 5]);
+        // Garis Atas
+        ctx.beginPath(); ctx.moveTo(0, UP_LIMIT); ctx.lineTo(640, UP_LIMIT); ctx.stroke();
+        // Garis Bawah
+        ctx.beginPath(); ctx.moveTo(0, DOWN_LIMIT); ctx.lineTo(640, DOWN_LIMIT); ctx.stroke();
+    }
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        msg.lang = 'id-ID';
+        window.speechSynthesis.speak(msg);
+    }
+
     function checkGoal() {
         if (count >= 5) {
             document.getElementById('task-pushup').classList.add('item-done');
-            document.getElementById('dot-pushup').style.background = "#00ff88";
-            document.getElementById('ai-instruction').innerText = "TARGET SELESAI!";
+            document.getElementById('dot-pushup').style.backgroundColor = "#00ff88";
+            instr.innerText = "TARGET SELESAI!";
+            speak("Luar biasa! Target tercapai.");
         }
     }
 
     function runTimer(sec) {
         let time = sec;
-        const timerEl = document.getElementById('timer');
         const countdown = setInterval(() => {
             let m = Math.floor(time / 60);
             let s = time % 60;
-            timerEl.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-            if (time <= 0) clearInterval(countdown);
+            document.getElementById('timer').innerText = 
+                `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            if (time <= 0) {
+                clearInterval(countdown);
+                isRunning = false;
+                speak("Waktu habis.");
+            }
             time--;
         }, 1000);
     }
-
-    startApp();
 </script>
-</body>
 
+</body>
 </html>
