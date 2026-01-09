@@ -42,9 +42,38 @@
             grid-template-columns: 1.2fr 0.8fr; align-items: center;
             padding: 100px 80px; gap: 60px; overflow: hidden;
         }
-        .hero-video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; object-fit: cover; opacity: 0.2; }
-        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, var(--dark-bg) 40%, transparent); z-index: -1; }
-        .hero-content h2 { font-size: 64px; font-weight: 900; line-height: 1.1; margin-bottom: 25px; }
+  /* 1. Menaikkan Opacity Video agar lebih jelas */
+.hero-video-bg { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    z-index: -2; 
+    object-fit: cover; 
+    opacity: 0.5; /* Saya naikkan ke 0.5 (50%) agar video jelas terlihat */
+}
+
+/* 2. Memperkuat Overlay agar teks tetap terbaca tajam */
+.hero-overlay { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    /* Gradient dibuat lebih pekat dari kiri ke kanan */
+    background: linear-gradient(to right, rgba(11, 15, 26, 0.9) 30%, rgba(11, 15, 26, 0.2) 100%); 
+    z-index: -1; 
+}
+
+/* 3. Tambahkan efek bayangan pada teks (Optional tapi disarankan) */
+.hero-content h2 { 
+    font-size: 64px; 
+    font-weight: 900; 
+    line-height: 1.1; 
+    margin-bottom: 25px; 
+    text-shadow: 0 4px 15px rgba(0,0,0,0.8); /* Memberikan bayangan agar teks 'lepas' dari video */
+}
         .hero-content p { font-size: 18px; color: var(--text-gray); margin-bottom: 35px; max-width: 550px; }
         .hero-buttons .btn-main { padding: 16px 35px; background: var(--primary); color: #000; text-decoration: none; border-radius: 50px; font-weight: 700; margin-right: 20px; display: inline-block; transition: 0.3s; }
         .hero-buttons .btn-main:hover { box-shadow: 0 0 20px var(--primary); transform: scale(1.05); }
@@ -338,4 +367,5 @@
     </script>
 </body>
 </html>
+
 
