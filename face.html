@@ -3,208 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-<link rel="icon" type="image/png" href="favicon.png">
- <title>Face Login | SmartCoach AI</title>
-    <link rel="stylesheet" href="style.css">
-
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Face Login | SmartCoach AI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+    <style>
+        :root {
+            --primary-bg: #0b1a2a;
+            --accent-green: #38ed70;
+            --soft-blue: #3182ce;
+            --text-gray: #cbd5e0;
+        }
 
-body {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-.auth-options {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-}
+        body { 
+            background-color: #f7fafc; 
+            min-height: 100vh; 
+        }
 
-.btn-login-tab {
-    flex: 1;
-    padding: 12px;
-    background: #3182ce;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-}
+        .container {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: row; /* Desktop */
+        }
 
-.btn-face-id {
-    flex: 1;
-    padding: 12px;
-    background: white;
-    color: #4a5568;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
+        /* --- Panel Kiri (Banner Info) --- */
+        .left-panel {
+            flex: 1.2;
+            background-color: var(--primary-bg);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
 
-.switch-text {
-    text-align: center;
-    font-size: 0.85rem;
-    color: #4a5568;
-    margin-bottom: 25px;
-}
+        .content-wrapper { max-width: 500px; }
+        .logo { width: 70px; margin-bottom: 25px; }
+        h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 20px; line-height: 1.2; }
+        .description { margin-bottom: 30px; color: var(--text-gray); font-size: 1rem; }
 
-.switch-text a { color: #3182ce; text-decoration: none; font-weight: bold; }
+        .features { list-style: none; }
+        .features li { margin-bottom: 20px; display: flex; align-items: flex-start; font-size: 0.95rem; }
+        .features i { color: var(--accent-green); margin-right: 15px; margin-top: 5px; }
 
+        /* --- Panel Kanan (Face ID) --- */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background-color: #ffffff;
+        }
 
-.container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-}
+        .login-box {
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
 
-/* Bagian Kiri */
-.left-panel {
-    flex: 1;
-    background-color: #0b1a2a; /* Warna biru gelap */
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-}
+        .login-box h2 { font-size: 1.8rem; margin-bottom: 10px; color: #1a202c; }
+        .login-box p { color: #718096; margin-bottom: 30px; }
 
-.content-wrapper {
-    max-width: 500px;
-}
+        /* Tabs */
+        .auth-options {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            background: #f1f5f9;
+            padding: 6px;
+            border-radius: 12px;
+        }
 
-.logo {
-    width: 80px;
-    margin-bottom: 30px;
-}
+        .btn-face-id, .btn-login-tab {
+            flex: 1; padding: 12px; border: none; border-radius: 8px;
+            font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 0.9rem;
+        }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    line-height: 1.2;
-}
+        .btn-face-id { background: transparent; color: #64748b; }
+        .btn-login-tab { background: white; color: var(--soft-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-.description {
-    margin-bottom: 30px;
-    color: #cbd5e0;
-}
+        /* --- Animasi Face Scan --- */
+        .face-scan-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
 
-.features {
-    list-style: none;
-}
+        .outer-ring {
+            width: 180px; height: 180px;
+            border: 3px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            transition: 0.5s;
+        }
 
-.features li {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: flex-start;
-}
+        /* Efek Radar Scanning */
+        .outer-ring::after {
+            content: "";
+            position: absolute;
+            width: 100%; height: 100%;
+            border: 3px solid var(--accent-green);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 2s linear infinite;
+        }
 
-.features i {
-    color: #38ed70; /* Warna hijau neon */
-    margin-right: 15px;
-    margin-top: 5px;
-}
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-/* Bagian Kanan */
-.right-panel {
-    flex: 1;
-    background-color: #f7fafc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .inner-circle {
+            width: 150px; height: 150px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; border: 2px solid #cbd5e0;
+        }
 
-.login-box {
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-}
+        .inner-circle i { font-size: 80px; color: #94a3b8; }
 
-.login-box h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: #1a202c;
-}
+        /* Tombol Aksi */
+        .btn-activate {
+            background-color: var(--accent-green);
+            color: var(--primary-bg);
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(56, 237, 112, 0.3);
+        }
 
-.login-box p {
-    color: #718096;
-    margin-bottom: 40px;
-}
+        .btn-activate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(56, 237, 112, 0.4); }
 
-/* Ilustrasi Face Scan */
-.face-scan-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
-}
+        .troubleshoot {
+            display: block;
+            color: var(--soft-blue);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
 
-.outer-ring {
-    width: 200px;
-    height: 200px;
-    border: 2px solid #38ed70;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-}
+        /* --- RESPONSIVE HANDLER --- */
+        @media (max-width: 900px) {
+            .container { flex-direction: column; }
+            .left-panel { padding: 50px 20px; text-align: center; }
+            .features li { text-align: left; }
+            .right-panel { 
+                padding: 40px 20px; 
+                border-radius: 25px 25px 0 0; 
+                margin-top: -30px; 
+            }
+            .outer-ring { width: 160px; height: 160px; }
+            .inner-circle { width: 130px; height: 130px; }
+        }
 
-.inner-circle {
-    width: 100%;
-    height: 100%;
-    background: #a0aec0;
-    border-radius: 50%;
-    border: 8px solid #cbd5e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.core-circle {
-    width: 40%;
-    height: 40%;
-    border: 4px solid #718096;
-    border-radius: 50%;
-}
-
-/* Tombol */
-.btn-activate {
-    background-color: #38ed70;
-    color: #0b1a2a;
-    border: none;
-    padding: 15px 40px;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 80%;
-    margin-bottom: 20px;
-    transition: transform 0.2s;
-}
-
-.btn-activate:hover {
-    transform: scale(1.05);
-}
-
-.troubleshoot {
-    display: block;
-    color: #38ed70;
-    text-decoration: none;
-    font-size: 0.9rem;
-}</style>
+        @media (max-width: 480px) {
+            h1 { font-size: 1.6rem; }
+            .btn-activate { padding: 14px; }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -212,21 +179,19 @@ h1 {
             <div class="content-wrapper">
                 <img src="favicon.png" alt="SmartCoach Logo" class="logo">
                 <h1>Build Your Skills With SmartCoach AI</h1>
-                <p class="description">Tingkatkan performa olahraga Anda dengan platform pelatihan berbasis kecerdasan buatan terbaik.</p>
+                <p class="description">Verifikasi identitas Anda dengan cepat dan aman menggunakan teknologi Face ID SmartCoach.</p>
                 
                 <ul class="features">
-                    <li><i class="fas fa-check"></i> <strong>AI Football Training:</strong> Analisis gerakan sepak bola secara real-time untuk teknik yang lebih sempurna.</li>
-                    <li><i class="fas fa-check"></i> <strong>Smart Analysis:</strong> Statistik mendalam mengenai perkembangan fisik dan taktik Anda di lapangan.</li>
-                    <li><i class="fas fa-check"></i> <strong>Personalized Coaching:</strong> Program latihan yang disesuaikan secara otomatis oleh model AI SmartCoach.</li>
+                    <li><i class="fas fa-check"></i> <div><strong>Instant Access:</strong> Masuk ke dashboard tanpa mengetik password.</div></li>
+                    <li><i class="fas fa-check"></i> <div><strong>Secure Validation:</strong> Memastikan data latihan sinkron dengan profil asli Anda.</div></li>
+                    <li><i class="fas fa-check"></i> <div><strong>AI Recognition:</strong> Teknologi pengenalan wajah yang akurat dalam kondisi minim cahaya.</div></li>
                 </ul>
             </div>
         </div>
 
         <div class="right-panel">
             <div class="login-box">
-               
-
- <h2>Welcome Back!</h2>
+                <h2>Welcome Back!</h2>
 
                 <div class="auth-options">
                     <button class="btn-face-id" onclick="window.location.href='login.html'">Login</button>
@@ -234,20 +199,40 @@ h1 {
                         <i class="far fa-smile"></i> Face ID Login
                     </button>
                 </div>
-                <p>Scan your face to login.</p>
+                
+                <p>Posisikan wajah Anda di dalam lingkaran untuk memindai.</p>
                 
                 <div class="face-scan-container">
                     <div class="outer-ring">
                         <div class="inner-circle">
-                            <div class="core-circle"></div>
+                            <i class="fas fa-user-shield"></i>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn-activate">Activate Camera</button>
-                <a href="#" class="troubleshoot">Troubleshoot Face ID hover-unidnlgie</a>
+                <button class="btn-activate" id="start-camera">
+                    <i class="fas fa-camera"></i> Activate Camera
+                </button>
+                
+                <a href="#" class="troubleshoot">Bermasalah dengan Face ID?</a>
             </div>
         </div>
     </div>
+
+    <script>
+        // Simulasi aktivasi kamera sederhana
+        document.getElementById('start-camera').addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-sync fa-spin"></i> Initializing AI...';
+            this.style.background = '#e2e8f0';
+            this.style.color = '#64748b';
+            
+            setTimeout(() => {
+                alert("SmartCoach AI: Camera access is required. (Simulasi: Kamera berhasil diaktifkan)");
+                this.innerHTML = '<i class="fas fa-camera"></i> Activate Camera';
+                this.style.background = '#38ed70';
+                this.style.color = '#0b1a2a';
+            }, 1500);
+        });
+    </script>
 </body>
 </html>
