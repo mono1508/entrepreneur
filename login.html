@@ -3,238 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-<link rel="icon" type="image/png" href="favicon.png">
-   <title>Sign Ip | SmartCoach AI</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="favicon" scr="favion.png type="favicon/png>
+    <title>SmartCoach AI | Auth</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { height: 100vh; overflow: hidden; }
+        .container { display: flex; height: 100vh; }
 
-body {
-    height: 100vh;
-}
+        /* Panel Kiri */
+        .left-panel {
+            flex: 1.2;
+            background-color: #0d1b2a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+        .content-wrapper { max-width: 500px; }
+        .logo-box {
+            background: #162431;
+            width: 80px; height: 80px;
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 12px; margin-bottom: 30px;
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 15px; line-height: 1.2; }
+        .features { list-style: none; margin-top: 30px; }
+        .features li { display: flex; margin-bottom: 20px; color: #cbd5e0; }
+        .features i { color: #38ed70; margin-right: 15px; margin-top: 5px; }
 
-.container {
-    display: flex;
-    height: 100vh;
-}
+        /* Panel Kanan */
+        .right-panel {
+            flex: 1;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+        }
+        .form-container { width: 100%; max-width: 400px; }
+        
+        /* Toggle Form */
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn {
+            flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;
+            background: white; cursor: pointer; font-weight: 600; transition: 0.3s;
+        }
+        .tab-btn.active { background: #3182ce; color: white; border-color: #3182ce; }
+        
+        /* Form Element */
+        .form-content { display: none; }
+        .form-content.active { display: block; }
+        
+        h2 { font-size: 2rem; margin-bottom: 10px; }
+        .subtitle { color: #718096; margin-bottom: 25px; font-size: 0.9rem; }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
+        .input-group input {
+            width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none;
+        }
+        
+        .btn-main {
+            width: 100%; padding: 14px; background: #3182ce; color: white;
+            border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
 
-/* Panel Kiri */
-.left-panel {
-    flex: 1.2;
-    background-color: #0d1b2a;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 60px;
-}
+        .face-id-btn {
+            width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px;
+            background: white; margin-bottom: 15px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; gap: 10px;
+        }
 
-.logo-container {
-    background: #162431;
-    width: 100px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    margin-bottom: 40px;
-}
-
-.logo { width: 70px; }
-
-h1 {
-    font-size: 2.8rem;
-    font-weight: 800;
-    margin-bottom: 20px;
-}
-
-.description {
-    color: #a0aec0;
-    margin-bottom: 40px;
-    font-size: 1.1rem;
-}
-
-.features { list-style: none; }
-.features li {
-    display: flex;
-    margin-bottom: 25px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-.features i {
-    color: #2ecc71;
-    margin-right: 15px;
-    margin-top: 5px;
-}
-
-/* Panel Kanan */
-.right-panel {
-    flex: 1;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-}
-
-.form-box {
-    width: 100%;
-    max-width: 450px;
-}
-
-h2 { font-size: 2.2rem; color: #2d3748; margin-bottom: 5px; }
-.subtitle { color: #718096; margin-bottom: 30px; }
-
-/* Tombol Tab Atas */
-.auth-options {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.btn-login-tab {
-    flex: 1;
-    padding: 12px;
-    background: #3182ce;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.btn-face-id {
-    flex: 1;
-    padding: 12px;
-    background: white;
-    color: #4a5568;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.switch-text {
-    text-align: center;
-    font-size: 0.85rem;
-    color: #4a5568;
-    margin-bottom: 25px;
-}
-
-.switch-text a { color: #3182ce; text-decoration: none; font-weight: bold; }
-
-/* Input Styling */
-.input-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.input-group label {
-    display: block;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 8px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
-/* Tombol Sign Up */
-.btn-signup {
-    width: 100%;
-    padding: 14px;
-    background: #3182ce;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.footer-links {
-    text-align: center;
-    margin-top: 25px;
-}
-
-.footer-links a {
-    color: #3182ce;
-    text-decoration: underline;
-    font-size: 0.9rem;
-}</style>
+        .switch-link { text-align: center; margin-top: 20px; font-size: 0.9rem; }
+        .switch-link a { color: #3182ce; text-decoration: none; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left-panel">
-            <div class="content-wrapper">
-                <div class="logo-container">
-                    <img src="favicon.png" alt="SC Logo" class="logo">
-                </div>
-                <h1>Build Your Skills With SmartCoach AI</h1>
-                <p class="description">Tingkatkan performa olahraga Anda dengan platform pelatihan berbasis kecerdasan buatan terbaik.</p>
-                
-                <ul class="features">
-                    <li><i class="fas fa-check"></i> <div><strong>AI Football Training:</strong> Analisis gerakan sepak bola secara real-time untuk teknik yang lebih sempurna.</div></li>
-                    <li><i class="fas fa-check"></i> <div><strong>Smart Analysis:</strong> Statistik mendalam mengenai perkembangan fisik dan taktik Anda di lapangan.</div></li>
-                    <li><i class="fas fa-check"></i> <div><strong>Personalized Coaching:</strong> Program latihan yang disesuaikan secara otomatis oleh model AI SmartCoach.</div></li>
-                </ul>
-            </div>
-        </div>
 
-        <div class="right-panel">
-            <div class="form-box">
-                <h2>Welcome!</h2>
-                <p class="subtitle">Please login to your account.</p>
-
-                <div class="auth-options">
-                    <button class="btn-login-tab">Login</button>
-                    <button class="btn-face-id" onclick="window.location.href='face.html'">
-                        <i class="far fa-smile"></i> Face ID Login
-                    </button>
-                </div>
-
-                <p class="switch-text">Don't have an account? <a href="signup.html">Sign Up</a></p>
-
-                <form action="_blank">
-                    <div class="input-group">
-                        <label>Nama Lengkap</label>
-                        <input type="text" placeholder="Enter your name">
-                    </div>
-
-                    <div class="input-group">
-                        <label>Email</label>
-                        <input type="email" placeholder="Email">
-                    </div>
-
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" placeholder="Konfirmasi Password">
-                    </div>
-
-                    <button type="submit" class="btn-signup">Sign In</button>
-                </form>
-                </div>
-            </div>
+<div class="container">
+    <div class="left-panel">
+        <div class="content-wrapper">
+            <div class="logo-box">
+                <img src="https://via.placeholder.com/50" alt="Logo"> </div>
+            <h1>Build Your Skills With SmartCoach AI</h1>
+            <ul class="features">
+                <li><i class="fas fa-check"></i> <div><strong>AI Football Training:</strong> Analisis gerakan real-time.</div></li>
+                <li><i class="fas fa-check"></i> <div><strong>Smart Analysis:</strong> Statistik mendalam perkembangan Anda.</div></li>
+                <li><i class="fas fa-check"></i> <div><strong>Personalized Coaching:</strong> Program latihan otomatis.</div></li>
+            </ul>
         </div>
     </div>
+
+    <div class="right-panel">
+        <div class="form-container">
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="showForm('login')">Login</button>
+                <button class="tab-btn" onclick="showForm('signup')">Sign Up</button>
+            </div>
+
+            <div id="login-form" class="form-content active">
+                <h2>Welcome Back!</h2>
+                <p class="subtitle">Please login to your account.</p>
+                <button class="face-id-btn"><i class="far fa-smile"></i> Face ID Login</button>
+                <form>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter your email">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn-main">Login</button>
+                </form>
+            </div>
+
+            <div id="signup-form" class="form-content">
+                <h2>Create Account</h2>
+                <p class="subtitle">Join the SmartCoach community today.</p>
+                <form>
+                    <div class="input-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" placeholder="Enter your full name">
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter your email">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="Create password">
+                    </div>
+                    <button type="submit" class="btn-main">Sign Up</button>
+                </form>
+            </div>
+
+            <div class="switch-link">
+                <p id="toggle-text">Don't have an account? <a href="javascript:void(0)" onclick="showForm('signup')">Sign up</a></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function showForm(type) {
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const tabs = document.querySelectorAll('.tab-btn');
+        const toggleText = document.getElementById('toggle-text');
+
+        if (type === 'login') {
+            loginForm.classList.add('active');
+            signupForm.classList.remove('active');
+            tabs[0].classList.add('active');
+            tabs[1].classList.remove('active');
+            toggleText.innerHTML = 'Don\'t have an account? <a href="javascript:void(0)" onclick="showForm(\'signup\')">Sign up</a>';
+        } else {
+            signupForm.classList.add('active');
+            loginForm.classList.remove('active');
+            tabs[1].classList.add('active');
+            tabs[0].classList.remove('active');
+            toggleText.innerHTML = 'Already have an account? <a href="javascript:void(0)" onclick="showForm(\'login\')">Login</a>';
+        }
+    }
+</script>
+
 </body>
-
 </html>
-
