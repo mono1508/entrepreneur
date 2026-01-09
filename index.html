@@ -17,277 +17,101 @@
             --text-gray: #94a3b8;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background: var(--dark-bg);
-            color: #ffffff;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--dark-bg); color: #ffffff; overflow-x: hidden; line-height: 1.6; }
+        html { scroll-behavior: smooth; }
 
         /* ---------- NAVBAR ---------- */
         header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(11, 15, 26, 0.85);
-            backdrop-filter: blur(12px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 60px;
-            z-index: 1000;
+            position: fixed; top: 0; width: 100%; background: rgba(11, 15, 26, 0.85);
+            backdrop-filter: blur(12px); display: flex; justify-content: space-between;
+            align-items: center; padding: 16px 60px; z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        header h1 {
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--primary);
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav a {
-            margin-left: 25px;
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            font-size: 14px;
-            transition: 0.3s;
-            position: relative;
-        }
-
-        nav a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -6px;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        .btn-sso {
-            margin-left: 25px;
-            padding: 10px 22px;
-            border-radius: 30px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #000;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 14px;
-        }
+        header h1 { font-size: 20px; font-weight: 900; color: var(--primary); }
+        nav { display: flex; align-items: center; }
+        nav a { margin-left: 25px; text-decoration: none; color: #ffffff; font-weight: 500; font-size: 14px; transition: 0.3s; position: relative; }
+        nav a:hover { color: var(--primary); }
+        nav a::after { content: ""; position: absolute; left: 0; bottom: -6px; width: 0; height: 2px; background: var(--primary); transition: 0.3s; }
+        nav a:hover::after { width: 100%; }
+        .btn-sso { margin-left: 25px; padding: 10px 22px; border-radius: 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; font-weight: 700; text-decoration: none; font-size: 14px; }
 
         /* ---------- HERO SECTION ---------- */
         .hero {
-            position: relative;
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            align-items: center;
-            padding: 100px 80px;
-            gap: 60px;
-            overflow: hidden;
+            position: relative; min-height: 100vh; display: grid;
+            grid-template-columns: 1.2fr 0.8fr; align-items: center;
+            padding: 100px 80px; gap: 60px; overflow: hidden;
         }
+        .hero-video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; object-fit: cover; opacity: 0.2; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, var(--dark-bg) 40%, transparent); z-index: -1; }
+        .hero-content h2 { font-size: 64px; font-weight: 900; line-height: 1.1; margin-bottom: 25px; }
+        .hero-content p { font-size: 18px; color: var(--text-gray); margin-bottom: 35px; max-width: 550px; }
+        .hero-buttons .btn-main { padding: 16px 35px; background: var(--primary); color: #000; text-decoration: none; border-radius: 50px; font-weight: 700; margin-right: 20px; display: inline-block; transition: 0.3s; }
+        .hero-buttons .btn-main:hover { box-shadow: 0 0 20px var(--primary); transform: scale(1.05); }
+        .btn-outline { color: #fff; text-decoration: none; font-weight: 600; border-bottom: 2px solid var(--primary); padding-bottom: 5px; }
 
-        .hero-video-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            object-fit: cover;
-            opacity: 0.3;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, var(--dark-bg) 40%, transparent);
-            z-index: -1;
-        }
-
-        .hero-content h2 {
-            font-size: 64px;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 25px;
-        }
-
-        .hero-content p {
-            font-size: 18px;
-            color: var(--text-gray);
-            margin-bottom: 35px;
-            max-width: 550px;
-        }
-
-        .hero-buttons .btn-main {
-            padding: 16px 35px;
-            background: var(--primary);
-            color: #000;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 700;
-            margin-right: 20px;
-            display: inline-block;
-            transition: 0.3s;
-        }
-
-        .hero-buttons .btn-main:hover {
-            box-shadow: 0 0 20px var(--primary);
-            transform: scale(1.05);
-        }
-
-        .btn-outline {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 5px;
-        }
-
-        /* ---------- HERO VISUAL ---------- */
+        /* ---------- HERO VISUAL (SCAN REVEAL) ---------- */
         .hero-visual {
-            position: relative;
-            height: 450px;
-            border-radius: 30px;
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            background: #161b22;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            position: relative; height: 450px; border-radius: 30px;
+            overflow: hidden; display: grid; grid-template-columns: 1fr 1fr;
+            gap: 10px; background: #000; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             animation: float 4s ease-in-out infinite;
         }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        .visual-item { position: relative; width: 100%; height: 100%; overflow: hidden; }
+        .img-base { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); position: absolute; top: 0; left: 0; }
+        .img-reveal {
+            width: 100%; height: 100%; object-fit: cover;
+            position: absolute; top: 0; left: 0; z-index: 2;
+            clip-path: inset(0 0 100% 0); /* Awalnya terpotong habis di atas */
         }
-
-        .visual-item { position: relative; overflow: hidden; }
-        .visual-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: saturate(1.4) brightness(0.9);
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .visual-overlay-text {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            z-index: 10;
-            color: var(--primary);
-            font-weight: 800;
-            font-size: 12px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
         .scanning-line {
-            position: absolute;
-            width: 100%;
-            height: 4px;
-            background: var(--secondary);
-            box-shadow: 0 0 15px var(--secondary);
-            top: 0;
-            z-index: 5;
-            animation: scan 3s ease-in-out infinite;
+            position: absolute; width: 100%; height: 4px;
+            background: var(--secondary); box-shadow: 0 0 20px var(--secondary);
+            top: 0; left: 0; z-index: 10; display: none;
         }
-
-        @keyframes scan {
-            0%, 30% { top: 0; opacity: 1; }
-            85% { top: 100%; opacity: 1; }
-            100% { top: 100%; opacity: 0; }
+        .visual-overlay-text {
+            position: absolute; bottom: 20px; left: 20px; z-index: 20;
+            color: var(--primary); font-weight: 800; font-size: 11px;
+            letter-spacing: 1px; background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 4px;
         }
 
         /* ---------- SECTION GLOBAL ---------- */
         section { padding: 100px 80px; }
-        section h3 { font-size: 42px; margin-bottom: 15px; color: #fff; }
+        section h3 { font-size: 42px; margin-bottom: 15px; }
         .section-desc { color: var(--text-gray); margin-bottom: 60px; max-width: 700px; }
 
         /* ---------- CARDS GRID ---------- */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.05);
-            height: 100%;
-            transition: 0.4s;
-            position: relative;
+            background: var(--card-bg); padding: 40px; border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; position: relative;
         }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
-        }
-
+        .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(0,255,136,0.1); }
         .card h4 { font-size: 22px; margin-bottom: 15px; color: var(--primary); }
         .card p { color: #cbd5e1; font-size: 15px; margin-bottom: 15px; }
         .card ul { list-style: none; }
         .card li { margin-bottom: 10px; color: #cbd5e1; display: flex; align-items: center; font-size: 14px; }
         .card li i { margin-right: 10px; color: var(--primary); font-size: 12px; }
-        
         .price { font-weight: 900; font-size: 20px; margin-top: 20px; display: block; }
         .locked { opacity: 0.6; cursor: not-allowed; }
         .fa-lock { position: absolute; top: 25px; right: 25px; color: #f6ad55; }
 
-        /* ---------- PRICING BOX (MERGED) ---------- */
-        .pricing-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-        }
+        /* ---------- PRICING ---------- */
         .price-box {
             background: linear-gradient(180deg, #12172a, #0b0f1a);
-            border-radius: 28px;
-            padding: 40px;
-            border: 1px solid #1f2937;
-            text-align: center;
+            border-radius: 28px; padding: 40px; border: 1px solid #1f2937; text-align: center;
         }
-        .price-box h4 { font-size: 26px; margin-bottom: 20px; color: var(--secondary); }
+        .price-box h4 { font-size: 24px; margin-bottom: 15px; color: var(--secondary); }
 
-        /* ---------- FOOTER ---------- */
-        footer { padding: 60px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); color: #64748b; }
+        footer { padding: 60px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); color: #64748b; }
 
         @media (max-width: 1024px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 150px; }
+            .hero { grid-template-columns: 1fr; text-align: center; padding: 120px 30px; }
             .hero-content p { margin: 0 auto 35px; }
             .hero-visual { height: 350px; max-width: 500px; margin: 0 auto; }
-            header { padding: 16px 30px; }
-            section { padding: 60px 30px; }
+            section { padding: 80px 30px; }
         }
     </style>
 </head>
@@ -312,54 +136,53 @@
         
         <div class="hero-content">
             <h2>Train Like a Pro.<br>Powered by AI.</h2>
-            <p>
-                Platform latihan sepak bola masa depan berbasis <b>AI, Face ID Validation,</b> dan <b>Real-time Video Analysis</b> untuk mencetak atlet profesional.
-            </p>
+            <p>Platform latihan sepak bola masa depan berbasis <b>AI, Face ID Validation,</b> dan <b>Real-time Video Analysis</b> untuk mencetak atlet profesional.</p>
             <div class="hero-buttons">
-                <a href="#pricing" class="btn-main">Start Training</a>
+                <a href="#training" class="btn-main">Start Training</a>
                 <a href="#features" class="btn-outline">Explore Features</a>
             </div>
         </div>
 
-        <div class="hero-visual">
+        <div class="hero-visual" id="hero-visual">
             <div class="scanning-line" id="scanner"></div>
             <div class="visual-item">
-                <img src="1b.jpg" alt="Training" id="img-left">
+                <img src="1b.jpg" class="img-base" id="img-left-base">
+                <img src="2b.jpg" class="img-reveal" id="img-left-reveal">
             </div>
             <div class="visual-item">
-                <img src="1a.jpg" alt="Tracking" id="img-right">
-                <div class="visual-overlay-text">AI FACE TRACKING ACTIVE</div>
+                <img src="1a.jpg" class="img-base" id="img-right-base">
+                <img src="2a.jpg" class="img-reveal" id="img-right-reveal">
+                <div class="visual-overlay-text"><i class="fas fa-sync fa-spin"></i> AI SCANNING ACTIVE</div>
             </div>
         </div>
     </section>
 
     <section id="features">
         <h3>Core Platform Features</h3>
-        <p class="section-desc">Sistem terintegrasi dari login, Face ID, AI monitoring, hingga nutrisi atlet. Dirancang scalable untuk web & mobile.</p>
+        <p class="section-desc">Sistem terintegrasi dari login, Face ID, AI monitoring, hingga nutrisi atlet.</p>
         <div class="cards-grid">
             <div class="card">
                 <h4>Smart Login & Face ID</h4>
-                <p>Registrasi akun dengan Face ID. Setiap login diverifikasi ulang menggunakan AI facial validation untuk keamanan data atlet.</p>
+                <p>Setiap login diverifikasi ulang menggunakan AI facial validation untuk keamanan data atlet profesional.</p>
             </div>
             <div class="card">
                 <h4>AI Video Training</h4>
-                <p>Materi teknik & fisik dari pemain profesional dengan fitur AI Q&A yang menjawab pertanyaan Anda secara otomatis.</p>
+                <p>Materi teknik & fisik profesional dengan fitur AI Q&A yang menjawab pertanyaan Anda secara otomatis.</p>
             </div>
             <div class="card">
-                <h4>AI Video Call</h4>
-                <p>AI melakukan monitoring latihan secara real-time melalui video call, menilai postur, gerakan, dan progres pemain.</p>
+                <h4>AI Monitoring</h4>
+                <p>AI memantau latihan secara real-time via video call untuk menilai postur dan akurasi gerakan.</p>
             </div>
         </div>
     </section>
 
     <section id="training">
         <h3>Training Camp System</h3>
-        <p class="section-desc">Klik pada paket Beginner untuk melihat progres latihan Anda secara gratis.</p>
+        <p class="section-desc">Pilih paket sesuai level Anda. Paket Beginner terbuka untuk akses gratis.</p>
         <div class="cards-grid">
             <a href="progress.html" style="text-decoration: none; color: inherit;">
                 <div class="card">
                     <h4 style="color: var(--accent-purple);">Beginner (Unlocked)</h4>
-                    <p>Dasar-dasar teknik untuk pemula.</p>
                     <ul>
                         <li><i class="fas fa-check"></i> Video Coach Teknik Dasar</li>
                         <li><i class="fas fa-check"></i> AI Q&A Chatbot</li>
@@ -371,81 +194,60 @@
             <div class="card locked">
                 <i class="fas fa-lock"></i>
                 <h4>Pro (Locked)</h4>
-                <p>Untuk pemain yang ingin serius.</p>
                 <ul>
                     <li><i class="fas fa-check"></i> AI Video Call Intensif</li>
                     <li><i class="fas fa-check"></i> Teknik & Fisik Lanjutan</li>
                     <li><i class="fas fa-check"></i> Progress Analytics</li>
                 </ul>
-                <span class="price">Rp149.000 / bln</span>
+                <span class="price">Rp149k / bln</span>
             </div>
             <div class="card locked">
                 <i class="fas fa-lock"></i>
                 <h4>Elite (Locked)</h4>
-                <p>Fasilitas atlet profesional.</p>
                 <ul>
                     <li><i class="fas fa-check"></i> WO & Gym Training</li>
                     <li><i class="fas fa-check"></i> Bib-Test Fisik</li>
-                    <li><i class="fas fa-check"></i> AI Performance Prediction</li>
+                    <li><i class="fas fa-check"></i> Performance Prediction</li>
                 </ul>
-                <span class="price">Rp299.000 / bln</span>
+                <span class="price">Rp299k / bln</span>
             </div>
         </div>
     </section>
 
     <section id="nutrition">
         <h3>Eating Management</h3>
-        <p class="section-desc">Nutrisi atlet berbasis data dan AI untuk performa maksimal di lapangan.</p>
+        <p class="section-desc">Nutrisi atlet berbasis data untuk performa maksimal di lapangan.</p>
         <div class="cards-grid">
             <div class="card">
-                <h4>Nutrition Analysis</h4>
-                <p>Analisis kebutuhan kalori & nutrisi makro/mikro sesuai dengan intensitas aktivitas latihan harian Anda.</p>
+                <h4>Nutrisi Analysis</h4>
+                <p>Analisis kebutuhan kalori & nutrisi sesuai intensitas aktivitas latihan harian.</p>
             </div>
             <div class="card">
                 <h4>Meal Guidance</h4>
-                <p>Panduan pola makan harian dan rekomendasi menu sehat yang disesuaikan dengan target fisik atlet.</p>
+                <p>Panduan pola makan sehat dan rekomendasi menu bergizi khusus atlet.</p>
             </div>
             <div class="card">
-                <h4>Expert Video Tutor</h4>
+                <h4>Expert Video</h4>
                 <p>Edukasi gizi langsung dari para ahli profesional melalui video eksklusif.</p>
             </div>
         </div>
     </section>
 
     <section id="instruction">
-        <h3>Instruction & Injury Prevention</h3>
-        <p class="section-desc">Arahan pelatih profesional dan panduan resmi untuk menjaga karir jangka panjang atlet.</p>
+        <h3>Instruction & Prevention</h3>
+        <p class="section-desc">Arahan taktis dan pencegahan cedera demi karir jangka panjang.</p>
         <div class="cards-grid">
             <div class="card">
                 <h4>Position Guide</h4>
-                <p>Arahan taktis khusus tiap posisi (Kiper, Bek, Gelandang, Penyerang) lengkap dengan trik profesional.</p>
+                <p>Arahan khusus tiap posisi (Bek, Gelandang, Striker) lengkap dengan trik pro.</p>
             </div>
             <div class="card">
                 <h4>Injury Prevention</h4>
-                <p>Instruksi pencegahan cedera dan teknik pemulihan (recovery) yang tepat setelah sesi latihan berat.</p>
+                <p>Instruksi pencegahan cedera dan teknik recovery yang tepat setelah latihan.</p>
             </div>
             <div class="card">
                 <h4>Football Rules</h4>
-                <p>Pemahaman mendalam mengenai peraturan resmi sepak bola modern (IFAB) dan implementasinya.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing">
-        <h3>Training Levels</h3>
-        <p class="section-desc">Pilih level yang sesuai dengan ambisi karir Anda.</p>
-        <div class="pricing-container">
-            <div class="price-box">
-                <h4>Beginner</h4>
-                <p>Cocok untuk memulai fondasi sepak bola yang benar.</p>
-            </div>
-            <div class="price-box">
-                <h4>Pro</h4>
-                <p>Fokus pada peningkatan teknik dan monitoring AI real-time.</p>
-            </div>
-            <div class="price-box">
-                <h4>Elite</h4>
-                <p>Persiapan menjadi atlet profesional dengan analitik performa.</p>
+                <p>Pemahaman mendalam mengenai peraturan resmi sepak bola modern (IFAB).</p>
             </div>
         </div>
     </section>
@@ -455,34 +257,73 @@
     </footer>
 
     <script>
-        const imgLeft = document.getElementById('img-left');
-        const imgRight = document.getElementById('img-right');
         const scanner = document.getElementById('scanner');
+        const imgLeftBase = document.getElementById('img-left-base');
+        const imgLeftReveal = document.getElementById('img-left-reveal');
+        const imgRightBase = document.getElementById('img-right-base');
+        const imgRightReveal = document.getElementById('img-right-reveal');
 
-        // File names based on request
         const imagesLeft = ['1b.jpg', '2b.jpg', '3b.jpg', '4b.webp', '5b.jpeg'];
         const imagesRight = ['1a.jpg', '2a.jpg', '3a.jpg', '4a.webp', '5a.webp'];
 
         let currentIndex = 0;
-        let cycleCount = 0;
+        let isScanning = false;
 
-        scanner.addEventListener('animationiteration', () => {
-            cycleCount++;
-            // Change image every 2nd downward cycle
-            if (cycleCount % 2 === 0) {
-                currentIndex = (currentIndex + 1) % imagesLeft.length;
+        function runScan() {
+            if (isScanning) return;
+            isScanning = true;
 
-                imgLeft.style.opacity = '0';
-                imgRight.style.opacity = '0';
+            let nextIndex = (currentIndex + 1) % imagesLeft.length;
+            
+            // Set gambar reveal (gambar baru)
+            imgLeftReveal.src = imagesLeft[nextIndex];
+            imgRightReveal.src = imagesRight[nextIndex];
 
-                setTimeout(() => {
-                    imgLeft.src = imagesLeft[currentIndex];
-                    imgRight.src = imagesRight[currentIndex];
-                    imgLeft.style.opacity = '1';
-                    imgRight.style.opacity = '1';
-                }, 400);
+            // Reset tampilan
+            scanner.style.display = 'block';
+            let start = null;
+            const duration = 2800; // Durasi laser turun
+
+            function animate(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+                let ratio = Math.min(progress / duration, 1);
+
+                // Laser turun
+                scanner.style.top = (ratio * 100) + '%';
+                
+                // Gambar reveal terbuka mengikuti laser
+                // Kita potong bagian bawah (bottom) gambar reveal sebesar sisa ratio
+                let clipBottom = (1 - ratio) * 100;
+                imgLeftReveal.style.clipPath = `inset(0 0 ${clipBottom}% 0)`;
+                imgRightReveal.style.clipPath = `inset(0 0 ${clipBottom}% 0)`;
+
+                if (ratio < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Selesai: Gambar reveal jadi gambar base
+                    setTimeout(() => {
+                        imgLeftBase.src = imagesLeft[nextIndex];
+                        imgRightBase.src = imagesRight[nextIndex];
+                        
+                        // Sembunyikan reveal (siapkan untuk scan berikutnya)
+                        imgLeftReveal.style.clipPath = 'inset(0 0 100% 0)';
+                        imgRightReveal.style.clipPath = 'inset(0 0 100% 0)';
+                        scanner.style.display = 'none';
+                        
+                        currentIndex = nextIndex;
+                        isScanning = false;
+                    }, 400);
+                }
             }
-        });
+            requestAnimationFrame(animate);
+        }
+
+        // Loop otomatis setiap 6 detik
+        setInterval(runScan, 6000);
+        
+        // Jalankan pertama kali
+        window.onload = () => setTimeout(runScan, 1500);
     </script>
 </body>
 </html>
