@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tactical Board Pro - Smart Coach AI</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg-dark: #0d1117;
+            --card-dark: #161b22;
+            --text-main: #f0f6fc;
+            --field-green: #1a2e1a;
+        }
+
+        body {
+            margin: 0; font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark); color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR (Identik) */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 6%; background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px); border-bottom: 1px solid #30363d;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { color: var(--primary); font-weight: 800; text-decoration: none; }
+        .nav-links a { color: #8b949e; text-decoration: none; margin: 0 10px; font-size: 0.85rem; }
+
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; text-align: center; }
+
+        /* FORMATION SELECTOR */
+        .selector-box {
+            background: var(--card-dark); padding: 15px;
+            border-radius: 50px; display: inline-flex; gap: 10px;
+            border: 1px solid #30363d; margin-bottom: 30px;
+        }
+        .btn-form {
+            background: transparent; border: none; color: white;
+            padding: 8px 20px; border-radius: 40px; cursor: pointer;
+            font-weight: 600; transition: 0.3s;
+        }
+        .btn-form.active { background: var(--primary); color: black; }
+
+        /* FIELD AREA */
+        .field-container {
+            position: relative; width: 100%; max-width: 900px;
+            height: 600px; background: var(--field-green);
+            margin: 0 auto; border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 15px; box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        /* Field Marking */
+        .center-circle {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 120px; height: 120px;
+            border: 2px solid rgba(255,255,255,0.2); border-radius: 50%;
+        }
+        .half-line {
+            position: absolute; top: 50%; left: 0; width: 100%;
+            height: 2px; background: rgba(255,255,255,0.2);
+        }
+
+        /* PLAYER STYLING */
+        .player {
+            position: absolute; width: 35px; height: 35px;
+            background: var(--primary); border: 3px solid white;
+            border-radius: 50%; cursor: help;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 800; color: black;
+            box-shadow: 0 5px 15px rgba(0,255,136,0.3);
+        }
+
+        /* TOOLTIP */
+        .player::after {
+            content: attr(data-info);
+            position: absolute; bottom: 130%; left: 50%;
+            transform: translateX(-50%); width: 200px;
+            background: white; color: black; padding: 12px;
+            border-radius: 12px; font-size: 12px; font-weight: 400;
+            opacity: 0; visibility: hidden; transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); pointer-events: none;
+            z-index: 100; text-align: left;
+        }
+        .player:hover::after { opacity: 1; visibility: visible; }
+
+        footer { margin-top: 50px; padding: 30px; color: #8b949e; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo">SMART COACH</a>
+    <div class="nav-links">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#training">Training</a>
+        <a href="rules.html">Rules</a>
+        <a href="expert.html">Expert</a>
+        <a href="position.html" class="active">Tactical Pro</a>
+    </div>
+    <a href="#" style="background: var(--primary); color: black; padding: 8px 18px; border-radius: 50px; font-weight: bold; text-decoration: none; font-size: 0.8rem;">Sign Up</a>
+</nav>
+
+<div class="container">
+    <h1>Tactical <span>Board Pro</span></h1>
+    <p>Pilih formasi untuk melihat pergeseran posisi dan instruksi strategis.</p>
+
+    <div class="selector-box">
+        <button class="btn-form active" onclick="setFormation('433', this)">4-3-3</button>
+        <button class="btn-form" onclick="setFormation('442', this)">4-4-2</button>
+        <button class="btn-form" onclick="setFormation('352', this)">3-5-2</button>
+    </div>
+
+    <div class="field-container" id="field">
+        <div class="half-line"></div>
+        <div class="center-circle"></div>
+        
+        <div class="player" style="bottom: 2%; left: 48%; background: #ffcc00;" data-info="GK: Fokus pada distribusi bola dan organisasi pertahanan.">GK</div>
+
+        <div id="p1" class="player">1</div>
+        <div id="p2" class="player">2</div>
+        <div id="p3" class="player">3</div>
+        <div id="p4" class="player">4</div>
+        <div id="p5" class="player">5</div>
+        <div id="p6" class="player">6</div>
+        <div id="p7" class="player">7</div>
+        <div id="p8" class="player">8</div>
+        <div id="p9" class="player">9</div>
+        <div id="p10" class="player">10</div>
+    </div>
+</div>
+
+<script>
+    const positions = {
+        '433': [
+            {id: 'p1', b: '15%', l: '10%', t: 'LB: Bantu serangan dari sayap (Overlap).'},
+            {id: 'p2', b: '12%', l: '35%', t: 'CB: Menjaga kedalaman & intersep.'},
+            {id: 'p3', b: '12%', l: '61%', t: 'CB: Menang duel udara & fisik.'},
+            {id: 'p4', b: '15%', l: '86%', t: 'RB: Menutup ruang winger lawan.'},
+            {id: 'p5', b: '35%', l: '48%', t: 'CDM: Pemutus serangan lawan (Anchor).'},
+            {id: 'p6', b: '50%', l: '25%', t: 'CM: Kreator peluang & transisi.'},
+            {id: 'p7', b: '50%', l: '71%', t: 'CM: Box-to-box, bantu serang & tahan.'},
+            {id: 'p8', b: '75%', l: '15%', t: 'LW: Cut-inside dan shooting.'},
+            {id: 'p9', b: '85%', l: '48%', t: 'ST: Target man, penyelesaian akhir.'},
+            {id: 'p10', b: '75%', l: '81%', t: 'RW: Crossing akurat ke kotak penalti.'},
+        ],
+        '442': [
+            {id: 'p1', b: '15%', l: '10%', t: 'LB: Pertahanan sayap solid.'},
+            {id: 'p2', b: '12%', l: '35%', t: 'CB: Koordinasi jebakan offside.'},
+            {id: 'p3', b: '12%', l: '61%', t: 'CB: Sapu bersih bola liar.'},
+            {id: 'p4', b: '15%', l: '86%', t: 'RB: Disiplin posisi.'},
+            {id: 'p5', b: '45%', l: '35%', t: 'CM: Jaga ritme permainan.'},
+            {id: 'p6', b: '45%', l: '61%', t: 'CM: Distribusi bola ke sayap.'},
+            {id: 'p7', b: '55%', l: '10%', t: 'LM: Suplai bola ke dua striker.'},
+            {id: 'p8', b: '55%', l: '86%', t: 'RM: Kecepatan di lini sayap.'},
+            {id: 'p9', b: '82%', l: '35%', t: 'ST: Striker utama.'},
+            {id: 'p10', b: '82%', l: '61%', t: 'ST: Second striker / Link up play.'},
+        ],
+        '352': [
+            {id: 'p1', b: '12%', l: '25%', t: 'LCB: Menutup sisi kiri.'},
+            {id: 'p2', b: '10%', l: '48%', t: 'CB: Komando lini belakang.'},
+            {id: 'p3', b: '12%', l: '71%', t: 'RCB: Menutup sisi kanan.'},
+            {id: 'p4', b: '40%', l: '5%', t: 'LWB: Jelajah seluruh sisi kiri.'},
+            {id: 'p5', b: '40%', l: '91%', t: 'RWB: Jelajah seluruh sisi kanan.'},
+            {id: 'p6', b: '35%', l: '48%', t: 'CDM: Pelapis lini belakang.'},
+            {id: 'p7', b: '55%', l: '30%', t: 'CM: Pengatur serangan.'},
+            {id: 'p8', b: '55%', l: '66%', t: 'CM: Pengatur serangan.'},
+            {id: 'p9', b: '85%', l: '35%', t: 'ST: Duet penyerang.'},
+            {id: 'p10', b: '85%', l: '61%', t: 'ST: Duet penyerang.'},
+        ]
+    };
+
+    function setFormation(type, btn) {
+        // Update Button UI
+        document.querySelectorAll('.btn-form').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Move Players
+        const config = positions[type];
+        config.forEach(pos => {
+            const el = document.getElementById(pos.id);
+            el.style.bottom = pos.b;
+            el.style.left = pos.l;
+            el.setAttribute('data-info', pos.t);
+            el.innerText = pos.t.split(':')[0]; // Ganti angka jadi nama posisi pendek (LB, CB, dll)
+        });
+    }
+
+    // Init awal 4-3-3
+    window.onload = () => setFormation('433', document.querySelector('.btn-form'));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Injury Prevention - Smart Coach AI</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg-dark: #0d1117;
+            --card-dark: #161b22;
+            --text-main: #f0f6fc;
+            --accent: #00d4ff;
+            --gray: #8b949e;
+            --danger: #ff4d4d;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* NAVBAR (Konsisten dengan Landing Page) */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 6%;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #30363d;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { color: var(--primary); font-weight: 800; font-size: 1.4rem; text-decoration: none; }
+        
+        .nav-links a { color: var(--gray); text-decoration: none; margin: 0 15px; font-size: 0.9rem; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+        /* HEADER */
+        .container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
+        
+        .header-section { text-align: center; margin-bottom: 50px; }
+        .header-section h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; }
+        .header-section span { color: var(--danger); }
+
+        /* PREVENTION GRID */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .recovery-card {
+            background: var(--card-dark);
+            border-radius: 24px;
+            padding: 35px;
+            border: 1px solid #30363d;
+            position: relative;
+            transition: 0.4s;
+        }
+
+        .recovery-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .recovery-card h3 { margin: 0 0 15px 0; font-size: 1.4rem; }
+        .recovery-card p { color: var(--gray); font-size: 0.95rem; }
+
+        /* RECOVERY CHECKLIST (White Style) */
+        .checklist-white {
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 40px;
+            border-radius: 30px;
+            margin-top: 60px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .checklist-white h2 { margin-top: 0; color: #000; font-weight: 800; }
+
+        .check-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .dot-check {
+            min-width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            margin-top: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .check-group { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo">SMART COACH</a>
+    <div class="nav-links">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#training">Training Camp</a>
+        <a href="rules.html">Football Rules</a>
+        <a href="expert.html">Expert Video</a>
+        <a href="#" class="active">Injury Prevention</a>
+    </div>
+    <a href="#" style="background: var(--primary); color: black; padding: 10px 20px; border-radius: 50px; font-weight: bold; text-decoration: none; font-size: 0.85rem;">Sign Up / SSO</a>
+</nav>
+
+<div class="container">
+    <header class="header-section">
+        <h1>Injury <span>Prevention</span> & Recovery</h1>
+        <p>Teknik profesional untuk meminimalkan risiko cedera dan mempercepat proses pemulihan otot Anda.</p>
+    </header>
+
+    <div class="grid-layout">
+        <div class="recovery-card">
+            <div class="icon-box">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+            </div>
+            <h3>Dynamic Warm-up</h3>
+            <p>Lakukan pemanasan dinamis minimal 10-15 menit untuk meningkatkan suhu inti tubuh dan elastisitas otot sebelum latihan intensitas tinggi.</p>
+        </div>
+
+        <div class="recovery-card">
+            <div class="icon-box">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8M8 12h8"></path></svg>
+            </div>
+            <h3>Myofascial Release</h3>
+            <p>Gunakan foam roller untuk melepaskan ketegangan pada fasia otot. Fokus pada area quadriceps, hamstrings, dan punggung bawah.</p>
+        </div>
+
+        <div class="recovery-card">
+            <div class="icon-box">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"></path></svg>
+            </div>
+            <h3>Active Rehydration</h3>
+            <p>Ganti cairan tubuh yang hilang dengan air mineral dan elektrolit. Hidrasi yang buruk adalah penyebab utama kram otot dan cedera ligamen.</p>
+        </div>
+    </div>
+
+    <div class="checklist-white">
+        <h2>Post-Training Recovery Checklist</h2>
+        <p style="color: #666;">Pastikan Anda melakukan hal berikut setelah sesi latihan selesai:</p>
+        
+        <div class="check-group">
+            <div class="check-item">
+                <div class="dot-check"></div>
+                <div>Cooling Down (Statik Stretching) - 10 Menit</div>
+            </div>
+            <div class="check-item">
+                <div class="dot-check"></div>
+                <div>Cold Water Immersion (Mandi Air Dingin)</div>
+            </div>
+            <div class="check-item">
+                <div class="dot-check"></div>
+                <div>Nutrisi Pasca Latihan (Tinggi Protein)</div>
+            </div>
+            <div class="check-item">
+                <div class="dot-check"></div>
+                <div>Istirahat/Tidur Berkualitas (7-9 Jam)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer style="text-align: center; padding: 50px; color: var(--gray); font-size: 0.8rem; border-top: 1px solid #30363d; margin-top: 60px;">
+    &copy; 2026 Smart Coach AI - Health & Safety Department
+</footer>
+
+</body>
+</html>

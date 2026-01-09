@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Rules - Smart Coach AI</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg-dark: #0d1117;
+            --card-dark: #161b22;
+            --text-main: #f0f6fc;
+            --gray: #8b949e;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* NAVBAR (Konsisten dengan Landing Page) */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 6%;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #30363d;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { color: var(--primary); font-weight: 800; font-size: 1.4rem; text-decoration: none; }
+        
+        .nav-links a { color: var(--gray); text-decoration: none; margin: 0 15px; font-size: 0.9rem; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+        /* CONTENT */
+        .container { max-width: 1000px; margin: 60px auto; padding: 0 20px; }
+        
+        .header-section { text-align: center; margin-bottom: 50px; }
+        .header-section h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; }
+        .header-section span { color: var(--primary); }
+
+        /* RULES GRID */
+        .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        
+        .rule-card {
+            background: var(--card-dark);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #30363d;
+            transition: 0.3s;
+        }
+
+        .rule-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        
+        .rule-number {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .rule-card h3 { margin: 0 0 15px 0; font-size: 1.3rem; }
+        .rule-card p { color: var(--gray); font-size: 0.95rem; }
+
+        /* IFAB SPECIAL SECTION */
+        .ifab-banner {
+            background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+            border: 1px solid var(--primary);
+            padding: 40px;
+            border-radius: 24px;
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .ifab-logo { width: 80px; height: 80px; background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; }
+
+        @media (max-width: 768px) {
+            .ifab-banner { flex-direction: column; text-align: center; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo">SMART COACH</a>
+    <div class="nav-links">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#training">Training Camp</a>
+        <a href="index.html#nutrition">Meal Guidance</a>
+        <a href="expert.html">Expert Video</a>
+        <a href="rules.html" class="active">Football Rules</a>
+    </div>
+    <a href="#" style="background: var(--primary); color: black; padding: 10px 20px; border-radius: 50px; font-weight: bold; text-decoration: none; font-size: 0.85rem;">Sign Up / SSO</a>
+</nav>
+
+<div class="container">
+    <header class="header-section">
+        <h1>Modern <span>Football Rules</span></h1>
+        <p>Panduan komprehensif peraturan sepak bola modern berdasarkan standar IFAB terbaru.</p>
+    </header>
+
+    <div class="rules-grid">
+        <div class="rule-card">
+            <div class="rule-number">12</div>
+            <h3>Fouls & Misconduct</h3>
+            <p>Penjelasan detail mengenai pelanggaran langsung, tidak langsung, serta kriteria kartu kuning dan kartu merah.</p>
+        </div>
+
+        <div class="rule-card">
+            <div class="rule-number">11</div>
+            <h3>Offside Rule</h3>
+            <p>Memahami posisi offside, keterlibatan aktif dalam permainan, dan aturan terbaru mengenai "Deliberate Play".</p>
+        </div>
+
+        <div class="rule-card">
+            <div class="rule-number">14</div>
+            <h3>The Penalty Kick</h3>
+            <p>Prosedur tendangan penalti, posisi kiper di garis gawang, dan pelanggaran saat eksekusi berlangsung.</p>
+        </div>
+
+        <div class="rule-card">
+            <div class="rule-number">V</div>
+            <h3>VAR Protocol</h3>
+            <p>Kapan Video Assistant Referee dapat mengintervensi: Gol, Penalti, Kartu Merah Langsung, dan Kesalahan Identitas.</p>
+        </div>
+    </div>
+
+    <div class="ifab-banner">
+        <div class="ifab-logo">
+            <img src="https://www.theifab.com/assets/img/ifab-logo.png" alt="IFAB" style="width: 60px;">
+        </div>
+        <div>
+            <h3 style="margin-top:0">Official IFAB Documents</h3>
+            <p style="color: var(--gray); margin-bottom:0">Dapatkan akses ke dokumen PDF resmi Laws of the Game 2025/26 langsung dari sumbernya untuk pemahaman yang tidak terbantahkan.</p>
+        </div>
+    </div>
+</div>
+
+<footer style="text-align: center; padding: 40px; color: var(--gray); font-size: 0.8rem;">
+    &copy; 2026 Smart Coach AI - Educational Series
+</footer>
+
+</body>
+</html>
