@@ -1,175 +1,410 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="favicon.png">
-    <title>Smart Coach - Training Session</title>
-    <style>
-        /* Reset & General Styles */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f0f0f; color: white; }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Coach - Training Session</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    /* ===== Reset & Base ===== */
+    :root{
+      --bg:#0f0f0f;
+      --panel:#1a1a1a;
+      --muted:#666;
+      --accent:#00ffcc;
+      --danger:#ff4d4d;
+      --card:#2b2b2b;
+      --border:#333;
+      --text:#ffffff;
+      --glass: rgba(255,255,255,0.03);
+      --radius:12px;
+      --max-width:1400px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif}
+    html,body{height:100%}
+    body{
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding-bottom:40px;
+    }
+    a{color:inherit;text-decoration:none}
 
-        /* Navigation Bar */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 40px;
-            background-color: #1a1a1a;
-            border-bottom: 1px solid #333;
-        }
-        .logo { font-weight: bold; font-size: 20px; color: #00ffcc; }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-        .nav-links a:hover { color: #00ffcc; }
-        .logout-btn { color: #ff4d4d !important; }
+    /* ===== Navigation ===== */
+    nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 20px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:40;
+      backdrop-filter: blur(6px);
+    }
+    .logo{font-weight:700;font-size:18px;color:var(--accent);letter-spacing:0.6px}
+    .nav-links{display:flex;gap:18px;align-items:center}
+    .nav-links a{font-size:14px;color:var(--text);opacity:0.95}
+    .nav-links a.logout{color:var(--danger);font-weight:600}
 
-        /* Layout Container */
-        .main-container {
-            display: flex;
-            padding: 20px;
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+    /* ===== Layout ===== */
+    .container{
+      max-width:var(--max-width);
+      margin:20px auto;
+      padding:16px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:20px;
+    }
 
-        /* Video Section (Left) */
-        .video-section { flex: 3; }
-        .video-player {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background-color: #000;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #333;
-        }
-        .video-info { margin-top: 15px; }
-        .video-info h2 { font-size: 22px; margin-bottom: 10px; }
+    /* ===== Video Section ===== */
+    .video-section{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .video-player{
+      width:100%;
+      border-radius:10px;
+      overflow:hidden;
+      background:#000;
+      aspect-ratio:16/9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .video-player iframe{width:100%;height:100%;display:block;border:0}
+    .video-info{display:flex;flex-direction:column;gap:10px}
+    .video-info h2{font-size:20px;color:var(--text)}
+    .controls{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      padding:10px 16px;border-radius:999px;border:none;cursor:pointer;font-weight:700;
+      display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn.prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+    .btn.next{background:var(--accent);color:#000}
+    .btn.view{background:transparent;color:var(--accent);border:1px solid var(--accent)}
 
-        /* Controls (Next/Prev) */
-        .training-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .btn-control {
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .prev-btn { background-color: #333; color: white; }
-        .next-btn { background-color: #00ffcc; color: #000; }
-        .btn-control:hover { opacity: 0.8; }
+    /* ===== AI Sidebar ===== */
+    .ai-sidebar{
+      background:var(--panel);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      display:flex;
+      flex-direction:column;
+      height:calc(80vh - 40px);
+      min-height:420px;
+      overflow:hidden;
+    }
+    .chat-header{
+      padding:14px 16px;
+      border-bottom:1px solid var(--border);
+      color:var(--accent);
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .chat-header .status{font-size:13px;color:var(--muted);font-weight:600}
+    .chat-messages{
+      padding:14px;
+      flex:1;
+      overflow-y:auto;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      scroll-behavior:smooth;
+    }
+    .chat-footer{
+      padding:12px;
+      border-top:1px solid var(--border);
+      background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
+    }
 
-        /* AI Chat Sidebar (Right) */
-        .ai-sidebar {
-            flex: 1;
-            background-color: #1a1a1a;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            height: 80vh;
-            border: 1px solid #333;
-        }
-        .chat-header {
-            padding: 15px;
-            border-bottom: 1px solid #333;
-            font-weight: bold;
-            color: #00ffcc;
-        }
-        .chat-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            font-size: 14px;
-        }
-        .ai-bubble {
-            background-color: #2b2b2b;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 3px solid #00ffcc;
-        }
-        .chat-input-area {
-            padding: 15px;
-            border-top: 1px solid #333;
-        }
-        .chat-input-area input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background-color: #0f0f0f;
-            color: white;
-            outline: none;
-        }
+    /* Message bubbles */
+    .bubble{
+      max-width:85%;
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:14px;
+      line-height:1.3;
+      word-wrap:break-word;
+    }
+    .bubble.ai{
+      background:var(--card);
+      border-left:4px solid var(--accent);
+      align-self:flex-start;
+      color:var(--text);
+    }
+    .bubble.user{
+      background:var(--accent);
+      color:#000;
+      align-self:flex-end;
+    }
+    .meta{font-size:12px;color:var(--muted);margin-top:6px}
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            .main-container { flex-direction: column; }
-            .ai-sidebar { height: 400px; }
-        }
-    </style>
+    /* Templates area */
+    .templates{
+      padding:12px 16px;
+      border-top:1px dashed rgba(255,255,255,0.03);
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
+    }
+    .tpl-btn{
+      background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text);
+      padding:8px 10px;border-radius:10px;font-size:13px;cursor:pointer;
+    }
+    .tpl-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+
+    /* Input row */
+    .input-row{display:flex;gap:8px;align-items:center}
+    .input-row input[type="text"]{
+      flex:1;padding:10px 12px;border-radius:10px;border:1px solid #444;background:transparent;color:var(--text);
+      outline:none;font-size:14px;
+    }
+    .send-btn{
+      width:44px;height:44px;border-radius:10px;border:none;background:var(--accent);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+    }
+    .send-btn svg{display:block}
+
+    /* Small helper */
+    .muted{color:var(--muted);font-size:13px}
+
+    /* ===== Responsive ===== */
+    @media (max-width:1100px){
+      .container{grid-template-columns: 1fr 340px;padding:12px;gap:14px}
+      .ai-sidebar{height:70vh;min-height:380px}
+    }
+    @media (max-width:900px){
+      .container{grid-template-columns:1fr;padding:12px}
+      .ai-sidebar{order:2;height:auto;min-height:320px}
+      .video-section{order:1}
+      .chat-messages{max-height:46vh}
+    }
+    @media (max-width:520px){
+      nav{padding:10px}
+      .logo{font-size:16px}
+      .chat-header{padding:10px}
+      .templates{padding:10px}
+      .video-info h2{font-size:18px}
+      .btn{padding:8px 12px;font-size:13px}
+    }
+
+    /* Scrollbar (subtle) */
+    .chat-messages::-webkit-scrollbar{width:8px}
+    .chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.04);border-radius:8px}
+  </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">SMART COACH</div>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="#" class="logout-btn">Log Out</a>
-        </div>
-    </nav>
-
-    <div class="main-container">
-        
-        <div class="video-section">
-            <div class="video-player">
-                <p style="color: #666;">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IODxDxX7oi4?si=u8alX7IPHpWdHSZG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</p>
-            </div>
-            
-            <div class="video-info">
-                <h2>Beginner Training – Push-Up Tutorial</h2>
-                <div class="training-controls">
-                    <button class="btn-control prev-btn">← Previous Practice</button>
-					<a href="ai check.html">
-                    <button class="btn-control next-btn">Next Practice →</button>
-					</a>
-		    <a href="insight.html">
-		    <button class="btn-control next-btn">View Insight</button>
-		   </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="ai-sidebar">
-            <div class="chat-header">Tanya AI Coach</div>
-            <div class="chat-messages">
-                <div class="ai-bubble">
-                    <strong>AI Coach:</strong> Pastikan sentuhan kaki ringan dan posisi badan seimbang saat melakukan gerakan ini.
-                </div>
-                </div>
-            <div class="chat-input-area">
-                <input type="text" placeholder="Tanyakan sesuatu pada AI...">
-            </div>
-        </div>
-
+  <nav>
+    <div class="logo">SMART COACH</div>
+    <div class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="#" class="logout">Log Out</a>
     </div>
+  </nav>
 
+  <main class="container" role="main">
+    <!-- Video / Content -->
+    <section class="video-section" aria-labelledby="videoTitle">
+      <div class="video-player" aria-hidden="false">
+        <iframe src="https://www.youtube.com/embed/IODxDxX7oi4?si=u8alX7IPHpWdHSZG" title="Beginner Training – Push-Up Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+
+      <div class="video-info">
+        <h2 id="videoTitle">Beginner Training – Push-Up Tutorial</h2>
+        <p class="muted">Durasi: 5:12 • Level: Pemula</p>
+
+        <div class="controls" role="group" aria-label="Kontrol latihan">
+          <button class="btn prev" id="prevPractice" type="button">← Previous Practice</button>
+          <a href="ai check.html"><button class="btn next" type="button">Next Practice →</button></a>
+          <a href="insight.html"><button class="btn view" type="button">View Insight</button></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Chat Sidebar -->
+    <aside class="ai-sidebar" aria-label="AI Coach">
+      <div class="chat-header">
+        <div>
+          <div style="font-weight:700">Tanya AI Coach</div>
+          <div class="status">Siap membantu</div>
+        </div>
+        <div class="muted" aria-hidden="true">AI</div>
+      </div>
+
+      <div id="chatMessages" class="chat-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+      <div class="templates" id="templates" aria-hidden="false">
+        <button class="tpl-btn">Bagaimana posisi tangan saat push-up?</button>
+        <button class="tpl-btn">Berapa repetisi pemula per set?</button>
+        <button class="tpl-btn">Tips agar punggung tidak melengkung</button>
+        <button class="tpl-btn">Pemanasan singkat sebelum latihan</button>
+      </div>
+
+      <div class="chat-footer">
+        <form id="chatForm" class="input-row" onsubmit="return false;" aria-label="Form kirim pesan ke AI">
+          <input id="chatInput" type="text" placeholder="Tanyakan sesuatu pada AI..." aria-label="Tanyakan sesuatu pada AI" autocomplete="off" />
+          <button id="sendBtn" class="send-btn" aria-label="Kirim pesan" title="Kirim (Enter)">
+            <!-- Send icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M22 2L11 13" stroke="#000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z" fill="#000" opacity="0.12"></path>
+              <path d="M22 2L11 13" stroke="#00ffcc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    /* ===== Elements ===== */
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const tplButtons = document.querySelectorAll('.tpl-btn');
+    const chatForm = document.getElementById('chatForm');
+
+    /* ===== Helpers ===== */
+    function timeNow() {
+      const d = new Date();
+      return d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    }
+
+    function appendBubble(text, who='ai', opts={meta:false}) {
+      const wrap = document.createElement('div');
+      wrap.className = 'bubble ' + (who === 'user' ? 'user' : 'ai');
+      wrap.textContent = text;
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.flexDirection = 'column';
+      container.style.alignItems = who === 'user' ? 'flex-end' : 'flex-start';
+      container.appendChild(wrap);
+      if (opts.meta) {
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.textContent = opts.meta;
+        container.appendChild(meta);
+      }
+      chatMessages.appendChild(container);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    /* ===== Simple rule-based AI (demo) ===== */
+    function simpleAiReply(message) {
+      const m = message.toLowerCase();
+      if (m.includes('posisi tangan') || m.includes('tangan saat push') || m.includes('posisi tangan saat')) {
+        return 'Letakkan tangan selebar bahu, jari-jari menghadap ke depan, dan tekan telapak tangan kuat ke lantai. Pastikan siku sedikit menyudut ke belakang saat turun.';
+      }
+      if (m.includes('repetisi') || m.includes('berapa repetisi') || m.includes('set')) {
+        return 'Untuk pemula coba 3 set x 8–12 repetisi. Istirahat 60–90 detik antar set. Fokus pada teknik sebelum menambah jumlah.';
+      }
+      if (m.includes('punggung') || m.includes('melengkung') || m.includes('pinggul')) {
+        return 'Aktifkan core: tarik pusar ke arah tulang belakang, jaga garis lurus dari kepala sampai tumit, dan hindari pinggul turun atau naik berlebihan.';
+      }
+      if (m.includes('pemanasan') || m.includes('warm up')) {
+        return 'Pemanasan 5–10 menit: jalan cepat, dynamic stretch, arm circles, dan beberapa gerakan mobilitas bahu.';
+      }
+      if (m.includes('istirahat') || m.includes('istirahat antar set')) {
+        return 'Istirahat 60–90 detik untuk pemula; jika tujuan kekuatan, istirahat bisa lebih lama (2–3 menit).';
+      }
+      // fallback
+      return 'Pertanyaan bagus. Bisa jelaskan sedikit lebih spesifik atau pilih salah satu template. Saya bisa bantu teknik, repetisi, atau pemanasan.';
+    }
+
+    /* ===== Simulasi panggilan ke AI nyata =====
+       Ganti isi fungsi ini untuk memanggil backend Anda (fetch / websocket).
+       Pastikan server mengembalikan teks jawaban.
+    */
+    async function sendToRealAI(message) {
+      // Demo: delay lalu gunakan simpleAiReply
+      await new Promise(r => setTimeout(r, 600));
+      return simpleAiReply(message);
+    }
+
+    /* ===== Send handler ===== */
+    let isSending = false;
+    async function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text || isSending) return;
+      isSending = true;
+      appendBubble(text, 'user', {meta: timeNow()});
+      chatInput.value = '';
+      // placeholder
+      appendBubble('Menjawab...', 'ai');
+      // keep reference to placeholder to replace
+      const placeholder = chatMessages.lastElementChild.querySelector('.bubble.ai');
+
+      try {
+        const reply = await sendToRealAI(text);
+        // replace placeholder
+        placeholder.textContent = reply;
+        // add meta time
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.textContent = timeNow();
+        chatMessages.lastElementChild.appendChild(meta);
+      } catch (err) {
+        placeholder.textContent = 'Maaf, terjadi kesalahan saat memproses jawaban.';
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.textContent = timeNow();
+        chatMessages.lastElementChild.appendChild(meta);
+      } finally {
+        isSending = false;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    }
+
+    /* ===== Events ===== */
+    sendBtn.addEventListener('click', handleSend);
+    chatForm.addEventListener('submit', (e) => { e.preventDefault(); handleSend(); });
+
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+
+    tplButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        chatInput.value = btn.textContent;
+        chatInput.focus();
+      });
+    });
+
+    /* ===== Init welcome message ===== */
+    appendBubble('Halo! Saya AI Coach. Pilih template atau ketik pertanyaan ringan tentang latihanmu.', 'ai', {meta: timeNow()});
+
+    /* ===== Optional: keyboard accessibility for templates (space/enter) ===== */
+    document.querySelectorAll('.tpl-btn').forEach(b => {
+      b.setAttribute('tabindex','0');
+      b.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          b.click();
+        }
+      });
+    });
+
+    /* ===== Optional: preserve scroll position on new messages for mobile keyboards ===== */
+    window.addEventListener('resize', () => {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+  </script>
 </body>
-
 </html>
-
