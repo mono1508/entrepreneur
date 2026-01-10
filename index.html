@@ -144,7 +144,79 @@
         }
         .btn-card:hover { background: var(--primary); color: #000; border-color: var(--primary); }
         .btn-card.pro { background: var(--primary); color: #000; }
+/* --- UI UPGRADE UNTUK PRICING CARDS --- */
+.card {
+    position: relative; /* Penting untuk posisi flags */
+    padding-top: 50px; /* Memberi ruang untuk flags */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
+/* Penanda/Flags (Ribbons) */
+.flag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.flag-coba { background: rgba(255, 165, 0, 0.2); color: #ffa500; border: 1px solid #ffa500; }
+.flag-laris { background: linear-gradient(135deg, #ff4d4d, #f97316); color: #fff; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.4); }
+.flag-investasi { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.4); }
+
+/* List Styling */
+.card ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: left;
+    font-size: 13px;
+}
+
+.card ul li {
+    margin-bottom: 12px;
+    color: #cbd5e1;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.card ul li i {
+    color: var(--primary);
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+.card ul li b {
+    color: #fff;
+    display: block;
+}
+
+.card ul ul {
+    margin: 5px 0 5px 24px;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.card ul ul li {
+    margin-bottom: 4px;
+    color: #94a3b8;
+}
+
+/* Pricing Highlight */
+.price-tag {
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+    margin: 10px 0;
+}
         /* ---------- POPUP ---------- */
         .modal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85);
@@ -334,103 +406,90 @@
         </div>
     </section>
 
-    <section id="training" style="background: rgba(0, 255, 136, 0.05);">
-        <i class="fas fa-dumbbell bg-silhouette"></i>
+   <section id="training" style="background: rgba(0, 255, 136, 0.05);">
+    <i class="fas fa-dumbbell bg-silhouette"></i>
+    <div style="text-align: center; margin-bottom: 50px;">
         <h3>Training Camp System</h3>
         <p class="section-desc">Pilih paket latihan yang sesuai untuk karir profesional Anda.</p>
-        <div class="cards-grid">
-            <div class="card">
-                <i class="fas fa-seedling main-icon" style="color: var(--accent-purple);"></i>
-                <h4 style="color: var(--accent-purple);">Beginner</h4>
-                <p>Akses gratis untuk teknik dasar dan dukungan chatbot AI harian.</p>
-                <a href="progress.html" class="btn-card">Try Now (FREE)</a>
-            </div>
-            <div class="card">
-                <i class="fas fa-star main-icon"></i>
-                <h4>Pro Player</h4>
-                <p>Benefit:</p>
-                <ul>
-  <li>✅ <strong>Prestasi Juara PORPROV</strong>
-    <ul>
-      <li>Akses eksklusif <b>Jalur Prestasi (Japres)</b> di institusi pendidikan unggulan.</li>
-      <li>Prioritas penggunaan <em>fasilitas atlet elite</em> dan pusat pelatihan daerah.</li>
-    </ul>
-  </li>
-  
-  <li>✅ <strong>Keunggulan Akademik Nasional</strong>
-    <ul>
-      <li>Penguatan portofolio untuk aplikasi <b>Beasiswa Bergengsi</b> baik nasional maupun internasional.</li>
-      <li>Pengakuan resmi atas <em>standard intelektual</em> yang diakui secara nasional.</li>
-    </ul>
-  </li>
+    </div>
 
-  <li>✅ <strong>Sertifikasi Resmi Kemenpora</strong>
-    <ul>
-      <li>Mendapatkan <b>Legitimasi Nasional</b> yang memiliki bobot tinggi dalam seleksi administrasi.</li>
-      <li>Peluang prioritas menjadi <em>Delegasi Pemuda</em> atau pertukaran antarnegara.</li>
-    </ul>
-  </li>
-
-  <li>✅ <strong>Perform Training Tersimpan</strong>
-    <ul>
-      <li>Monitoring <em>Progres Digital</em> secara real-time untuk evaluasi performa yang akurat.</li>
-      <li>Akses <b>Resume Digital</b> yang siap dipresentasikan kepada pelatih profesional atau pemandu bakat.</li>
-    </ul>
-  </li>
-</ul>
-                <a href="pay1.html" class="btn-card pro">Buy Now - Rp149k</a>
-            </div>
-            <div class="card">
-                <i class="fas fa-trophy main-icon"></i>
-                <h4>Elite Academy</h4>
-                <p>Benefit:</p>
-                <ul>
-  <li>✅ <strong>Capaian Jurnas (Kejuaraan Nasional)</strong>
-    <ul>
-      <li>Pengakuan sebagai <b>Atlet Peringkat Nasional</b> yang membuka jalan menuju seleksi Pemusatan Latihan Nasional (Pelatnas).</li>
-      <li>Hak istimewa dalam mengikuti <em>turnamen bergengsi</em> tingkat tinggi dengan undangan khusus.</li>
-    </ul>
-  </li>
-
-  <li>✅ <strong>Akses International & National Club Academy</strong>
-    <ul>
-      <li>Kesempatan berlatih di <em>Akademi Klub Elite</em> dengan kurikulum berstandar internasional dan nasional.</li>
-      <li>Eksposur langsung terhadap jaringan <b>Klub Profesional</b> yang berafiliasi secara resmi.</li>
-    </ul>
-  </li>
-
-  <li>✅ <strong>Sertifikasi Resmi Kemenpora</strong>
-    <ul>
-      <li>Dokumen <b>Legitimasi Negara</b> yang menjadi syarat mutlak untuk program pembinaan atlet masa depan.</li>
-      <li>Poin tambahan tinggi untuk akses <em>beasiswa pendidikan</em> di institusi yang dikelola pemerintah.</li>
-    </ul>
-  </li>
-
-  <li>✅ <strong>Monitoring Kemenpora & Pelatih Profesional</strong>
-    <ul>
-      <li>Performa Anda dipantau langsung oleh <b>Scout Talent Kemenpora</b> untuk kebutuhan tim nasional.</li>
-      <li>Mendapatkan evaluasi teknis secara berkala dari <em>Pelatih Klub Profesional</em> untuk pengembangan karier.</li>
-    </ul>
-  </li>
-
-  <li>✅ <strong>Opsi Bundel Tim (Team Bundle)</strong>
-    <ul>
-      <li>Kemudahan pendaftaran kolektif bagi <b>Satu Tim/Klub</b> dengan skema biaya yang lebih efisien.</li>
-      <li>Fitur <em>Analisis Sinergi Tim</em> untuk melihat perkembangan performa secara kelompok.</li>
-    </ul>
-  </li>
-
-  <li>✅ <strong>Database Progress Training Terintegrasi</strong>
-    <ul>
-      <li>Penyimpanan data latihan <b>Secara Permanen</b> yang dapat diakses kapan saja untuk kebutuhan evaluasi fisik.</li>
-      <li>Menghasilkan <em>Laporan Progres Individu</em> yang valid untuk dipresentasikan kepada agen atau sponsor.</li>
-    </ul>
-  </li>
-</ul>
-                <a href="pay2.html" class="btn-card pro">Buy Now - Rp299k</a>
-            </div>
+    <div class="cards-grid">
+        <div class="card">
+            <div class="flag flag-coba"><i class="fas fa-fire"></i> COBA SEKARANG</div>
+            <i class="fas fa-seedling main-icon" style="color: var(--accent-purple);"></i>
+            <h4 style="color: var(--accent-purple);">Beginner</h4>
+            <div class="price-tag">Gratis</div>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> <span>Akses teknik dasar sepak bola</span></li>
+                <li><i class="fas fa-check-circle"></i> <span>Dukungan Chatbot AI 24/7</span></li>
+                <li><i class="fas fa-check-circle"></i> <span>Tracking progres harian</span></li>
+            </ul>
+            <a href="progress.html" class="btn-card" style="margin-top: auto;">Mulai Gratis</a>
         </div>
-    </section>
+
+        <div class="card" style="border-color: var(--primary);">
+            <div class="flag flag-laris"><i class="fas fa-bolt"></i> PALING LARIS</div>
+            <i class="fas fa-star main-icon"></i>
+            <h4>Pro Player</h4>
+            <div class="price-tag">Rp 149.000</div>
+            <ul>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <b>Jalur Prestasi PORPROV</b>
+                        Akses eksklusif Japres & fasilitas elite.
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <b>Sertifikasi Kemenpora</b>
+                        Legitimasi nasional untuk seleksi atlet.
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <b>Resume Digital</b>
+                        Data performa siap untuk Scout Talent.
+                    </div>
+                </li>
+            </ul>
+            <a href="pay1.html" class="btn-card pro" style="margin-top: auto;">Pilih Paket Pro</a>
+        </div>
+
+        <div class="card">
+            <div class="flag flag-investasi"><i class="fas fa-trophy"></i> INVESTASI TERBAIK</div>
+            <i class="fas fa-crown main-icon" style="color: #f59e0b;"></i>
+            <h4 style="color: #f59e0b;">Elite Academy</h4>
+            <div class="price-tag">Rp 299.000</div>
+            <ul>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <b>Ranking Nasional (Jurnas)</b>
+                        Jalur emas menuju seleksi PELATNAS.
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <b>International Network</b>
+                        Koneksi ke Akademi Klub Pro luar negeri.
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <b>Full Monitoring Scout</b>
+                        Dipantau langsung oleh Scout Kemenpora.
+                    </div>
+                </li>
+            </ul>
+            <a href="pay2.html" class="btn-card pro" style="margin-top: auto; background: #f59e0b; border-color: #f59e0b;">Pilih Paket Elite</a>
+        </div>
+    </div>
+</section>
 
     <section id="nutrition">
         <i class="fas fa-apple-whole bg-silhouette"></i>
@@ -575,6 +634,7 @@
     </script>
 </body>
 </html>
+
 
 
 
