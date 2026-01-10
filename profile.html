@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Elite Athlete Profile | Smart Coach AI</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+            --dark-bg: #0b0f1a;
+            --card-bg: rgba(18, 23, 42, 0.9);
+            --text-gray: #94a3b8;
+            --gold: #f59e0b;
+            --nav-height: 70px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--dark-bg); color: #ffffff; line-height: 1.6; }
+
+        /* ---------- NAVBAR ---------- */
+        header {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height);
+            background: rgba(11, 15, 26, 0.95); backdrop-filter: blur(15px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        header h1 { font-size: 18px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+        nav a { margin-left: 20px; text-decoration: none; color: #ffffff; font-weight: 500; font-size: 14px; }
+
+        /* ---------- PROFILE LAYOUT ---------- */
+        .main-container {
+            margin-top: var(--nav-height);
+            padding: 40px 5%;
+            max-width: 1200px;
+            margin-inline: auto;
+        }
+
+        /* Profile Header Card */
+        .profile-header {
+            background: linear-gradient(135deg, var(--card-bg), #1e293b);
+            border-radius: 30px;
+            padding: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .profile-header::before {
+            content: 'ELITE';
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            padding: 5px;
+            background: var(--dark-bg);
+        }
+
+        .rank-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--gold);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 12px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .profile-info h2 { font-size: 32px; font-weight: 900; margin-bottom: 5px; }
+        .profile-info p { color: var(--secondary); font-weight: 600; letter-spacing: 1px; margin-bottom: 15px; }
+        
+        .stats-summary { display: flex; gap: 20px; flex-wrap: wrap; }
+        .stat-item { text-align: center; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-item span { display: block; font-size: 10px; color: var(--text-gray); text-transform: uppercase; }
+        .stat-item b { font-size: 18px; color: var(--primary); }
+
+        /* Grid Section */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) { .content-grid { grid-template-columns: 1fr; } }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card h3 { font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--primary); }
+
+        /* Performance Chart Simulation */
+        .chart-container {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+            padding-top: 20px;
+        }
+        .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .bar { width: 100%; background: linear-gradient(to top, var(--primary), var(--secondary)); border-radius: 5px 5px 0 0; position: relative; transition: 0.5s; }
+        .bar:hover { filter: brightness(1.2); cursor: pointer; }
+        .bar::after { content: attr(data-value); position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 700; }
+        .label { font-size: 11px; color: var(--text-gray); }
+
+        /* Badges */
+        .badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .badge-icon { 
+            background: rgba(255,255,255,0.03); 
+            aspect-ratio: 1; 
+            border-radius: 15px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+        .badge-icon:hover { border-color: var(--gold); transform: scale(1.05); }
+        .badge-icon i { font-size: 24px; color: var(--gold); }
+        .badge-icon span { font-size: 9px; text-align: center; color: var(--text-gray); }
+
+        .btn-edit {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: transparent;
+            border: 1px solid var(--text-gray);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .btn-edit:hover { border-color: var(--primary); color: var(--primary); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SMART COACH</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="tes.html">AI Assessment</a>
+            <a href="index.html#training" style="color: var(--primary);">Go Train <i class="fas fa-arrow-right"></i></a>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <section class="profile-header">
+            <div class="avatar-wrapper">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop" alt="Profile" class="avatar-img">
+                <div class="rank-badge"><i class="fas fa-crown"></i> ELITE TIER</div>
+            </div>
+
+            <div class="profile-info">
+                <h2>Raka Wijaya</h2>
+                <p>ATTACKING MIDFIELDER (AMF)</p>
+                <div class="stats-summary">
+                    <div class="stat-item">
+                        <span>Win Rate</span>
+                        <b>88%</b>
+                    </div>
+                    <div class="stat-item">
+                        <span>Scout Interest</span>
+                        <b>High</b>
+                    </div>
+                    <div class="stat-item">
+                        <span>Rank</span>
+                        <b>#12 National</b>
+                    </div>
+                    <a href="#" class="btn-edit" style="height: fit-content; align-self: center;">Edit Profile</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Technical Skill Progress (AI Verified)</h3>
+                <div class="chart-container">
+                    <div class="bar-group">
+                        <div class="bar" style="height: 92%;" data-value="92"></div>
+                        <span class="label">Pace</span>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar" style="height: 85%;" data-value="85"></div>
+                        <span class="label">Shooting</span>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar" style="height: 95%;" data-value="95"></div>
+                        <span class="label">Passing</span>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar" style="height: 88%;" data-value="88"></div>
+                        <span class="label">Dribble</span>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar" style="height: 70%;" data-value="70"></div>
+                        <span class="label">Defense</span>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar" style="height: 82%;" data-value="82"></div>
+                        <span class="label">Physical</span>
+                    </div>
+                </div>
+                <p style="margin-top: 25px; font-size: 13px; color: var(--text-gray);">
+                    <i class="fas fa-info-circle" style="color: var(--secondary);"></i> 
+                    Statistik ini dihitung berdasarkan analisis video latihan terakhir Anda pada modul <b>High-Speed Dribbling</b>.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-medal"></i> Trophy Room</h3>
+                <div class="badge-grid">
+                    <div class="badge-icon">
+                        <i class="fas fa-bolt"></i>
+                        <span>Speed Demon</span>
+                    </div>
+                    <div class="badge-icon">
+                        <i class="fas fa-bullseye"></i>
+                        <span>Sharpshooter</span>
+                    </div>
+                    <div class="badge-icon">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Iron Wall</span>
+                    </div>
+                    <div class="badge-icon">
+                        <i class="fas fa-fire"></i>
+                        <span>10 Day Streak</span>
+                    </div>
+                    <div class="badge-icon" style="opacity: 0.3; border-style: dashed;">
+                        <i class="fas fa-lock" style="color: var(--text-gray);"></i>
+                        <span>Top Scorer</span>
+                    </div>
+                    <div class="badge-icon" style="opacity: 0.3; border-style: dashed;">
+                        <i class="fas fa-lock" style="color: var(--text-gray);"></i>
+                        <span>Pro Scouted</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="grid-column: 1 / -1;">
+                <h3><i class="fas fa-dna"></i> AI Digital Twin Biometrics</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px;">
+                        <p style="font-size: 12px; color: var(--text-gray);">Reaction Time</p>
+                        <h4 style="color: var(--secondary);">0.24s <small style="font-size: 10px; color: var(--primary);">Top 1%</small></h4>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px;">
+                        <p style="font-size: 12px; color: var(--text-gray);">VO2 Max Est.</p>
+                        <h4 style="color: var(--secondary);">58.5 ml/kg</h4>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px;">
+                        <p style="font-size: 12px; color: var(--text-gray);">Fat Percentage</p>
+                        <h4 style="color: var(--secondary);">10.2%</h4>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px;">
+                        <p style="font-size: 12px; color: var(--text-gray);">Peak Velocity</p>
+                        <h4 style="color: var(--secondary);">33.2 km/h</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="padding: 40px; text-align: center; color: var(--text-gray); font-size: 12px;">
+        © 2026 Smart Coach AI — Performance Profile
+    </footer>
+
+</body>
+</html>
