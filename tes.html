@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>AI Diagnostic & Planning | Smart Coach AI</title>
-    <link rel="icon" type="image/png" href="favicon.png" />
+    <title>AI Diagnostic & Career Planning | Smart Coach AI</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -15,97 +15,89 @@
             --dark-bg: #0b0f1a;
             --card-bg: rgba(18, 23, 42, 0.9);
             --text-gray: #94a3b8;
-            --nav-height: 70px;
+            --nav-height: 75px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: var(--dark-bg); color: #ffffff; line-height: 1.6; overflow-x: hidden; }
 
-        /* ---------- NAVBAR (Consistent) ---------- */
+        /* ---------- NAVBAR PREMIUM ---------- */
         header {
             position: fixed; top: 0; width: 100%; height: var(--nav-height);
-            background: rgba(11, 15, 26, 0.95); backdrop-filter: blur(15px);
+            background: rgba(11, 15, 26, 0.8); backdrop-filter: blur(20px);
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0 5%; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
-        header h1 { font-size: 18px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
-        nav a { margin-left: 20px; text-decoration: none; color: #ffffff; font-weight: 500; font-size: 14px; }
-        .btn-sso { margin-left: 20px; padding: 8px 18px; border-radius: 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; font-weight: 700; text-decoration: none; font-size: 13px; }
+        header h1 { 
+            font-size: 20px; font-weight: 900; 
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-container { display: flex; align-items: center; gap: 15px; }
+        nav { display: flex; align-items: center; gap: 5px; }
+        nav a { padding: 8px 15px; text-decoration: none; color: var(--text-gray); font-weight: 600; font-size: 13px; transition: 0.3s; border-radius: 10px; }
+        nav a.active { color: var(--primary); background: rgba(0, 255, 136, 0.1); }
+        
+        .btn-start-training {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #000 !important; font-weight: 800 !important;
+            padding: 10px 20px !important; border-radius: 12px;
+            display: flex; align-items: center; gap: 8px; font-size: 11px !important;
+            text-transform: uppercase; animation: glow-pulse 2s infinite; border: none;
+        }
+        @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 136, 0.4); } 50% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.7); } }
+
+        .profile-trigger {
+            display: flex; align-items: center; gap: 10px; padding: 5px 5px 5px 12px;
+            background: rgba(255,255,255,0.05); border-radius: 50px; text-decoration: none; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--primary); }
 
         /* ---------- ASSESSMENT LAYOUT ---------- */
         .container {
-            margin-top: var(--nav-height);
-            padding: 40px 5%;
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 30px;
-            max-width: 1400px;
-            margin-inline: auto;
+            margin-top: var(--nav-height); padding: 40px 5%;
+            display: grid; grid-template-columns: 1fr 380px; gap: 30px;
+            max-width: 1400px; margin-inline: auto;
         }
 
         @media (max-width: 1024px) { .container { grid-template-columns: 1fr; } }
 
-        /* --- Chat/Diagnostic Area --- */
         .assessment-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            flex-direction: column;
-            height: 80vh;
+            background: var(--card-bg); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; height: 75vh;
         }
 
         .chat-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .chat-messages {
-            flex-grow: 1; padding: 25px; overflow-y: auto;
-            display: flex; flex-direction: column; gap: 20px;
-            background: radial-gradient(circle at top right, rgba(0,255,136,0.02), transparent);
-        }
+        .chat-messages { flex-grow: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .msg { max-width: 85%; padding: 15px 20px; border-radius: 15px; font-size: 14px; position: relative; }
+        .msg.ai { background: rgba(255,255,255,0.05); align-self: flex-start; border: 1px solid rgba(0, 255, 136, 0.2); }
+        .msg.user { background: rgba(0, 204, 255, 0.1); align-self: flex-end; border: 1px solid var(--secondary); color: var(--secondary); }
 
-        .msg { max-width: 85%; padding: 15px 20px; border-radius: 15px; font-size: 14px; line-height: 1.5; }
-        .msg.ai { background: rgba(255,255,255,0.05); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid rgba(0, 255, 136, 0.2); }
-        .msg.user { background: rgba(0, 204, 255, 0.1); align-self: flex-end; border-bottom-right-radius: 2px; border: 1px solid var(--secondary); color: var(--secondary); }
-
-        /* Options/Buttons in Chat */
         .option-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
         .opt-btn {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #fff; padding: 10px 18px; border-radius: 20px; cursor: pointer;
-            font-size: 13px; transition: 0.3s;
+            color: #fff; padding: 10px 18px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: 0.3s;
         }
         .opt-btn:hover { border-color: var(--primary); background: rgba(0, 255, 136, 0.1); }
 
-        /* --- Sidebar Recommendation --- */
+        /* ---------- SIDEBAR RESULTS ---------- */
         .sidebar { display: flex; flex-direction: column; gap: 20px; }
         .card-res {
             background: var(--card-bg); padding: 25px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;
-            display: none; /* Hidden until assessment finish */
+            border: 1px solid rgba(255,255,255,0.05); display: none;
         }
-        .card-res.active { display: block; animation: slideIn 0.5s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .card-res.active { display: block; animation: slideUp 0.5s ease forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card-res h4 { color: var(--primary); font-size: 14px; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-
-        .pos-badge {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #000; padding: 5px 15px; border-radius: 5px; font-weight: 900; font-size: 18px;
-            display: inline-block; margin-bottom: 10px;
-        }
-
-        .schedule-list { list-style: none; margin-top: 15px; }
-        .schedule-item {
-            display: flex; gap: 15px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .day { font-weight: 700; color: var(--secondary); min-width: 45px; font-size: 12px; }
-        .activity { font-size: 12px; color: #cbd5e1; }
-
-        .loading-ai { font-style: italic; color: var(--text-gray); font-size: 12px; display: none; }
+        .pos-badge { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; padding: 5px 15px; border-radius: 8px; font-weight: 900; font-size: 18px; display: inline-block; margin-bottom: 15px; }
+        .motivation-box { background: rgba(0, 255, 136, 0.05); padding: 15px; border-left: 4px solid var(--primary); font-style: italic; font-size: 13px; margin-top: 15px; color: #e2e8f0; }
+        .schedule-item { display: flex; gap: 15px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; }
+        .day { font-weight: 700; color: var(--secondary); min-width: 55px; }
+        .loading-ai { font-style: italic; color: var(--text-gray); font-size: 12px; display: none; padding: 15px 25px; }
 
     </style>
 </head>
@@ -113,167 +105,135 @@
 
     <header>
         <h1>SMART COACH</h1>
-        <nav>
-            <a href="index.html">Dashboard</a>
-            <a href="index.html#training">Training</a>
-            <a href="profile.html" class="btn-sso">My Profile</a>
-        </nav>
+        <div class="nav-container">
+            <nav>
+                <a href="index.html">Dashboard</a>
+                <a href="tes.html" class="active">AI Assessment</a>
+                <a href="index.html#training" class="btn-start-training">
+                    <i class="fas fa-play-circle"></i> <span>Start Training</span>
+                </a>
+            </nav>
+            <a href="profile.html" class="profile-trigger">
+                <span>Raka Wijaya</span>
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&auto=format&fit=crop" class="nav-avatar" alt="User">
+            </a>
+        </div>
     </header>
 
     <main class="container">
         <section class="assessment-section">
             <div class="chat-header">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <i class="fas fa-robot" style="color: var(--primary); font-size: 20px;"></i>
+                    <i class="fas fa-robot" style="color: var(--primary);"></i>
                     <div>
-                        <p style="font-weight: 700; font-size: 14px;">AI Diagnostic Coach</p>
-                        <p id="ai-status" style="font-size: 11px; color: var(--primary);">System Online</p>
+                        <p style="font-weight: 700; font-size: 14px;">Diagnostic AI</p>
+                        <p style="font-size: 10px; color: var(--primary);"><i class="fas fa-circle" style="font-size: 8px;"></i> System Analyzing</p>
                     </div>
                 </div>
-                <div id="progress-text" style="font-size: 12px; color: var(--text-gray);">Question 1 of 3</div>
+                <div id="prog-count" style="font-size: 12px; color: var(--text-gray);">Question 1 of 8</div>
             </div>
 
             <div class="chat-messages" id="chatContainer">
-                <div class="msg ai" id="q1">
-                    Selamat datang di tahap Diagnostik. Mari tentukan profil atletmu.<br><br>
-                    <strong>Pertanyaan 1:</strong> Apa keunggulan fisik terbesarmu saat di lapangan?
+                <div class="msg ai">
+                    Halo Raka! Saya akan menyusun peta jalan (roadmap) karir profesionalmu.<br><br>
+                    <strong>Q1:</strong> Apa atribut fisik yang paling menonjol dari permainanmu?
                     <div class="option-container">
-                        <button class="opt-btn" onclick="nextStep(1, 'Speed & Sprint', 'speed')">Kecepatan Lari (Sprint)</button>
-                        <button class="opt-btn" onclick="nextStep(1, 'Endurance & Stamina', 'stamina')">Daya Tahan (Stamina)</button>
-                        <button class="opt-btn" onclick="nextStep(1, 'Physical Strength', 'power')">Kekuatan Fisik (Body Balance)</button>
+                        <button class="opt-btn" onclick="handle(1, 'Speed & Sprint', 'speed')">Speed / Lari</button>
+                        <button class="opt-btn" onclick="handle(1, 'Stamina', 'stamina')">Stamina / Nafas</button>
+                        <button class="opt-btn" onclick="handle(1, 'Strength', 'power')">Physical / Body</button>
                     </div>
                 </div>
             </div>
-            <div id="ai-loading" class="loading-ai" style="padding: 10px 25px;"><i class="fas fa-spinner fa-spin"></i> AI is calculating your profile...</div>
+            <div id="ai-loading" class="loading-ai"><i class="fas fa-spinner fa-spin"></i> AI is processing data...</div>
         </section>
 
         <aside class="sidebar">
-            <div class="card-res" id="result-pos">
-                <h4><i class="fas fa-map-marker-alt"></i> Recommended Position</h4>
-                <div id="pos-name" class="pos-badge">ANALYZING...</div>
-                <p id="pos-desc" style="font-size: 12px; color: var(--text-gray);">Berdasarkan data fisik dan teknis, Anda sangat cocok mengisi posisi ini untuk memaksimalkan potensi tim.</p>
+            <div class="card-res" id="result-main">
+                <h4 style="font-size: 11px; color: var(--primary); margin-bottom: 10px; letter-spacing: 1px;">TARGET UNLOCKED</h4>
+                <div id="pos-name" class="pos-badge">-</div>
+                <div id="target-club" style="font-weight: 700; color: var(--secondary); font-size: 15px;"></div>
+                <p id="pos-desc" style="font-size: 12px; color: var(--text-gray); margin: 10px 0;"></p>
+                <div id="motivation-box" class="motivation-box"></div>
             </div>
 
-            <div class="card-res" id="result-schedule">
-                <h4><i class="fas fa-calendar-alt"></i> Training Schedule (Weekly)</h4>
-                <div class="schedule-list" id="schedule-content">
-                    </div>
-                <a href="index.html#training" class="btn-sso" style="display: block; text-align: center; margin-top: 20px; margin-left: 0;">Confirm & Start Plan</a>
+            <div class="card-res" id="result-remind">
+                <h4 style="font-size: 11px; color: var(--primary); margin-bottom: 10px;">REMINDER ACTIVE</h4>
+                <div id="remind-detail" style="font-size: 12px; line-height: 1.8;"></div>
+                <div id="schedule-list" style="margin-top: 15px;"></div>
+                <a href="index.html" class="btn-start-training" style="margin-top: 20px; text-align: center; justify-content: center; margin-left: 0;">Confirm & Sync to Calendar</a>
             </div>
         </aside>
     </main>
 
     <script>
-        let userData = {
-            physical: '',
-            technical: '',
-            mentality: ''
-        };
+        let session = {};
+        const chat = document.getElementById('chatContainer');
+        const loader = document.getElementById('ai-loading');
 
-        function nextStep(step, label, value) {
-            const chat = document.getElementById('chatContainer');
-            const loader = document.getElementById('ai-loading');
-            const progText = document.getElementById('progress-text');
-
-            // Add user bubble
-            const userMsg = document.createElement('div');
-            userMsg.className = 'msg user';
-            userMsg.innerText = label;
-            chat.appendChild(userMsg);
-
+        function handle(step, label, val) {
+            addMsg(label, 'user');
             loader.style.display = 'block';
-
+            
             setTimeout(() => {
                 loader.style.display = 'none';
-                if (step === 1) {
-                    userData.physical = value;
-                    progText.innerText = "Question 2 of 3";
-                    addAiMsg(`<strong>Pertanyaan 2:</strong> Dalam situasi permainan, apa tugas yang paling kamu sukai?`, [
-                        {text: 'Mencetak Gol & Finishing', val: 'finish', key: 2},
-                        {text: 'Mengatur Ritme & Passing', val: 'playmake', key: 2},
-                        {text: 'Menghalau Serangan Lawan', val: 'defend', key: 2}
-                    ]);
-                } else if (step === 2) {
-                    userData.technical = value;
-                    progText.innerText = "Question 3 of 3";
-                    addAiMsg(`<strong>Pertanyaan 3:</strong> Bagaimana caramu mengambil keputusan saat ditekan lawan?`, [
-                        {text: 'Tenang & Cari Ruang Kosong', val: 'calm', key: 3},
-                        {text: 'Agresif & Melawan Balik', val: 'aggro', key: 3},
-                        {text: 'Langsung Oper ke Teman', val: 'simple', key: 3}
-                    ]);
-                } else if (step === 3) {
-                    userData.mentality = value;
-                    progText.innerText = "Assessment Complete";
-                    showFinalResult();
+                if (step === 1) { session.phys = val; ask(2, "Q2: Skill teknis apa yang ingin kamu asah?", [{t:'Finishing',v:'f'},{t:'Passing',v:'p'},{t:'Tackling',v:'t'}]); }
+                else if (step === 2) { session.skill = val; ask(3, "Q3: Apa target klub impianmu?", [{t:'Persija / Lokal',v:'Persija'},{t:'Oxford / Europe',v:'Oxford Utd'},{t:'Ansan / Asia',v:'Ansan'}]); }
+                else if (step === 3) { session.club = val; ask(4, "Q4: Target ini tercapai dalam berapa bulan?", [{t:'3 Bulan',v:'3'},{t:'6 Bulan',v:'6'},{t:'12 Bulan',v:'12'}]); }
+                else if (step === 4) { session.months = val; ask(5, "Q5: Aktifkan pengingat latihan otomatis?", [{t:'Ya, Aktifkan',v:'y'},{t:'Tidak',v:'n'}]); }
+                else if (step === 5) { 
+                    session.remind = val; 
+                    if(val==='y') ask(6, "Q6: Hari apa kamu ingin fokus latihan?", [{t:'Weekdays',v:'Senin-Jumat'},{t:'Weekend',v:'Sabtu-Minggu'},{t:'Tiap Hari',v:'Daily'}]);
+                    else finalize();
                 }
+                else if (step === 6) { session.days = val; ask(7, "Q7: Jam berapa notifikasi dikirim?", [{t:'05:00 Pagi',v:'05:00'},{t:'16:00 Sore',v:'16:00'},{t:'19:00 Malam',v:'19:00'}]); }
+                else if (step === 7) { session.time = val; ask(8, "Q8: Tipe pengingat yang diinginkan?", [{t:'Dering',v:'Sound'},{t:'Getar',v:'Vibrate'},{t:'Layar Kunci',v:'Lockscreen'}]); }
+                else if (step === 8) { session.type = val; finalize(); }
+                
+                document.getElementById('prog-count').innerText = `Question ${step+1} of 8`;
                 chat.scrollTop = chat.scrollHeight;
             }, 800);
         }
 
-        function addAiMsg(text, options) {
-            const chat = document.getElementById('chatContainer');
-            const div = document.createElement('div');
-            div.className = 'msg ai';
-            div.innerHTML = text;
-
-            if (options) {
-                const optCont = document.createElement('div');
-                optCont.className = 'option-container';
-                options.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = 'opt-btn';
-                    btn.innerText = opt.text;
-                    btn.onclick = () => nextStep(opt.key, opt.text, opt.val);
-                    optCont.appendChild(btn);
-                });
-                div.appendChild(optCont);
-            }
-            chat.appendChild(div);
+        function ask(step, txt, opts) {
+            let html = `<strong>${txt}</strong><div class="option-container">`;
+            opts.forEach(o => html += `<button class="opt-btn" onclick="handle(${step}, '${o.t}', '${o.v}')">${o.t}</button>`);
+            addMsg(html + `</div>`, 'ai');
         }
 
-        function showFinalResult() {
-            addAiMsg("<strong>Deep Scan Berhasil!</strong><br>Digital Twin kamu telah diperbarui. Lihat panel sebelah kanan untuk penempatan posisi dan jadwal latihan yang telah saya optimalkan.");
-            
-            // Logic Penentuan Posisi (Sederhana)
-            let finalPos = "Midfielder";
-            let desc = "Pemain serbabisa yang mengatur aliran bola.";
-            let schedule = "";
+        function addMsg(txt, type) {
+            const d = document.createElement('div');
+            d.className = `msg ${type}`;
+            d.innerHTML = txt;
+            chat.appendChild(d);
+        }
 
-            if (userData.physical === 'speed' && userData.technical === 'finish') {
-                finalPos = "Forward / Winger";
-                desc = "Gunakan kecepatanmu untuk memecah lini pertahanan lawan.";
-                schedule = `
-                    <div class="schedule-item"><div class="day">SENIN</div><div class="activity">Sprint Drill & Finishing Practice</div></div>
-                    <div class="schedule-item"><div class="day">SELASA</div><div class="activity">Gym: Lower Body Explosiveness</div></div>
-                    <div class="schedule-item"><div class="day">RABU</div><div class="activity">Rest & Recovery</div></div>
-                    <div class="schedule-item"><div class="day">KAMIS</div><div class="activity">1v1 Attacking Scenarios</div></div>
+        function finalize() {
+            addMsg("<strong>Assessment Complete!</strong> AI sedang menyusun algoritma latihanmu...", "ai");
+            
+            // Logic Posisi
+            let pos = "Creative Midfielder";
+            let mot = "Visi bermainmu akan menentukan arah serangan tim.";
+            if(session.phys === 'speed' && session.skill === 'f') { pos = "Elite Winger/Striker"; mot = "Gunakan akselerasimu. Bek lawan tidak akan bisa mengejarmu jika kamu disiplin."; }
+            if(session.skill === 't') { pos = "General Defender"; mot = "Ketenanganmu adalah benteng terakhir yang tak tertembus."; }
+
+            document.getElementById('pos-name').innerText = pos;
+            document.getElementById('target-club').innerText = `Target: ${session.club} (${session.months} Bulan)`;
+            document.getElementById('pos-desc').innerText = `Latihan harian telah disesuaikan dengan standar fisik di ${session.club}.`;
+            document.getElementById('motivation-box').innerHTML = `<i class="fas fa-quote-left"></i> ${mot}`;
+            
+            if(session.remind === 'y') {
+                document.getElementById('remind-detail').innerHTML = `
+                    <i class="fas fa-bell"></i> ${session.type} Mode <br>
+                    <i class="fas fa-clock"></i> Jam: ${session.time} | Hari: ${session.days}
                 `;
-            } else if (userData.physical === 'stamina' && userData.technical === 'defend') {
-                finalPos = "Defensive Midfielder";
-                desc = "Jangkar tim yang memutus serangan lawan sebelum masuk kotak penalti.";
-                schedule = `
-                    <div class="schedule-item"><div class="day">SENIN</div><div class="activity">Long Distance Running (Stamina)</div></div>
-                    <div class="schedule-item"><div class="day">SELASA</div><div class="activity">Interception & Tactical Positioning</div></div>
-                    <div class="schedule-item"><div class="day">RABU</div><div class="activity">Upper Body Strength</div></div>
-                    <div class="schedule-item"><div class="day">KAMIS</div><div class="activity">Zonal Marking Drills</div></div>
-                `;
-            } else {
-                finalPos = "Playmaker / AMF";
-                desc = "Visi bermainmu adalah kunci kreativitas tim.";
-                schedule = `
-                    <div class="schedule-item"><div class="day">SENIN</div><div class="activity">Short & Long Passing Accuracy</div></div>
-                    <div class="schedule-item"><div class="day">SELASA</div><div class="activity">Vision & Scanning Drill (AI Video)</div></div>
-                    <div class="schedule-item"><div class="day">RABU</div><div class="activity">Agility & Footwork</div></div>
-                    <div class="schedule-item"><div class="day">KAMIS</div><div class="activity">Set Piece Practice</div></div>
+                document.getElementById('schedule-list').innerHTML = `
+                    <div class="schedule-item"><div class="day">HARI 1</div><div>Fisik & Drill ${session.phys}</div></div>
+                    <div class="schedule-item"><div class="day">HARI 2</div><div>Analisis Video & Teknik</div></div>
                 `;
             }
 
-            document.getElementById('pos-name').innerText = finalPos;
-            document.getElementById('pos-desc').innerText = desc;
-            document.getElementById('schedule-content').innerHTML = schedule;
-
-            document.getElementById('result-pos').classList.add('active');
-            document.getElementById('result-schedule').classList.add('active');
+            document.getElementById('result-main').classList.add('active');
+            document.getElementById('result-remind').classList.add('active');
         }
     </script>
 </body>
