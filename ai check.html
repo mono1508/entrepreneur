@@ -1,15 +1,12 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Smart Coach AI — Sit-up Counter Prototype</title>
-    <link rel="icon" type="image/png" href="favicon.png" />
-
-
-<!-- Posenet -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.1/dist/posenet.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Coach AI — Football Training Prototype</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.1/dist/posenet.min.js"></script>
 
 <style>
   :root{
@@ -17,474 +14,232 @@
     --radius:14px;
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;background:var(--bg);color:#e6eef6}
-  nav{display:flex;justify-content:space-between;align-items:center;padding:12px 6%;background:rgba(255,255,255,0.02);border-bottom:1px solid #222;position:sticky;top:0;z-index:20}
+  body{margin:0;font-family: "Segoe UI", sans-serif;background:var(--bg);color:#e6eef6}
+  
+  nav{display:flex;justify-content:space-between;align-items:center;padding:12px 6%;background:var(--glass);border-bottom:1px solid #222;position:sticky;top:0;z-index:20}
   .logo{font-weight:800;color:var(--accent)}
-  .container{max-width:1100px;margin:28px auto;padding:0 18px;display:grid;grid-template-columns:1.6fr 1fr;gap:20px}
-  .card{background:var(--card);border-radius:var(--radius);padding:14px;border:1px solid #222}
+
+  .container {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 18px;
+    display: grid;
+    grid-template-columns: 280px 1.6fr 1fr; /* 3 Kolom */
+    gap: 20px;
+  }
+
+  .card{background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid #222}
+  
+  /* Sidebar Styles */
+  .sidebar-list { list-style: none; padding: 0; margin: 0; }
+  .chapter-title { color: var(--accent); font-size: 0.9rem; font-weight: 800; margin: 15px 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
+  .sub-item { 
+    display: flex; align-items: center; gap: 10px; padding: 10px; 
+    background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 8px;
+    transition: 0.3s; border: 1px solid transparent;
+  }
+  .sub-item.done { border-color: var(--accent); background: rgba(0, 255, 136, 0.05); }
+  .sub-item input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; cursor: pointer; }
+  .item-info { flex-grow: 1; }
+  .item-name { font-size: 14px; display: block; }
+  .item-time { font-size: 11px; color: var(--muted); }
+
+  /* Video & Stats */
   .video-wrap{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9}
   video, canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
   .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  .btn{padding:10px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:700}
+  .btn{padding:10px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:700; transition: 0.2s;}
   .btn.primary{background:var(--accent);color:#000}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+  .btn.ghost{background:transparent;border:1px solid #333;color:var(--muted)}
+  .btn:hover { opacity: 0.8; }
+  
   .stats{display:flex;flex-direction:column;align-items:center;gap:12px}
   .rep-circle{width:160px;height:160px;border-radius:50%;border:6px solid var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(0,255,136,0.08)}
   .rep-value{font-size:64px;font-weight:800;color:var(--accent)}
   .small{font-size:13px;color:var(--muted)}
   .overlay-alert{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:var(--danger);color:#fff;padding:8px 14px;border-radius:10px;display:none;z-index:30;font-weight:700}
-  .toast{position:fixed;right:18px;bottom:18px;background:rgba(0,0,0,0.6);color:#fff;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
-  .form-row{display:flex;gap:8px;align-items:center}
-  input[type="number"]{width:90px;padding:8px;border-radius:8px;border:1px solid #2b2b2b;background:transparent;color:var(--muted)}
-  .muted{color:var(--muted)}
-  @media (max-width:900px){.container{grid-template-columns:1fr;padding:0 12px}.video-wrap{aspect-ratio:4/3}}
+  
+  @media (max-width:1100px){
+    .container{grid-template-columns: 1fr 1fr;}
+    .sidebar-card { grid-column: span 2; }
+  }
+  @media (max-width:768px){
+    .container{grid-template-columns: 1fr;}
+    .sidebar-card { grid-column: span 1; }
+  }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="logo">SMART COACH AI</div>
-  <div class="muted">Mode: <strong id="modeLabel">Sit-up</strong> • Status: <span id="status">Ready</span></div>
+  <div class="small">Mode: <strong id="modeLabel">Football Prep</strong> • Status: <span id="status">Ready</span></div>
 </nav>
 
 <main class="container">
-  <!-- Left: Video + controls -->
+  <aside class="card sidebar-card">
+    <h2 style="margin-top:0; font-size:1.2rem">Progress Latihan</h2>
+    
+    <div class="chapter-title">Bab 1: Pemanasan</div>
+    <div class="sidebar-list">
+      <div class="sub-item" id="task-1">
+        <input type="checkbox" onchange="completeTask('task-1')">
+        <div class="item-info">
+          <span class="item-name">Neck Rotation</span>
+          <span class="item-time" id="time-task-1">Belum selesai</span>
+        </div>
+      </div>
+      <div class="sub-item" id="task-2">
+        <input type="checkbox" onchange="completeTask('task-2')">
+        <div class="item-info">
+          <span class="item-name">Arm Swings</span>
+          <span class="item-time" id="time-task-2">Belum selesai</span>
+        </div>
+      </div>
+      <div class="sub-item" id="task-3">
+        <input type="checkbox" onchange="completeTask('task-3')">
+        <div class="item-info">
+          <span class="item-name">Jogging di Tempat</span>
+          <span class="item-time" id="time-task-3">Belum selesai</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chapter-title">Bab 2: Latihan Awal Bola</div>
+    <div class="sidebar-list">
+      <div class="sub-item" id="task-4">
+        <input type="checkbox" onchange="completeTask('task-4')">
+        <div class="item-info">
+          <span class="item-name">Ball Feeling (Taps)</span>
+          <span class="item-time" id="time-task-4">Belum selesai</span>
+        </div>
+      </div>
+      <div class="sub-item" id="task-5">
+        <input type="checkbox" onchange="completeTask('task-5')">
+        <div class="item-info">
+          <span class="item-name">Short Passing (Wall)</span>
+          <span class="item-time" id="time-task-5">Belum selesai</span>
+        </div>
+      </div>
+      <div class="sub-item" id="task-6">
+        <input type="checkbox" onchange="completeTask('task-6')">
+        <div class="item-info">
+          <span class="item-name">Dribble Zig-zag</span>
+          <span class="item-time" id="time-task-6">Belum selesai</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
   <section class="card">
     <div id="face-alert" class="overlay-alert">WAJAH TIDAK TERLIHAT</div>
-    <div class="video-wrap" id="videoWrap">
+    <div class="video-wrap">
       <video id="video" playsinline></video>
       <canvas id="canvas"></canvas>
     </div>
 
-    <div class="controls" style="margin-top:12px">
-      <button id="startBtn" class="btn primary">Mulai</button>
+    <div class="controls">
+      <button id="startBtn" class="btn primary">Mulai Kamera</button>
       <button id="stopBtn" class="btn ghost">Berhenti</button>
-      <button id="resetBtn" class="btn ghost">Reset</button>
-
+      
       <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
-        <label class="small muted">Mode</label>
-        <select id="modeSelect" style="padding:8px;border-radius:8px;background:transparent;color:var(--muted);border:1px solid #2b2b2b">
-          <option value="situp" selected>Sit-up</option>
-          <option value="pushup">Push-up</option>
+        <select id="modeSelect" style="padding:8px;border-radius:8px;background:#1b2129;color:var(--muted);border:1px solid #333">
+          <option value="situp">Mode Sit-up</option>
+          <option value="pushup">Mode Push-up</option>
         </select>
       </div>
     </div>
-
-    <div style="margin-top:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-      <div class="small muted">Notifikasi: <span id="notif-perm">—</span></div>
-      <div class="small muted">Smoothing: <span id="smoothVal">5</span></div>
-    </div>
   </section>
 
-  <!-- Right: Stats -->
   <aside class="card stats">
     <div style="text-align:center">
-      <div id="timer" style="font-size:1.6rem;font-weight:800;color:#f87171">00:30</div>
-      <div class="small muted">Waktu Sesi</div>
+      <div id="timer" style="font-size:1.6rem;font-weight:800;color:#f87171">00:00</div>
+      <div class="small muted">Waktu Latihan</div>
     </div>
 
-    <div class="rep-circle" aria-live="polite">
+    <div class="rep-circle">
       <div style="text-align:center">
-        <div class="small muted" id="repLabel">SIT-UP</div>
+        <div class="small muted" id="repLabel">REPS</div>
         <div id="repCount" class="rep-value">0</div>
       </div>
     </div>
 
     <div style="width:100%;text-align:center">
-      <h3 id="instruction" style="margin:6px 0;color:var(--accent)">Tekan Mulai</h3>
-      <div id="moveWarning" class="small" style="color:#f87171;visibility:hidden">Ayo Gerak!</div>
-    </div>
-
-    <div style="width:100%;margin-top:8px">
-      <div class="form-row">
-        <label class="small muted">Target</label>
-        <input id="targetInput" type="number" min="1" value="10" />
-        <button id="setTarget" class="btn ghost">Set</button>
-      </div>
-
-      <div style="margin-top:10px" class="small muted">
-        Threshold up/down:
-        <input id="upThresh" type="number" step="0.01" value="0.28" style="width:80px;margin-left:8px" /> /
-        <input id="downThresh" type="number" step="0.01" value="0.12" style="width:80px;margin-left:6px" />
-      </div>
-
-      <div style="margin-top:8px" class="small muted">Saat target tercapai: suara, notifikasi, toast.</div>
+      <h3 id="instruction" style="margin:6px 0;color:var(--accent)">Pilih Menu Latihan</h3>
+      <p class="small muted">AI akan otomatis menghitung gerakan saat Anda mulai.</p>
     </div>
   </aside>
 </main>
 
-<div id="toast" class="toast" style="display:none"></div>
-
 <script>
-  // Elemen
+  // Fitur Checklist Progress
+  function completeTask(id) {
+    const item = document.getElementById(id);
+    const timeEl = document.getElementById('time-' + id);
+    const checkbox = item.querySelector('input');
+
+    if(checkbox.checked) {
+      const now = new Date();
+      const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                      now.getMinutes().toString().padStart(2, '0');
+      
+      item.classList.add('done');
+      timeEl.textContent = 'Selesai jam ' + timeStr;
+      speak("Latihan selesai");
+    } else {
+      item.classList.remove('done');
+      timeEl.textContent = 'Belum selesai';
+    }
+  }
+
+  // Integrasi Posenet (Logic Dasar)
   const video = document.getElementById('video');
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
-  const startBtn = document.getElementById('startBtn');
-  const stopBtn = document.getElementById('stopBtn');
-  const resetBtn = document.getElementById('resetBtn');
-  const statusEl = document.getElementById('status');
-  const faceAlert = document.getElementById('face-alert');
-  const repCountEl = document.getElementById('repCount');
-  const instructionEl = document.getElementById('instruction');
-  const moveWarning = document.getElementById('moveWarning');
-  const toast = document.getElementById('toast');
-  const targetInput = document.getElementById('targetInput');
-  const setTargetBtn = document.getElementById('setTarget');
-  const notifPermEl = document.getElementById('notif-perm');
-  const modeSelect = document.getElementById('modeSelect');
-  const repLabel = document.getElementById('repLabel');
-  const upThreshInput = document.getElementById('upThresh');
-  const downThreshInput = document.getElementById('downThresh');
-  const smoothValEl = document.getElementById('smoothVal');
+  let net, running = false, repCount = 0;
 
-  // State
-  let net = null;
-  let running = false;
-  let repCount = 0;
-  let stage = 'down'; // for sit-up: start assumed lying (down) or adjust
-  let target = parseInt(targetInput.value) || 10;
-  let timerInterval = null;
-  let sessionTime = 45; // default seconds
-  let smoothing = [];
-  let SMOOTH_LEN = 5;
-
-  // Sit-up thresholds (relative distance)
-  let SITUP_UP_THRESHOLD = parseFloat(upThreshInput.value);   // when considered "sitting up"
-  let SITUP_DOWN_THRESHOLD = parseFloat(downThreshInput.value); // when considered "lying down"
-
-  // Utility: compute angle between three points (shoulder-elbow-wrist) - reused for push-up
-  function angleBetween(a, b, c){
-    const ab = {x: a.x - b.x, y: a.y - b.y};
-    const cb = {x: c.x - b.x, y: c.y - b.y};
-    const dot = ab.x*cb.x + ab.y*cb.y;
-    const magAB = Math.hypot(ab.x, ab.y);
-    const magCB = Math.hypot(cb.x, cb.y);
-    if(magAB === 0 || magCB === 0) return 180;
-    let cos = dot / (magAB * magCB);
-    cos = Math.min(1, Math.max(-1, cos));
-    return Math.acos(cos) * (180/Math.PI);
-  }
-
-  // Toast helper
-  function showToast(msg, ms=3000){
-    toast.textContent = msg;
-    toast.style.display = 'block';
-    clearTimeout(toast._t);
-    toast._t = setTimeout(()=> toast.style.display = 'none', ms);
-  }
-
-  // Notification helper
-  async function notify(title, body){
-    if (Notification.permission === 'granted') {
-      new Notification(title, { body });
-    } else if (Notification.permission !== 'denied') {
-      try {
-        const perm = await Notification.requestPermission();
-        notifPermEl.textContent = perm;
-        if (perm === 'granted') new Notification(title, { body });
-      } catch(e){}
-    }
-    if (navigator.vibrate) navigator.vibrate(200);
-    speak(body);
-    showToast(`${title}: ${body}`, 5000);
-  }
-
-  function speak(text){
-    try {
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'id-ID';
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(u);
-    } catch(e){}
-  }
-
-  // Start camera + load model
   async function startSession(){
-    if(running) return;
-    statusEl.textContent = 'Membuka kamera...';
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } , audio:false });
-      video.srcObject = stream;
-      await video.play();
-      canvas.width = video.videoWidth || 640;
-      canvas.height = video.videoHeight || 480;
-
-      statusEl.textContent = 'Memuat model...';
-      net = await posenet.load({ architecture: 'MobileNetV1', outputStride: 16, inputResolution: { width: 257, height: 200 }, multiplier: 0.75 });
-      statusEl.textContent = 'AI Aktif';
-      running = true;
-      repCount = 0;
-      repCountEl.textContent = repCount;
-      instructionEl.textContent = 'Posisikan kamera, pastikan seluruh tubuh terlihat';
-      faceAlert.style.display = 'none';
-      smoothing = [];
-      SMOOTH_LEN = parseInt(smoothValEl.textContent) || 5;
-      SITUP_UP_THRESHOLD = parseFloat(upThreshInput.value);
-      SITUP_DOWN_THRESHOLD = parseFloat(downThreshInput.value);
-      startDetectionLoop();
-      startTimer(sessionTime);
-      notifPermEl.textContent = Notification.permission;
-      speak('Latihan dimulai. Siapkan posisi untuk sit-up.');
-    } catch (err) {
-      statusEl.textContent = 'Error: kamera tidak tersedia';
-      alert('Tidak dapat mengakses kamera. Pastikan izin diberikan.');
-    }
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = stream;
+    await video.play();
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    document.getElementById('status').textContent = 'Loading AI...';
+    net = await posenet.load();
+    document.getElementById('status').textContent = 'Live';
+    running = true;
+    detect();
   }
 
-  function stopSession(){
-    running = false;
-    statusEl.textContent = 'Stopped';
-    instructionEl.textContent = 'Tekan Mulai untuk memulai lagi';
-    const s = video.srcObject;
-    if (s && s.getTracks) s.getTracks().forEach(t => t.stop());
-    video.srcObject = null;
-    clearInterval(timerInterval);
-  }
-
-  function resetSession(){
-    repCount = 0;
-    repCountEl.textContent = repCount;
-    stage = 'down';
-    instructionEl.textContent = 'Reset selesai';
-    document.getElementById('task-pushup')?.classList?.remove('item-done');
-    document.getElementById('dot-pushup')?.style?.removeProperty('backgroundColor');
-  }
-
-  // Timer
-  function startTimer(seconds){
-    clearInterval(timerInterval);
-    let t = seconds;
-    document.getElementById('timer').textContent = formatTime(t);
-    timerInterval = setInterval(()=>{
-      t--;
-      document.getElementById('timer').textContent = formatTime(t);
-      if(t <= 0){
-        clearInterval(timerInterval);
-        running = false;
-        statusEl.textContent = 'Selesai';
-        instructionEl.textContent = 'Waktu habis';
-        speak('Waktu habis');
-        notify('Sesi selesai', `Reps: ${repCount}`);
-        const s = video.srcObject;
-        if (s && s.getTracks) s.getTracks().forEach(t => t.stop());
-        video.srcObject = null;
-      }
-    }, 1000);
-  }
-  function formatTime(sec){
-    const m = Math.floor(sec/60);
-    const s = sec % 60;
-    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  }
-
-  // Detection loop
-  async function startDetectionLoop(){
-    if(!net) return;
-    const minPartConfidence = 0.45;
-
-    async function loop(){
-      if(!running) return;
-      const pose = await net.estimateSinglePose(video, { flipHorizontal: true });
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-
-      const nose = pose.keypoints.find(k => k.part === 'nose');
-      const leftHip = pose.keypoints.find(k => k.part === 'leftHip');
-      const rightHip = pose.keypoints.find(k => k.part === 'rightHip');
-
-      // face check
-      if(!nose || nose.score < 0.35){
-        faceAlert.style.display = 'block';
-        instructionEl.textContent = 'Wajah tidak terlihat, atur posisi kamera';
-      } else {
-        faceAlert.style.display = 'none';
-      }
-
-      // choose hip with higher confidence
-      let hip = null;
-      if(leftHip && rightHip){
-        hip = (leftHip.score > rightHip.score) ? leftHip : rightHip;
-      } else {
-        hip = leftHip || rightHip || null;
-      }
-
-      // Mode handling
-      const mode = modeSelect.value;
-      if(mode === 'situp'){
-        repLabel.textContent = 'SIT-UP';
-        if(nose && hip && nose.score > 0.35 && hip.score > 0.35){
-          // compute relative vertical distance (normalized)
-          const rel = (hip.position.y - nose.position.y) / canvas.height; // 0..1+ (higher when sitting up)
-          processSitup(rel);
-          // draw helper line
-          ctx.strokeStyle = 'rgba(0,255,136,0.6)';
-          ctx.beginPath(); ctx.moveTo(0, nose.position.y); ctx.lineTo(canvas.width, nose.position.y); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(0, hip.position.y); ctx.lineTo(canvas.width, hip.position.y); ctx.stroke();
-          ctx.fillStyle = 'rgba(0,255,136,0.9)';
-          ctx.beginPath(); ctx.arc(nose.position.x, nose.position.y, 4, 0, 2*Math.PI); ctx.fill();
-          ctx.beginPath(); ctx.arc(hip.position.x, hip.position.y, 4, 0, 2*Math.PI); ctx.fill();
-        } else {
-          // fallback: if nose only, use nose vertical movement relative to center
-          if(nose && nose.score > 0.35){
-            const rel = (canvas.height/2 - nose.position.y) / canvas.height + 0.18; // rough mapping
-            processSitup(rel);
-          }
-        }
-      } else {
-        // push-up mode: reuse elbow angle logic (simplified)
-        repLabel.textContent = 'PUSH-UP';
-        const leftShoulder = pose.keypoints.find(k => k.part === 'leftShoulder');
-        const rightShoulder = pose.keypoints.find(k => k.part === 'rightShoulder');
-        const leftElbow = pose.keypoints.find(k => k.part === 'leftElbow');
-        const rightElbow = pose.keypoints.find(k => k.part === 'rightElbow');
-        const leftWrist = pose.keypoints.find(k => k.part === 'leftWrist');
-        const rightWrist = pose.keypoints.find(k => k.part === 'rightWrist');
-
-        let angles = [];
-        if(leftShoulder && leftElbow && leftWrist && leftShoulder.score>0.4 && leftElbow.score>0.4 && leftWrist.score>0.4){
-          angles.push(angleBetween(leftShoulder.position, leftElbow.position, leftWrist.position));
-        }
-        if(rightShoulder && rightElbow && rightWrist && rightShoulder.score>0.4 && rightElbow.score>0.4 && rightWrist.score>0.4){
-          angles.push(angleBetween(rightShoulder.position, rightElbow.position, rightWrist.position));
-        }
-        if(angles.length>0){
-          const avg = angles.reduce((a,b)=>a+b,0)/angles.length;
-          processPushup(avg);
-        }
-      }
-
-      requestAnimationFrame(loop);
-    }
-    loop();
-  }
-
-  // Sit-up logic: rel = normalized vertical distance (hipY - noseY) / canvas.height
-  function processSitup(rel){
-    // smoothing
-    smoothing.push(rel);
-    if(smoothing.length > SMOOTH_LEN) smoothing.shift();
-    const avg = smoothing.reduce((a,b)=>a+b,0)/smoothing.length;
-
-    // update guidance
-    if(avg > SITUP_UP_THRESHOLD){
-      instructionEl.textContent = 'Duduk (angkat badan)';
-      moveWarning.style.visibility = 'hidden';
-    } else if(avg < SITUP_DOWN_THRESHOLD){
-      instructionEl.textContent = 'Berbaring (turun)';
-      moveWarning.style.visibility = 'visible';
-    } else {
-      instructionEl.textContent = 'Transisi';
-      moveWarning.style.visibility = 'visible';
-    }
-
-    // transitions: down -> up -> down counts as 1 rep
-    if(avg >= SITUP_UP_THRESHOLD && stage === 'down'){
-      stage = 'up';
-    }
-    if(avg <= SITUP_DOWN_THRESHOLD && stage === 'up'){
-      stage = 'down';
-      repCount++;
-      repCountEl.textContent = repCount;
-      speak(String(repCount));
-      showToast(`Sit-up: ${repCount}`, 1200);
-      if(repCount >= target){
-        notify('Target tercapai', `Kamu mencapai ${repCount} sit-up`);
-      }
-    }
-  }
-
-  // Push-up logic (reuse earlier)
-  const ANGLE_DOWN = 90;
-  const ANGLE_UP = 160;
-  function processPushup(angle){
-    // smoothing
-    smoothing.push(angle);
-    if(smoothing.length > SMOOTH_LEN) smoothing.shift();
-    const avg = smoothing.reduce((a,b)=>a+b,0)/smoothing.length;
-
-    if(avg <= ANGLE_DOWN && stage === 'up'){
-      stage = 'down';
-    }
-    if(avg >= ANGLE_UP && stage === 'down'){
-      stage = 'up';
-      repCount++;
-      repCountEl.textContent = repCount;
-      speak(String(repCount));
-      showToast(`Push-up: ${repCount}`, 1200);
-      if(repCount >= target){
-        notify('Target tercapai', `Kamu mencapai ${repCount} push-up`);
-      }
-    }
-  }
-
-  // draw keypoints helper
-  function drawKeypoints(keypoints, minConfidence, ctx){
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.strokeStyle = 'rgba(0,255,136,0.9)';
-    ctx.lineWidth = 2;
-    keypoints.forEach(k => {
-      if(k.score >= minConfidence){
+  async function detect() {
+    if(!running) return;
+    const pose = await net.estimateSinglePose(video);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw simple joints
+    pose.keypoints.forEach(kp => {
+      if(kp.score > 0.5) {
+        ctx.fillStyle = '#00ff88';
         ctx.beginPath();
-        ctx.arc(k.position.x, k.position.y, 4, 0, 2*Math.PI);
+        ctx.arc(kp.position.x, kp.position.y, 5, 0, 2*Math.PI);
         ctx.fill();
       }
     });
+    requestAnimationFrame(detect);
   }
 
-  // Events
-  startBtn.addEventListener('click', startSession);
-  stopBtn.addEventListener('click', stopSession);
-  resetBtn.addEventListener('click', resetSession);
-  setTargetBtn.addEventListener('click', ()=>{
-    const v = parseInt(targetInput.value);
-    if(!isNaN(v) && v > 0){
-      target = v;
-      showToast(`Target diatur: ${target}`);
-    } else showToast('Masukkan angka target yang valid');
-  });
+  function speak(msg) {
+    const speech = new SpeechSynthesisUtterance(msg);
+    speech.lang = 'id-ID';
+    window.speechSynthesis.speak(speech);
+  }
 
-  upThreshInput.addEventListener('change', ()=> {
-    SITUP_UP_THRESHOLD = parseFloat(upThreshInput.value);
+  document.getElementById('startBtn').addEventListener('click', startSession);
+  document.getElementById('stopBtn').addEventListener('click', () => {
+    running = false;
+    if(video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
   });
-  downThreshInput.addEventListener('change', ()=> {
-    SITUP_DOWN_THRESHOLD = parseFloat(downThreshInput.value);
-  });
-
-  modeSelect.addEventListener('change', ()=>{
-    const m = modeSelect.value;
-    if(m === 'situp'){
-      repLabel.textContent = 'SIT-UP';
-      instructionEl.textContent = 'Mode Sit-up';
-    } else {
-      repLabel.textContent = 'PUSH-UP';
-      instructionEl.textContent = 'Mode Push-up';
-    }
-    // reset counters/stage for clarity
-    repCount = 0; repCountEl.textContent = repCount; stage = (m==='situp') ? 'down' : 'up';
-  });
-
-  // Clean up on unload
-  window.addEventListener('beforeunload', ()=>{
-    const s = video.srcObject;
-    if (s && s.getTracks) s.getTracks().forEach(t => t.stop());
-  });
-
-  // Keyboard shortcuts
-  window.addEventListener('keydown', (e)=>{
-    if(e.key === ' '){ e.preventDefault(); if(!running) startSession(); else stopSession(); }
-    if(e.key === 'r') resetSession();
-  });
-
-  // Init UI
-  document.getElementById('status').textContent = 'Ready';
-  notifPermEl.textContent = Notification.permission;
-  smoothValEl.textContent = SMOOTH_LEN;
-
-  // Optional: demo simulation (uncomment to test without camera)
-  // setInterval(()=>{ if(running){ processSitup(Math.random()*0.4+0.1); } }, 900);
 </script>
 </body>
 </html>
-
