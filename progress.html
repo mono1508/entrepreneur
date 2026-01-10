@@ -4,407 +4,201 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Smart Coach - Training Session</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  
   <style>
-    /* ===== Reset & Base ===== */
-    :root{
-      --bg:#0f0f0f;
-      --panel:#1a1a1a;
-      --muted:#666;
-      --accent:#00ffcc;
-      --danger:#ff4d4d;
-      --card:#2b2b2b;
-      --border:#333;
-      --text:#ffffff;
-      --glass: rgba(255,255,255,0.03);
-      --radius:12px;
-      --max-width:1400px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0;font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif}
-    html,body{height:100%}
-    body{
-      background:var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.4;
-      padding-bottom:40px;
-    }
-    a{color:inherit;text-decoration:none}
-
-    /* ===== Navigation ===== */
-    nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:14px 20px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      border-bottom:1px solid var(--border);
-      position:sticky;
-      top:0;
-      z-index:40;
-      backdrop-filter: blur(6px);
-    }
-    .logo{font-weight:700;font-size:18px;color:var(--accent);letter-spacing:0.6px}
-    .nav-links{display:flex;gap:18px;align-items:center}
-    .nav-links a{font-size:14px;color:var(--text);opacity:0.95}
-    .nav-links a.logout{color:var(--danger);font-weight:600}
-
-    /* ===== Layout ===== */
-    .container{
-      max-width:var(--max-width);
-      margin:20px auto;
-      padding:16px;
-      display:grid;
-      grid-template-columns: 1fr 360px;
-      gap:20px;
+    :root {
+      --bg: #0d1117; 
+      --card: #161b22; 
+      --accent: #00ff88; 
+      --secondary: #00aaff;
+      --muted: #8b949e; 
+      --border: #30363d;
+      --text: #e6eef6;
+      --sidebar-width: 320px;
     }
 
-    /* ===== Video Section ===== */
-    .video-section{
-      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .video-player{
-      width:100%;
-      border-radius:10px;
-      overflow:hidden;
-      background:#000;
-      aspect-ratio:16/9;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .video-player iframe{width:100%;height:100%;display:block;border:0}
-    .video-info{display:flex;flex-direction:column;gap:10px}
-    .video-info h2{font-size:20px;color:var(--text)}
-    .controls{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      padding:10px 16px;border-radius:999px;border:none;cursor:pointer;font-weight:700;
-      display:inline-flex;align-items:center;gap:8px;
-    }
-    .btn.prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
-    .btn.next{background:var(--accent);color:#000}
-    .btn.view{background:transparent;color:var(--accent);border:1px solid var(--accent)}
-
-    /* ===== AI Sidebar ===== */
-    .ai-sidebar{
-      background:var(--panel);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      display:flex;
-      flex-direction:column;
-      height:calc(80vh - 40px);
-      min-height:420px;
-      overflow:hidden;
-    }
-    .chat-header{
-      padding:14px 16px;
-      border-bottom:1px solid var(--border);
-      color:var(--accent);
-      font-weight:700;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-    }
-    .chat-header .status{font-size:13px;color:var(--muted);font-weight:600}
-    .chat-messages{
-      padding:14px;
-      flex:1;
-      overflow-y:auto;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      scroll-behavior:smooth;
-    }
-    .chat-footer{
-      padding:12px;
-      border-top:1px solid var(--border);
-      background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: "Segoe UI", sans-serif; 
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; height: 100vh; overflow: hidden;
     }
 
-    /* Message bubbles */
-    .bubble{
-      max-width:85%;
-      padding:10px 12px;
-      border-radius:12px;
-      font-size:14px;
-      line-height:1.3;
-      word-wrap:break-word;
-    }
-    .bubble.ai{
-      background:var(--card);
-      border-left:4px solid var(--accent);
-      align-self:flex-start;
-      color:var(--text);
-    }
-    .bubble.user{
-      background:var(--accent);
-      color:#000;
-      align-self:flex-end;
-    }
-    .meta{font-size:12px;color:var(--muted);margin-top:6px}
+    /* --- NAV & WRAPPER --- */
+    header { background: var(--card); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; z-index: 1000; }
+    .nav-wrapper { width: 100%; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+    .nav-left { display: flex; align-items: center; gap: 15px; }
+    .menu-toggle { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
+    .logo { font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+    
+    #nav-menu { display: flex; align-items: center; }
+    #nav-menu a { margin-left: 20px; text-decoration: none; color: #fff; font-size: 14px; }
+    .btn-sso { padding: 8px 18px; border-radius: 30px; background: linear-gradient(135deg, var(--accent), var(--secondary)); color: #000 !important; font-weight: 700; }
 
-    /* Templates area */
-    .templates{
-      padding:12px 16px;
-      border-top:1px dashed rgba(255,255,255,0.03);
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-      background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
-    }
-    .tpl-btn{
-      background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text);
-      padding:8px 10px;border-radius:10px;font-size:13px;cursor:pointer;
-    }
-    .tpl-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+    .wrapper { display: flex; flex: 1; overflow: hidden; }
 
-    /* Input row */
-    .input-row{display:flex;gap:8px;align-items:center}
-    .input-row input[type="text"]{
-      flex:1;padding:10px 12px;border-radius:10px;border:1px solid #444;background:transparent;color:var(--text);
-      outline:none;font-size:14px;
-    }
-    .send-btn{
-      width:44px;height:44px;border-radius:10px;border:none;background:var(--accent);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
-    }
-    .send-btn svg{display:block}
+    /* --- SIDEBAR PROGRESS --- */
+    aside.sidebar { width: var(--sidebar-width); background: var(--card); border-right: 1px solid var(--border); transition: 0.3s; }
+    aside.sidebar.closed { margin-left: -320px; }
+    .sidebar-header { padding: 20px 16px; font-size: 0.85rem; font-weight: 700; color: var(--accent); }
+    .progress-section { padding: 0 16px 20px; }
+    .progress-bar-bg { height: 6px; background: #30363d; border-radius: 10px; margin-top: 8px; }
+    .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 10px; width: 45%; }
 
-    /* Small helper */
-    .muted{color:var(--muted);font-size:13px}
+    .module-list { overflow-y: auto; height: calc(100% - 120px); }
+    .module-title { padding: 12px 16px; background: rgba(255,255,255,0.03); font-size: 14px; font-weight: 600; }
+    .sub-item { padding: 10px 16px 10px 30px; font-size: 13px; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+    .sub-item.active { color: #fff; border-left: 3px solid var(--accent); background: rgba(0,255,136,0.05); }
+    .dot { width: 8px; height: 8px; background: var(--border); border-radius: 50%; }
+    .dot.done { background: var(--accent); }
 
-    /* ===== Responsive ===== */
-    @media (max-width:1100px){
-      .container{grid-template-columns: 1fr 340px;padding:12px;gap:14px}
-      .ai-sidebar{height:70vh;min-height:380px}
-    }
-    @media (max-width:900px){
-      .container{grid-template-columns:1fr;padding:12px}
-      .ai-sidebar{order:2;height:auto;min-height:320px}
-      .video-section{order:1}
-      .chat-messages{max-height:46vh}
-    }
-    @media (max-width:520px){
-      nav{padding:10px}
-      .logo{font-size:16px}
-      .chat-header{padding:10px}
-      .templates{padding:10px}
-      .video-info h2{font-size:18px}
-      .btn{padding:8px 12px;font-size:13px}
-    }
+    /* --- CONTENT & CHAT --- */
+    main.content { flex: 1; display: grid; grid-template-columns: 1fr 350px; gap: 20px; padding: 20px; overflow-y: auto; }
+    .video-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; height: fit-content; }
+    .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; margin-bottom: 15px; }
 
-    /* Scrollbar (subtle) */
-    .chat-messages::-webkit-scrollbar{width:8px}
-    .chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.04);border-radius:8px}
+    /* --- AI CHAT SYSTEM --- */
+    .chat-container { background: var(--card); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; height: 600px; }
+    .chat-header { padding: 15px; border-bottom: 1px solid var(--border); font-weight: bold; color: var(--accent); }
+    
+    #chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 85%; padding: 10px; border-radius: 10px; font-size: 13px; line-height: 1.4; }
+    .msg.ai { background: #21262d; align-self: flex-start; border-left: 3px solid var(--accent); }
+    .msg.user { background: var(--accent); color: #000; align-self: flex-end; font-weight: 500; }
+
+    .chat-footer { padding: 15px; border-top: 1px solid var(--border); }
+    .template-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .tpl-btn { 
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); 
+      padding: 6px; border-radius: 6px; font-size: 11px; cursor: pointer; text-align: left; transition: 0.2s;
+    }
+    .tpl-btn:hover { background: var(--border); border-color: var(--muted); }
+
+    .input-box { display: flex; gap: 8px; }
+    .input-box input { flex: 1; background: #0d1117; border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 6px; outline: none; }
+    .send-btn { background: var(--accent); border: none; padding: 0 15px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
+    @media (max-width: 1000px) { main.content { grid-template-columns: 1fr; } .chat-container { height: 450px; } }
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo">SMART COACH</div>
-    <div class="nav-links" role="navigation" aria-label="Main navigation">
-      <a href="index.html">Home</a>
-      <a href="#" class="logout">Log Out</a>
+  <header>
+    <div class="nav-wrapper">
+      <div class="nav-left">
+        <button class="menu-toggle" id="sidebarToggle">☰</button>
+        <div class="logo">SMART COACH</div>
+      </div>
+      <nav id="nav-menu">
+        <a href="index.html#training">Training</a>
+        <a href="index.html#nutrition">Nutrition</a>
+        <a href="login.html" class="btn-sso">Sign Up</a>
+      </nav>
     </div>
-  </nav>
+  </header>
 
-  <main class="container" role="main">
-    <!-- Video / Content -->
-    <section class="video-section" aria-labelledby="videoTitle">
-      <div class="video-player" aria-hidden="false">
-        <iframe src="https://www.youtube.com/embed/IODxDxX7oi4?si=u8alX7IPHpWdHSZG" title="Beginner Training – Push-Up Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <div class="wrapper">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">MODUL: PUSH-UP</div>
+      <div class="progress-section">
+        <div style="display:flex; justify-content:space-between; font-size:12px;"><span>Progress</span><span>45%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
       </div>
-
-      <div class="video-info">
-        <h2 id="videoTitle">Beginner Training – Push-Up Tutorial</h2>
-        <p class="muted">Durasi: 5:12 • Level: Pemula</p>
-
-        <div class="controls" role="group" aria-label="Kontrol latihan">
-          <button class="btn prev" id="prevPractice" type="button">← Previous Practice</button>
-          <a href="ai check.html"><button class="btn next" type="button">Next Practice →</button></a>
-          <a href="insight.html"><button class="btn view" type="button">View Insight</button></a>
-        </div>
-      </div>
-    </section>
-
-    <!-- AI Chat Sidebar -->
-    <aside class="ai-sidebar" aria-label="AI Coach">
-      <div class="chat-header">
-        <div>
-          <div style="font-weight:700">Tanya AI Coach</div>
-          <div class="status">Siap membantu</div>
-        </div>
-        <div class="muted" aria-hidden="true">AI</div>
-      </div>
-
-      <div id="chatMessages" class="chat-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
-
-      <div class="templates" id="templates" aria-hidden="false">
-        <button class="tpl-btn">Bagaimana posisi tangan saat push-up?</button>
-        <button class="tpl-btn">Berapa repetisi pemula per set?</button>
-        <button class="tpl-btn">Tips agar punggung tidak melengkung</button>
-        <button class="tpl-btn">Pemanasan singkat sebelum latihan</button>
-      </div>
-
-      <div class="chat-footer">
-        <form id="chatForm" class="input-row" onsubmit="return false;" aria-label="Form kirim pesan ke AI">
-          <input id="chatInput" type="text" placeholder="Tanyakan sesuatu pada AI..." aria-label="Tanyakan sesuatu pada AI" autocomplete="off" />
-          <button id="sendBtn" class="send-btn" aria-label="Kirim pesan" title="Kirim (Enter)">
-            <!-- Send icon -->
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-              <path d="M22 2L11 13" stroke="#000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M22 2L15 22L11 13L2 9L22 2Z" fill="#000" opacity="0.12"></path>
-              <path d="M22 2L11 13" stroke="#00ffcc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-          </button>
-        </form>
+      <div class="module-list">
+        <div class="module-title">Level 1: Dasar</div>
+        <div class="sub-item"><div class="dot done"></div> 1.1 Posisi Tangan</div>
+        <div class="sub-item active"><div class="dot"></div> 1.2 Gerakan Turun</div>
+        <div class="module-title">Level 2: Variasi</div>
+        <div class="sub-item"><div class="dot"></div> 2.1 Diamond Push Up</div>
       </div>
     </aside>
-  </main>
+
+    <main class="content">
+      <div class="video-card">
+        <div class="video-box">
+           <iframe width="100%" height="100%" src="https://www.youtube.com/embed/IODxDxX7oi4" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <h3>1.2 Mengatur Napas & Gerakan Turun</h3>
+        <p style="color:var(--muted); font-size:14px; margin-top:8px;">Pastikan siku membentuk sudut 45 derajat saat tubuh turun ke bawah.</p>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-header">AI Training Assistant</div>
+        <div id="chat-messages">
+          <div class="msg ai">Halo! Saya siap membantu sesi latihanmu. Klik template di bawah atau ketik pertanyaanmu.</div>
+        </div>
+        
+        <div class="chat-footer">
+          <div class="template-grid">
+            <button class="tpl-btn" onclick="askTemplate('Berapa repetisi yang ideal?')">🤔 Repetisi ideal?</button>
+            <button class="tpl-btn" onclick="askTemplate('Bagaimana posisi siku?')">📐 Posisi siku?</button>
+            <button class="tpl-btn" onclick="askTemplate('Kapan harus ambil napas?')">🫁 Cara bernapas?</button>
+            <button class="tpl-btn" onclick="askTemplate('Kenapa bahu saya sakit?')">⚠️ Bahu sakit?</button>
+          </div>
+          
+          <div class="input-box">
+            <input type="text" id="chatInput" placeholder="Tanya sesuatu...">
+            <button class="send-btn" onclick="handleChat()">Kirim</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
   <script>
-    /* ===== Elements ===== */
-    const chatMessages = document.getElementById('chatMessages');
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+      sidebar.classList.toggle('closed');
+    });
+
+    // Internal AI Logic
+    const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chatInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const tplButtons = document.querySelectorAll('.tpl-btn');
-    const chatForm = document.getElementById('chatForm');
 
-    /* ===== Helpers ===== */
-    function timeNow() {
-      const d = new Date();
-      return d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const internalDatabase = {
+      "repetisi": "Untuk pemula, disarankan 3 set sebanyak 8-12 repetisi. Fokuslah pada kualitas gerakan daripada jumlahnya.",
+      "siku": "Siku tidak boleh melebar ke samping (90 derajat). Arahkan siku sedikit ke belakang membentuk sudut 45 derajat agar bahu tetap aman.",
+      "napas": "Tarik napas saat menurunkan tubuh (fase eksentrik) dan buang napas saat mendorong tubuh ke atas (fase konsentrik).",
+      "sakit": "Jika bahu sakit, biasanya posisi tangan terlalu jauh di depan atau siku terlalu melebar. Coba rapatkan siku ke arah tubuh.",
+      "default": "Pertanyaan bagus! Pastikan Anda mengikuti instruksi video dengan teliti. Ada hal spesifik lain yang ingin ditanyakan?"
+    };
+
+    function askTemplate(question) {
+      appendMessage(question, 'user');
+      processResponse(question);
     }
 
-    function appendBubble(text, who='ai', opts={meta:false}) {
-      const wrap = document.createElement('div');
-      wrap.className = 'bubble ' + (who === 'user' ? 'user' : 'ai');
-      wrap.textContent = text;
-      const container = document.createElement('div');
-      container.style.display = 'flex';
-      container.style.flexDirection = 'column';
-      container.style.alignItems = who === 'user' ? 'flex-end' : 'flex-start';
-      container.appendChild(wrap);
-      if (opts.meta) {
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.textContent = opts.meta;
-        container.appendChild(meta);
-      }
-      chatMessages.appendChild(container);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    /* ===== Simple rule-based AI (demo) ===== */
-    function simpleAiReply(message) {
-      const m = message.toLowerCase();
-      if (m.includes('posisi tangan') || m.includes('tangan saat push') || m.includes('posisi tangan saat')) {
-        return 'Letakkan tangan selebar bahu, jari-jari menghadap ke depan, dan tekan telapak tangan kuat ke lantai. Pastikan siku sedikit menyudut ke belakang saat turun.';
-      }
-      if (m.includes('repetisi') || m.includes('berapa repetisi') || m.includes('set')) {
-        return 'Untuk pemula coba 3 set x 8–12 repetisi. Istirahat 60–90 detik antar set. Fokus pada teknik sebelum menambah jumlah.';
-      }
-      if (m.includes('punggung') || m.includes('melengkung') || m.includes('pinggul')) {
-        return 'Aktifkan core: tarik pusar ke arah tulang belakang, jaga garis lurus dari kepala sampai tumit, dan hindari pinggul turun atau naik berlebihan.';
-      }
-      if (m.includes('pemanasan') || m.includes('warm up')) {
-        return 'Pemanasan 5–10 menit: jalan cepat, dynamic stretch, arm circles, dan beberapa gerakan mobilitas bahu.';
-      }
-      if (m.includes('istirahat') || m.includes('istirahat antar set')) {
-        return 'Istirahat 60–90 detik untuk pemula; jika tujuan kekuatan, istirahat bisa lebih lama (2–3 menit).';
-      }
-      // fallback
-      return 'Pertanyaan bagus. Bisa jelaskan sedikit lebih spesifik atau pilih salah satu template. Saya bisa bantu teknik, repetisi, atau pemanasan.';
-    }
-
-    /* ===== Simulasi panggilan ke AI nyata =====
-       Ganti isi fungsi ini untuk memanggil backend Anda (fetch / websocket).
-       Pastikan server mengembalikan teks jawaban.
-    */
-    async function sendToRealAI(message) {
-      // Demo: delay lalu gunakan simpleAiReply
-      await new Promise(r => setTimeout(r, 600));
-      return simpleAiReply(message);
-    }
-
-    /* ===== Send handler ===== */
-    let isSending = false;
-    async function handleSend() {
+    function handleChat() {
       const text = chatInput.value.trim();
-      if (!text || isSending) return;
-      isSending = true;
-      appendBubble(text, 'user', {meta: timeNow()});
+      if (!text) return;
+      appendMessage(text, 'user');
       chatInput.value = '';
-      // placeholder
-      appendBubble('Menjawab...', 'ai');
-      // keep reference to placeholder to replace
-      const placeholder = chatMessages.lastElementChild.querySelector('.bubble.ai');
-
-      try {
-        const reply = await sendToRealAI(text);
-        // replace placeholder
-        placeholder.textContent = reply;
-        // add meta time
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.textContent = timeNow();
-        chatMessages.lastElementChild.appendChild(meta);
-      } catch (err) {
-        placeholder.textContent = 'Maaf, terjadi kesalahan saat memproses jawaban.';
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.textContent = timeNow();
-        chatMessages.lastElementChild.appendChild(meta);
-      } finally {
-        isSending = false;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
+      processResponse(text);
     }
 
-    /* ===== Events ===== */
-    sendBtn.addEventListener('click', handleSend);
-    chatForm.addEventListener('submit', (e) => { e.preventDefault(); handleSend(); });
+    function processResponse(query) {
+      setTimeout(() => {
+        let response = internalDatabase["default"];
+        const q = query.toLowerCase();
 
-    chatInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        handleSend();
-      }
-    });
+        if(q.includes("repetisi")) response = internalDatabase["repetisi"];
+        else if(q.includes("siku")) response = internalDatabase["siku"];
+        else if(q.includes("napas")) response = internalDatabase["napas"];
+        else if(q.includes("sakit") || q.includes("bahu")) response = internalDatabase["sakit"];
 
-    tplButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        chatInput.value = btn.textContent;
-        chatInput.focus();
-      });
-    });
+        appendMessage(response, 'ai');
+      }, 500);
+    }
 
-    /* ===== Init welcome message ===== */
-    appendBubble('Halo! Saya AI Coach. Pilih template atau ketik pertanyaan ringan tentang latihanmu.', 'ai', {meta: timeNow()});
-
-    /* ===== Optional: keyboard accessibility for templates (space/enter) ===== */
-    document.querySelectorAll('.tpl-btn').forEach(b => {
-      b.setAttribute('tabindex','0');
-      b.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          b.click();
-        }
-      });
-    });
-
-    /* ===== Optional: preserve scroll position on new messages for mobile keyboards ===== */
-    window.addEventListener('resize', () => {
+    function appendMessage(text, sender) {
+      const div = document.createElement('div');
+      div.className = `msg ${sender}`;
+      div.innerText = text;
+      chatMessages.appendChild(div);
       chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
+    }
   </script>
 </body>
 </html>
