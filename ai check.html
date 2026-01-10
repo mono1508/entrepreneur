@@ -8,194 +8,264 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.1/dist/posenet.min.js"></script>
 
 <style>
-  :root{
-    --bg:#0d1117; --card:#161b22; --accent:#00ff88; --muted:#8b949e; --danger:#ef4444; --glass: rgba(255,255,255,0.02);
-    --radius:14px;
+  :root {
+    --bg: #0d1117; 
+    --card: #161b22; 
+    --accent: #00ff88; 
+    --muted: #8b949e; 
+    --border: #30363d;
+    --netacad-blue: #58a6ff;
+    --glass: rgba(255, 255, 255, 0.03);
   }
-  *{box-sizing:border-box}
-  body{margin:0;font-family: "Segoe UI", sans-serif;background:var(--bg);color:#e6eef6}
-  
-  nav{display:flex;justify-content:space-between;align-items:center;padding:12px 6%;background:var(--glass);border-bottom:1px solid #222;position:sticky;top:0;z-index:20}
-  .logo{font-weight:800;color:var(--accent)}
 
-  .container {
-    max-width: 1400px;
-    margin: 20px auto;
-    padding: 0 18px;
+  * { box-sizing: border-box; }
+  body { 
+    margin: 0; 
+    font-family: "Segoe UI", sans-serif; 
+    background: var(--bg); 
+    color: #e6eef6;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  /* Header ala Netacad (Dark Version) */
+  nav {
+    display: flex;
+    align-items: center;
+    padding: 0 2%;
+    height: 56px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .logo { font-weight: 800; color: var(--accent); border-right: 1px solid var(--border); padding-right: 20px; margin-right: 20px; }
+  .course-name { font-size: 0.95rem; color: var(--muted); flex-grow: 1; }
+
+  /* Main Wrapper */
+  .wrapper {
     display: grid;
-    grid-template-columns: 280px 1.6fr 1fr; /* 3 Kolom */
+    grid-template-columns: 300px 1fr;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Sidebar: Course Outline */
+  aside.sidebar {
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .sidebar-header {
+    padding: 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Progress Section */
+  .progress-container {
+    padding: 20px 16px;
+    background: rgba(0,0,0,0.2);
+  }
+  .progress-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+  .progress-bar-bg { height: 6px; background: #30363d; border-radius: 10px; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 10px; box-shadow: 0 0 10px rgba(0,255,136,0.3); }
+
+  /* Lesson List */
+  .module { border-bottom: 1px solid var(--border); }
+  .module-title {
+    padding: 14px 16px;
+    background: var(--glass);
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .sub-item {
+    padding: 10px 16px 10px 36px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted);
+    transition: 0.2s;
+    border-left: 3px solid transparent;
+  }
+  .sub-item:hover { background: var(--glass); color: #fff; }
+  .sub-item.active { border-left-color: var(--accent); background: rgba(0,255,136,0.05); color: #fff; }
+  
+  .check-circle {
+    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center; font-size: 10px;
+  }
+  .check-circle.done { background: var(--accent); border-color: var(--accent); color: #000; }
+
+  /* Main Content Area */
+  main.content {
+    padding: 24px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+  }
+
+  .video-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+
+  .video-wrap {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    margin: 15px 0;
+  }
+  video, canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+
+  /* Stats Panel */
+  .stats-panel {
+    display: flex;
+    flex-direction: column;
     gap: 20px;
   }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .rep-val { font-size: 4rem; font-weight: 800; color: var(--accent); line-height: 1; margin: 10px 0; }
+  
+  .btn {
+    padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; transition: 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
-  .card{background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid #222}
-  
-  /* Sidebar Styles */
-  .sidebar-list { list-style: none; padding: 0; margin: 0; }
-  .chapter-title { color: var(--accent); font-size: 0.9rem; font-weight: 800; margin: 15px 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
-  .sub-item { 
-    display: flex; align-items: center; gap: 10px; padding: 10px; 
-    background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 8px;
-    transition: 0.3s; border: 1px solid transparent;
-  }
-  .sub-item.done { border-color: var(--accent); background: rgba(0, 255, 136, 0.05); }
-  .sub-item input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; cursor: pointer; }
-  .item-info { flex-grow: 1; }
-  .item-name { font-size: 14px; display: block; }
-  .item-time { font-size: 11px; color: var(--muted); }
-
-  /* Video & Stats */
-  .video-wrap{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9}
-  video, canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
-  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  .btn{padding:10px 14px;border-radius:999px;border:none;cursor:pointer;font-weight:700; transition: 0.2s;}
-  .btn.primary{background:var(--accent);color:#000}
-  .btn.ghost{background:transparent;border:1px solid #333;color:var(--muted)}
-  .btn:hover { opacity: 0.8; }
-  
-  .stats{display:flex;flex-direction:column;align-items:center;gap:12px}
-  .rep-circle{width:160px;height:160px;border-radius:50%;border:6px solid var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(0,255,136,0.08)}
-  .rep-value{font-size:64px;font-weight:800;color:var(--accent)}
-  .small{font-size:13px;color:var(--muted)}
-  .overlay-alert{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:var(--danger);color:#fff;padding:8px 14px;border-radius:10px;display:none;z-index:30;font-weight:700}
-  
-  @media (max-width:1100px){
-    .container{grid-template-columns: 1fr 1fr;}
-    .sidebar-card { grid-column: span 2; }
-  }
-  @media (max-width:768px){
-    .container{grid-template-columns: 1fr;}
-    .sidebar-card { grid-column: span 1; }
-  }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="logo">SMART COACH AI</div>
-  <div class="small">Mode: <strong id="modeLabel">Football Prep</strong> • Status: <span id="status">Ready</span></div>
+  <div class="course-name">Football Training Prototype — Module 2: Ball Feeling</div>
 </nav>
 
-<main class="container">
-  <aside class="card sidebar-card">
-    <h2 style="margin-top:0; font-size:1.2rem">Progress Latihan</h2>
-    
-    <div class="chapter-title">Bab 1: Pemanasan</div>
-    <div class="sidebar-list">
-      <div class="sub-item" id="task-1">
-        <input type="checkbox" onchange="completeTask('task-1')">
-        <div class="item-info">
-          <span class="item-name">Neck Rotation</span>
-          <span class="item-time" id="time-task-1">Belum selesai</span>
-        </div>
+<div class="wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+       <span>Course Outline</span>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-info">
+        <span>Course Progress</span>
+        <b id="progressPct">100%</b>
       </div>
-      <div class="sub-item" id="task-2">
-        <input type="checkbox" onchange="completeTask('task-2')">
-        <div class="item-info">
-          <span class="item-name">Arm Swings</span>
-          <span class="item-time" id="time-task-2">Belum selesai</span>
-        </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: 100%;"></div>
       </div>
-      <div class="sub-item" id="task-3">
-        <input type="checkbox" onchange="completeTask('task-3')">
-        <div class="item-info">
-          <span class="item-name">Jogging di Tempat</span>
-          <span class="item-time" id="time-task-3">Belum selesai</span>
+    </div>
+
+    <div class="module">
+      <div class="module-title">
+        <span>Bab 1: Pemanasan</span>
+        <span style="color: var(--accent)">100%</span>
+      </div>
+      <div class="module-items">
+        <div class="sub-item">
+          <div class="check-circle done">✓</div>
+          <span>Neck Rotation</span>
+          <span style="margin-left:auto; font-size:10px">02:00</span>
+        </div>
+        <div class="sub-item">
+          <div class="check-circle done">✓</div>
+          <span>Arm Swings</span>
+          <span style="margin-left:auto; font-size:10px">03:00</span>
+        </div>
+        <div class="sub-item">
+          <div class="check-circle done">✓</div>
+          <span>Jogging di Tempat</span>
+          <span style="margin-left:auto; font-size:10px">05:00</span>
         </div>
       </div>
     </div>
 
-    <div class="chapter-title">Bab 2: Latihan Awal Bola</div>
-    <div class="sidebar-list">
-      <div class="sub-item" id="task-4">
-        <input type="checkbox" onchange="completeTask('task-4')">
-        <div class="item-info">
-          <span class="item-name">Ball Feeling (Taps)</span>
-          <span class="item-time" id="time-task-4">Belum selesai</span>
-        </div>
+    <div class="module">
+      <div class="module-title">
+        <span>Bab 2: Latihan Awal Bola</span>
+        <span style="color: var(--muted)">0%</span>
       </div>
-      <div class="sub-item" id="task-5">
-        <input type="checkbox" onchange="completeTask('task-5')">
-        <div class="item-info">
-          <span class="item-name">Short Passing (Wall)</span>
-          <span class="item-time" id="time-task-5">Belum selesai</span>
-        </div>
+      <div class="sub-item active">
+        <div class="check-circle"></div>
+        <span><b>2.1 Ball Feeling (Taps)</b></span>
       </div>
-      <div class="sub-item" id="task-6">
-        <input type="checkbox" onchange="completeTask('task-6')">
-        <div class="item-info">
-          <span class="item-name">Dribble Zig-zag</span>
-          <span class="item-time" id="time-task-6">Belum selesai</span>
-        </div>
+      <div class="sub-item">
+        <div class="check-circle"></div>
+        <span>2.2 Short Passing</span>
       </div>
     </div>
   </aside>
 
-  <section class="card">
-    <div id="face-alert" class="overlay-alert">WAJAH TIDAK TERLIHAT</div>
-    <div class="video-wrap">
-      <video id="video" playsinline></video>
-      <canvas id="canvas"></canvas>
-    </div>
-
-    <div class="controls">
-      <button id="startBtn" class="btn primary">Mulai Kamera</button>
-      <button id="stopBtn" class="btn ghost">Berhenti</button>
+  <main class="content">
+    <section class="video-section">
+      <h2 style="margin: 0; color: #fff;">2.1 Ball Feeling (Toe Taps)</h2>
+      <p style="color: var(--muted); font-size: 0.9rem;">Lakukan sentuhan ringan di atas bola secara bergantian. AI akan mendeteksi gerakan kaki Anda.</p>
       
-      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
-        <select id="modeSelect" style="padding:8px;border-radius:8px;background:#1b2129;color:var(--muted);border:1px solid #333">
-          <option value="situp">Mode Sit-up</option>
-          <option value="pushup">Mode Push-up</option>
-        </select>
+      <div class="video-wrap">
+        <video id="video" playsinline></video>
+        <canvas id="canvas"></canvas>
       </div>
-    </div>
-  </section>
 
-  <aside class="card stats">
-    <div style="text-align:center">
-      <div id="timer" style="font-size:1.6rem;font-weight:800;color:#f87171">00:00</div>
-      <div class="small muted">Waktu Latihan</div>
-    </div>
-
-    <div class="rep-circle">
-      <div style="text-align:center">
-        <div class="small muted" id="repLabel">REPS</div>
-        <div id="repCount" class="rep-value">0</div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <button id="startBtn" class="btn btn-primary">Mulai Kamera</button>
+        <button id="stopBtn" class="btn btn-ghost">Berhenti</button>
+        <div id="status" style="margin-left: auto; font-size: 0.8rem; color: var(--muted);">Status: Ready</div>
       </div>
-    </div>
+    </section>
 
-    <div style="width:100%;text-align:center">
-      <h3 id="instruction" style="margin:6px 0;color:var(--accent)">Pilih Menu Latihan</h3>
-      <p class="small muted">AI akan otomatis menghitung gerakan saat Anda mulai.</p>
-    </div>
-  </aside>
-</main>
+    <aside class="stats-panel">
+      <div class="stat-card">
+        <span style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Repetisi</span>
+        <div id="repCount" class="rep-val">0</div>
+        <div style="font-size: 0.8rem; color: var(--accent)">Target: 20 Taps</div>
+      </div>
+
+      <div class="stat-card">
+        <span style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Waktu Latihan</span>
+        <div id="timer" style="font-size: 1.8rem; font-weight: 700; margin-top: 5px;">00:00</div>
+      </div>
+
+      <div class="stat-card" style="background: rgba(0,255,136,0.02); border-color: rgba(0,255,136,0.2);">
+        <p style="font-size: 0.85rem; margin: 0; color: var(--muted);">Gunakan kamera depan dan pastikan seluruh tubuh terlihat untuk hasil terbaik.</p>
+      </div>
+    </aside>
+  </main>
+</div>
 
 <script>
-  // Fitur Checklist Progress
-  function completeTask(id) {
-    const item = document.getElementById(id);
-    const timeEl = document.getElementById('time-' + id);
-    const checkbox = item.querySelector('input');
-
-    if(checkbox.checked) {
-      const now = new Date();
-      const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
-                      now.getMinutes().toString().padStart(2, '0');
-      
-      item.classList.add('done');
-      timeEl.textContent = 'Selesai jam ' + timeStr;
-      speak("Latihan selesai");
-    } else {
-      item.classList.remove('done');
-      timeEl.textContent = 'Belum selesai';
-    }
-  }
-
-  // Integrasi Posenet (Logic Dasar)
   const video = document.getElementById('video');
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
-  let net, running = false, repCount = 0;
+  let net, running = false;
 
   async function startSession(){
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -204,9 +274,9 @@
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     
-    document.getElementById('status').textContent = 'Loading AI...';
+    document.getElementById('status').textContent = 'Status: Loading AI...';
     net = await posenet.load();
-    document.getElementById('status').textContent = 'Live';
+    document.getElementById('status').textContent = 'Status: Live';
     running = true;
     detect();
   }
@@ -216,7 +286,6 @@
     const pose = await net.estimateSinglePose(video);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Draw simple joints
     pose.keypoints.forEach(kp => {
       if(kp.score > 0.5) {
         ctx.fillStyle = '#00ff88';
@@ -228,17 +297,13 @@
     requestAnimationFrame(detect);
   }
 
-  function speak(msg) {
-    const speech = new SpeechSynthesisUtterance(msg);
-    speech.lang = 'id-ID';
-    window.speechSynthesis.speak(speech);
-  }
-
   document.getElementById('startBtn').addEventListener('click', startSession);
   document.getElementById('stopBtn').addEventListener('click', () => {
     running = false;
+    document.getElementById('status').textContent = 'Status: Stopped';
     if(video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
   });
 </script>
+
 </body>
 </html>
