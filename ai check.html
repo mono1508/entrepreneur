@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Coach AI — Football Training Prototype</title>
+  <title>Smart Coach AI — Football Training</title>
+  
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.1/dist/posenet.min.js"></script>
 
@@ -14,49 +17,66 @@
     --accent: #00ff88; 
     --muted: #8b949e; 
     --border: #30363d;
-    --netacad-blue: #58a6ff;
-    --glass: rgba(255, 255, 255, 0.03);
+    --sidebar-width: 300px;
   }
 
   * { box-sizing: border-box; }
   body { 
     margin: 0; 
-    font-family: "Segoe UI", sans-serif; 
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
     background: var(--bg); 
     color: #e6eef6;
     display: flex;
     flex-direction: column;
     height: 100vh;
-  }
-
-  /* Header ala Netacad (Dark Version) */
-  nav {
-    display: flex;
-    align-items: center;
-    padding: 0 2%;
-    height: 56px;
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    z-index: 100;
-  }
-  .logo { font-weight: 800; color: var(--accent); border-right: 1px solid var(--border); padding-right: 20px; margin-right: 20px; }
-  .course-name { font-size: 0.95rem; color: var(--muted); flex-grow: 1; }
-
-  /* Main Wrapper */
-  .wrapper {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    flex: 1;
     overflow: hidden;
   }
 
-  /* Sidebar: Course Outline */
+  /* --- HEADER --- */
+  nav {
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    height: 56px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+  }
+  .menu-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+  }
+  .logo { font-weight: 800; color: var(--accent); margin-right: 20px; letter-spacing: 1px; }
+  .course-name { font-size: 0.85rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* --- MAIN WRAPPER --- */
+  .wrapper {
+    display: flex;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* --- SIDEBAR --- */
   aside.sidebar {
+    width: var(--sidebar-width);
     background: var(--card);
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    transition: all 0.3s ease;
+    z-index: 99;
+  }
+  
+  /* Sidebar Closed State */
+  aside.sidebar.closed {
+    margin-left: calc(-1 * var(--sidebar-width));
   }
 
   .sidebar-header {
@@ -66,30 +86,21 @@
     text-transform: uppercase;
     color: var(--accent);
     border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
   }
 
-  /* Progress Section */
-  .progress-container {
-    padding: 20px 16px;
-    background: rgba(0,0,0,0.2);
-  }
+  .progress-container { padding: 20px 16px; background: rgba(0,0,0,0.2); }
   .progress-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
   .progress-bar-bg { height: 6px; background: #30363d; border-radius: 10px; }
-  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 10px; box-shadow: 0 0 10px rgba(0,255,136,0.3); }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 10px; }
 
-  /* Lesson List */
-  .module { border-bottom: 1px solid var(--border); }
+  .module-list { overflow-y: auto; flex: 1; }
   .module-title {
     padding: 14px 16px;
-    background: var(--glass);
+    background: rgba(255,255,255,0.03);
     display: flex;
     justify-content: space-between;
     font-size: 14px;
     font-weight: 600;
-    cursor: pointer;
   }
   .sub-item {
     padding: 10px 16px 10px 36px;
@@ -98,33 +109,28 @@
     align-items: center;
     gap: 12px;
     color: var(--muted);
-    transition: 0.2s;
     border-left: 3px solid transparent;
   }
-  .sub-item:hover { background: var(--glass); color: #fff; }
   .sub-item.active { border-left-color: var(--accent); background: rgba(0,255,136,0.05); color: #fff; }
-  
-  .check-circle {
-    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border);
-    display: flex; align-items: center; justify-content: center; font-size: 10px;
-  }
-  .check-circle.done { background: var(--accent); border-color: var(--accent); color: #000; }
+  .check-circle { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; }
+  .check-circle.done { background: var(--accent); border-color: var(--accent); }
 
-  /* Main Content Area */
+  /* --- CONTENT AREA --- */
   main.content {
-    padding: 24px;
+    flex: 1;
+    padding: 20px;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: 1fr 280px;
-    gap: 24px;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
   }
 
   .video-section {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 20px;
-    position: relative;
+    padding: 15px;
+    height: fit-content;
   }
 
   .video-wrap {
@@ -138,12 +144,7 @@
   }
   video, canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-  /* Stats Panel */
-  .stats-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+  .stats-panel { display: flex; flex-direction: column; gap: 15px; }
   .stat-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -151,134 +152,134 @@
     padding: 20px;
     text-align: center;
   }
-  .rep-val { font-size: 4rem; font-weight: 800; color: var(--accent); line-height: 1; margin: 10px 0; }
-  
-  .btn {
-    padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; transition: 0.2s;
-  }
+  .rep-val { font-size: 3.5rem; font-weight: 800; color: var(--accent); margin: 5px 0; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .btn { padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
   .btn-primary { background: var(--accent); color: #000; }
   .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
+  /* --- RESPONSIVE MOBILE --- */
+  @media (max-width: 992px) {
+    main.content { grid-template-columns: 1fr; }
+    aside.sidebar {
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .logo { font-size: 0.9rem; margin-right: 10px; }
+    .course-name { display: none; }
+    .rep-val { font-size: 2.5rem; }
+    .video-section { padding: 10px; }
+  }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">SMART COACH AI</div>
-  <div class="course-name">Football Training Prototype — Module 2: Ball Feeling</div>
+  <button class="menu-toggle" id="sidebarToggle">☰</button>
+  <div class="logo">SMART COACH</div>
+  <div class="course-name">M2: Ball Feeling — Toe Taps</div>
 </nav>
 
 <div class="wrapper">
-  <aside class="sidebar">
-    <div class="sidebar-header">
-       <span>Course Outline</span>
-    </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">Materi Latihan</div>
 
     <div class="progress-container">
       <div class="progress-info">
-        <span>Course Progress</span>
-        <b id="progressPct">100%</b>
+        <span>Progress</span>
+        <b id="progressPct">60%</b>
       </div>
       <div class="progress-bar-bg">
-        <div class="progress-bar-fill" style="width: 100%;"></div>
+        <div class="progress-bar-fill" style="width: 60%;"></div>
       </div>
     </div>
 
-    <div class="module">
-      <div class="module-title">
-        <span>Bab 1: Pemanasan</span>
-        <span style="color: var(--accent)">100%</span>
+    <div class="module-list">
+      <div class="module">
+        <div class="module-title">Bab 1: Pemanasan</div>
+        <div class="sub-item"><div class="check-circle done"></div><span>Neck Rotation</span></div>
+        <div class="sub-item"><div class="check-circle done"></div><span>Arm Swings</span></div>
       </div>
-      <div class="module-items">
-        <div class="sub-item">
-          <div class="check-circle done">✓</div>
-          <span>Neck Rotation</span>
-          <span style="margin-left:auto; font-size:10px">02:00</span>
-        </div>
-        <div class="sub-item">
-          <div class="check-circle done">✓</div>
-          <span>Arm Swings</span>
-          <span style="margin-left:auto; font-size:10px">03:00</span>
-        </div>
-        <div class="sub-item">
-          <div class="check-circle done">✓</div>
-          <span>Jogging di Tempat</span>
-          <span style="margin-left:auto; font-size:10px">05:00</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="module">
-      <div class="module-title">
-        <span>Bab 2: Latihan Awal Bola</span>
-        <span style="color: var(--muted)">0%</span>
-      </div>
-      <div class="sub-item active">
-        <div class="check-circle"></div>
-        <span><b>2.1 Ball Feeling (Taps)</b></span>
-      </div>
-      <div class="sub-item">
-        <div class="check-circle"></div>
-        <span>2.2 Short Passing</span>
+      <div class="module">
+        <div class="module-title">Bab 2: Ball Feeling</div>
+        <div class="sub-item active"><div class="check-circle"></div><span>2.1 Toe Taps</span></div>
+        <div class="sub-item"><div class="check-circle"></div><span>2.2 Inside-Outside</span></div>
       </div>
     </div>
   </aside>
 
   <main class="content">
     <section class="video-section">
-      <h2 style="margin: 0; color: #fff;">2.1 Ball Feeling (Toe Taps)</h2>
-      <p style="color: var(--muted); font-size: 0.9rem;">Lakukan sentuhan ringan di atas bola secara bergantian. AI akan mendeteksi gerakan kaki Anda.</p>
+      <h3 style="margin: 0;">2.1 Ball Feeling (Toe Taps)</h3>
+      <p style="color: var(--muted); font-size: 0.85rem;">Sentuh bagian atas bola dengan ujung kaki secara bergantian.</p>
       
       <div class="video-wrap">
         <video id="video" playsinline></video>
         <canvas id="canvas"></canvas>
       </div>
 
-      <div style="display: flex; gap: 12px; align-items: center;">
+      <div class="controls">
         <button id="startBtn" class="btn btn-primary">Mulai Kamera</button>
         <button id="stopBtn" class="btn btn-ghost">Berhenti</button>
-        <div id="status" style="margin-left: auto; font-size: 0.8rem; color: var(--muted);">Status: Ready</div>
+        <div id="status" style="margin-left: auto; font-size: 0.75rem; color: var(--muted);">Ready</div>
       </div>
     </section>
 
     <aside class="stats-panel">
       <div class="stat-card">
-        <span style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Repetisi</span>
+        <span style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Repetisi</span>
         <div id="repCount" class="rep-val">0</div>
-        <div style="font-size: 0.8rem; color: var(--accent)">Target: 20 Taps</div>
+        <div style="font-size: 0.8rem; color: var(--accent)">Target: 20</div>
       </div>
 
       <div class="stat-card">
-        <span style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Waktu Latihan</span>
-        <div id="timer" style="font-size: 1.8rem; font-weight: 700; margin-top: 5px;">00:00</div>
-      </div>
-
-      <div class="stat-card" style="background: rgba(0,255,136,0.02); border-color: rgba(0,255,136,0.2);">
-        <p style="font-size: 0.85rem; margin: 0; color: var(--muted);">Gunakan kamera depan dan pastikan seluruh tubuh terlihat untuk hasil terbaik.</p>
+        <span style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Waktu</span>
+        <div id="timer" style="font-size: 1.5rem; font-weight: 700;">00:00</div>
       </div>
     </aside>
   </main>
 </div>
 
 <script>
+  // Sidebar Toggle Logic
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('sidebarToggle');
+  
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('closed');
+  });
+
+  // AI Logic
   const video = document.getElementById('video');
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
   let net, running = false;
 
   async function startSession(){
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    video.srcObject = stream;
-    await video.play();
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    
-    document.getElementById('status').textContent = 'Status: Loading AI...';
-    net = await posenet.load();
-    document.getElementById('status').textContent = 'Status: Live';
-    running = true;
-    detect();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'user' } 
+      });
+      video.srcObject = stream;
+      await video.play();
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      document.getElementById('status').textContent = 'Loading AI...';
+      net = await posenet.load();
+      document.getElementById('status').textContent = 'Live';
+      running = true;
+      detect();
+    } catch (e) {
+      alert("Gagal akses kamera: " + e.message);
+    }
   }
 
   async function detect() {
@@ -290,7 +291,7 @@
       if(kp.score > 0.5) {
         ctx.fillStyle = '#00ff88';
         ctx.beginPath();
-        ctx.arc(kp.position.x, kp.position.y, 5, 0, 2*Math.PI);
+        ctx.arc(kp.position.x, kp.position.y, 4, 0, 2*Math.PI);
         ctx.fill();
       }
     });
@@ -300,9 +301,15 @@
   document.getElementById('startBtn').addEventListener('click', startSession);
   document.getElementById('stopBtn').addEventListener('click', () => {
     running = false;
-    document.getElementById('status').textContent = 'Status: Stopped';
+    document.getElementById('status').textContent = 'Stopped';
     if(video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   });
+
+  // Tutup sidebar otomatis di mobile saat layar pertama dimuat
+  if (window.innerWidth < 992) {
+    sidebar.classList.add('closed');
+  }
 </script>
 
 </body>
