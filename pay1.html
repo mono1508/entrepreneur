@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Secure Payment | Smart Coach AI</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+            --dark-bg: #0b0f1a;
+            --card-bg: #161b2a;
+            --text-gray: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--dark-bg); color: #fff; min-height: 100vh; padding: 40px 5%; }
+
+        .payment-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* --- Payment Options Column --- */
+        .payment-methods {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        h2 { margin-bottom: 25px; font-size: 24px; }
+        .method-group { margin-bottom: 30px; }
+        .method-group h4 { color: var(--text-gray); font-size: 14px; margin-bottom: 15px; text-transform: uppercase; }
+
+        .method-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .method-item:hover { background: rgba(255,255,255,0.08); }
+        .method-item.active { border-color: var(--primary); background: rgba(0, 255, 136, 0.05); }
+
+        .method-item i { font-size: 20px; width: 40px; color: var(--secondary); }
+        .method-item .label { flex-grow: 1; font-weight: 600; }
+        .method-item .check { color: var(--primary); opacity: 0; }
+        .method-item.active .check { opacity: 1; }
+
+        /* --- Order Summary Column --- */
+        .order-summary {
+            background: rgba(255,255,255,0.02);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            height: fit-content;
+        }
+
+        .summary-title { font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        
+        .item-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: var(--text-gray); }
+        .item-row.total { color: #fff; font-size: 18px; font-weight: 800; margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .total span { color: var(--primary); }
+
+        .btn-pay {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 16px;
+            margin-top: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-pay:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+
+        .security-note {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        @media (max-width: 850px) {
+            .payment-container { grid-template-columns: 1fr; }
+        }
+/* Styling untuk Modal QR Code */
+.modal-qr {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: none; /* Sembunyi secara default */
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    padding: 20px;
+}
+
+.modal-qr-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    color: #000;
+}
+
+.modal-qr-content h3 {
+    margin-bottom: 10px;
+    color: var(--dark-bg);
+}
+
+.modal-qr-content p {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.qr-image {
+    width: 100%;
+    max-width: 250px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+
+.btn-done {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: var(--dark-bg);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+
+    <div class="payment-container">
+        <div class="payment-methods">
+            <h2>Pilih Metode Pembayaran</h2>
+            
+            <div class="method-group">
+                <h4>E-Wallet & QRIS</h4>
+                <div class="method-item active" onclick="selectMethod(this)">
+                    <i class="fas fa-qrcode"></i>
+                    <div class="label">QRIS (Gopay, OVO, Dana)</div>
+                    <i class="fas fa-circle-check check"></i>
+                </div>
+                <div class="method-item" onclick="selectMethod(this)">
+                    <i class="fab fa-google-pay"></i>
+                    <div class="label">Google Pay</div>
+                    <i class="fas fa-circle-check check"></i>
+                </div>
+            </div>
+
+            <div class="method-group">
+                <h4>Virtual Account (Transfer Bank)</h4>
+                <div class="method-item" onclick="selectMethod(this)">
+                    <i class="fas fa-university"></i>
+                    <div class="label">Mandiri Virtual Account</div>
+                    <i class="fas fa-circle-check check"></i>
+                </div>
+                <div class="method-item" onclick="selectMethod(this)">
+                    <i class="fas fa-university"></i>
+                    <div class="label">BCA Virtual Account</div>
+                    <i class="fas fa-circle-check check"></i>
+                </div>
+            </div>
+
+            <div class="method-group">
+                <h4>Kartu Kredit</h4>
+                <div class="method-item" onclick="selectMethod(this)">
+                    <i class="fas fa-credit-card"></i>
+                    <div class="label">Visa / Mastercard</div>
+                    <i class="fas fa-circle-check check"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <div class="summary-title">Ringkasan Pesanan</div>
+            
+            <div class="item-row">
+                <span>Paket:</span>
+                <span style="color: #fff; font-weight: 600;">Pro Player Plan</span>
+            </div>
+            <div class="item-row">
+                <span>Durasi:</span>
+                <span>Selamanya (Lifetime)</span>
+            </div>
+            <div class="item-row">
+                <span>Harga:</span>
+                <span>Rp149.000</span>
+            </div>
+            <div class="item-row">
+                <span>Biaya Layanan:</span>
+                <span>Rp2.500</span>
+            </div>
+
+            <div class="item-row total">
+                <span>Total Bayar:</span>
+                <span>Rp151.500</span>
+            </div>
+
+            <button class="btn-pay" onclick="processPayment()">BAYAR SEKARANG</button>
+            
+            <div class="security-note">
+                <i class="fas fa-lock"></i> Pembayaran Terenkripsi & Aman oleh Smart Coach AI.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectMethod(element) {
+            // Hapus kelas active dari semua item
+            document.querySelectorAll('.method-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            // Tambah kelas active ke yang diklik
+            element.classList.add('active');
+        }
+
+       function processPayment() {
+    const btn = document.querySelector('.btn-pay');
+    
+    // Efek loading pada tombol
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memvalidasi...';
+    btn.disabled = true;
+
+    // Simulasi proses bank selama 1.5 detik
+    setTimeout(() => {
+        // Memunculkan Modal QR
+        document.getElementById('qrModal').style.display = 'flex';
+        
+        // Reset tombol
+        btn.innerHTML = 'BAYAR SEKARANG';
+        btn.disabled = false;
+    }, 1500);
+}
+
+function closeQrModal() {
+    document.getElementById('qrModal').style.display = 'none';
+    // Opsional: Arahkan kembali ke halaman utama setelah bayar
+    window.location.href = "index.html";
+}
+    </script>
+<div class="modal-qr" id="qrModal">
+    <div class="modal-qr-content">
+        <h3>Pembayaran Prototype</h3>
+        <p>Halaman ini hanya <b>Prototype</b>. Silahkan bayar sedekah Anda melalui QR Saweria di bawah ini:</p>
+        
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://saweria.co/smartcoach" alt="QR Code" class="qr-image">
+        
+        <div class="btn-done" onclick="closeQrModal()">Selesai & Kembali</div>
+    </div>
+</div>
+</body>
+</html>
