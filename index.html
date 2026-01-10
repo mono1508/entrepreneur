@@ -306,17 +306,41 @@
     font-size: 13px;
     color: #64748b;
 }
+        @keyframes pulse {
+    0% { transform: scale(1); filter: drop-shadow(0 0 0px var(--primary)); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--primary)); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 0px var(--primary)); }
+}
 
     </style>
 </head>
 <body>
 
-    <div class="modal" id="protoModal">
-        <div class="modal-content">
-            <i class="fas fa-flask" style="font-size: 40px; color: var(--primary); margin-bottom: 15px;"></i>
-            <h4>Prototype Alert!</h4>
-            <p>Halaman ini adalah <b>Prototype</b> untuk keperluan presentasi Smart Coach AI. Beberapa fitur masih dalam tahap simulasi.</p>
-            <div class="btn-close" onclick="closeModal()">SAYA MENGERTI</div>
+  <div class="modal" id="protoModal">
+        <div class="modal-content" style="max-width: 450px; position: relative; border: 2px solid var(--primary); box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);">
+            <div style="margin-bottom: 20px;">
+                <i class="fas fa-robot" style="font-size: 50px; color: var(--primary); animation: pulse 2s infinite;"></i>
+            </div>
+            
+            <h2 style="color: #fff; font-size: 24px; font-weight: 900; margin-bottom: 10px;">Dapatkan AI Diagnostic <span style="color: var(--primary);">GRATIS!</span></h2>
+            
+            <p style="color: var(--text-gray); font-size: 14px; margin-bottom: 25px;">
+                Bingung harus mulai latihan dari mana? Biarkan AI kami menganalisis kemampuanmu dan menentukan <b>posisi ideal</b> serta <b>jadwal latihan</b> khusus untukmu secara cuma-cuma hari ini!
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <a href="tes.html" class="btn-sso" style="margin: 0; padding: 15px; font-size: 15px; text-align: center; display: block; text-transform: uppercase; letter-spacing: 1px;">
+                    Mulai Diagnostik Sekarang <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                </a>
+                
+                <div class="btn-close" onclick="closeModal()" style="border: none; color: #64748b; font-size: 12px; margin-top: 5px; text-decoration: underline;">
+                    Mungkin Nanti, Saya Mengerti Ini Prototype
+                </div>
+            </div>
+
+            <div style="position: absolute; top: -15px; right: -15px; background: #ff4d4d; color: #fff; padding: 5px 12px; border-radius: 5px; font-size: 10px; font-weight: 900; transform: rotate(15deg);">
+                LIMITED OFFER
+            </div>
         </div>
     </div>
 
@@ -325,6 +349,7 @@
         <div class="nav-container">
             <nav id="nav-menu">
                 <a href="#hero-visual">About Us</a>
+                                <a href="tes.html">AI Diagnostic Assessment</a>
                 <a href="#features">Features</a>
                 <a href="#training">Training</a>
                 <a href="#nutrition">Nutrition</a>
@@ -634,6 +659,7 @@
     </script>
 </body>
 </html>
+
 
 
 
