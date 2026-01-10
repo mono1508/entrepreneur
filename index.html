@@ -4,16 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Smart Coach Trainer | AI Football Platform</title>
+    
+    <meta name="description" content="Smart Coach AI - Platform latihan sepak bola masa depan dengan Face ID Validation dan Real-time Video Analysis.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Smart Coach AI",
+      "operatingSystem": "Web",
+      "applicationCategory": "HealthApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "149000",
+        "priceCurrency": "IDR"
+      }
+    }
+    </script>
+
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root {
             --primary: #00ff88;
             --secondary: #00ccff;
             --accent-purple: #a855f7;
             --dark-bg: #0b0f1a;
-            --card-bg: #12172a;
+            --card-bg: rgba(18, 23, 42, 0.8);
             --text-gray: #94a3b8;
             --nav-height: 70px;
         }
@@ -30,134 +48,204 @@
             padding: 0 5%; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         header h1 { font-size: 18px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
-
         .nav-container { display: flex; align-items: center; }
-        
         nav { display: flex; align-items: center; }
-        nav a { 
-            margin-left: 20px; text-decoration: none; color: #ffffff; 
-            font-weight: 500; font-size: 14px; transition: 0.3s; 
-        }
+        nav a { margin-left: 20px; text-decoration: none; color: #ffffff; font-weight: 500; font-size: 14px; transition: 0.3s; }
         nav a:hover { color: var(--primary); }
-        .btn-sso { 
-            margin-left: 20px; padding: 8px 18px; border-radius: 30px; 
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-            color: #000; font-weight: 700; text-decoration: none; font-size: 13px; 
-        }
-
-        .burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; margin-left: 15px; }
-        .burger span { width: 25px; height: 3px; background: var(--primary); border-radius: 2px; transition: 0.4s; }
+        .btn-sso { margin-left: 20px; padding: 8px 18px; border-radius: 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; font-weight: 700; text-decoration: none; font-size: 13px; }
 
         /* ---------- HERO SECTION ---------- */
-        .hero {
-            position: relative; min-height: 100vh; display: grid;
-            grid-template-columns: 1.2fr 0.8fr; align-items: center;
-            padding: 100px 5% 50px; gap: 40px; overflow: hidden;
+        /* === HERO LAYOUT FIX === */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    padding: 100px 5% 50px;
+    overflow: hidden;
+}
+.hero-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.hero-content {
+    text-align: left;
+}
+
+.hero-visual {
+    margin: 0;
+}
+
+/* MOBILE AMAN */
+@media (max-width: 900px) {
+    .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .hero-content {
+        text-align: center;
+    }
+}
+
+        .hero-video-bg { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -2; object-fit: cover; opacity: 0.8; /* Updated to 0.8 */
         }
-        .hero-video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; object-fit: cover; opacity: 1.0; }
-        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, var(--dark-bg) 50%, transparent); z-index: -1; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 20%, var(--dark-bg) 90%); z-index: -1; }
         
         .hero-content h2 { font-size: clamp(32px, 6vw, 64px); font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
-        .hero-content p { font-size: clamp(14px, 2vw, 18px); color: var(--text-gray); margin-bottom: 30px; max-width: 550px; }
-        .hero-buttons { display: flex; flex-wrap: wrap; gap: 15px; }
-        .btn-main { padding: 14px 28px; background: var(--primary); color: #000; text-decoration: none; border-radius: 50px; font-weight: 700; transition: 0.3s; text-align: center; }
-        .btn-outline { color: #fff; text-decoration: none; font-weight: 600; border-bottom: 2px solid var(--primary); padding-bottom: 5px; }
-
-        /* ---------- FIXED SCANNER VISUAL FOR MOBILE ---------- */
+        .hero-content p { font-size: clamp(14px, 2vw, 18px); color: var(--text-gray); margin-bottom: 30px; max-width: 550px; margin-inline: auto; }
+        .hero-buttons { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 40px; }
+        
+        /* ---------- SCANNER (UNTOUCHED RESPONSIVE) ---------- */
         .hero-visual {
-            position: relative; 
-            aspect-ratio: 4/3; /* Memastikan rasio tetap di HP */
-            width: 100%;
-            max-width: 500px;
-            border-radius: 25px;
-            overflow: hidden; 
-            display: grid; 
-            grid-template-columns: 1fr 1fr;
-            gap: 5px; 
-            background: #000; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            animation: float 4s ease-in-out infinite; 
-            z-index: 5;
-            margin: 0 auto;
+            position: relative; aspect-ratio: 4/3; width: 100%; max-width: 500px;
+            border-radius: 25px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr;
+            gap: 5px; background: #000; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: float 4s ease-in-out infinite; z-index: 5; margin: 0 auto;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
         .visual-item { position: relative; width: 100%; height: 100%; overflow: hidden; }
         .img-base { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); position: absolute; top: 0; left: 0; }
-        .img-reveal { 
-            width: 100%; height: 100%; object-fit: cover; 
-            position: absolute; top: 0; left: 0; z-index: 2; 
-            clip-path: inset(0 0 100% 0); /* Menggunakan inset untuk sinkronisasi laser */
-            will-change: clip-path;
-        }
-        .scanning-line { 
-            position: absolute; width: 100%; height: 4px; 
-            background: var(--secondary); box-shadow: 0 0 15px var(--secondary), 0 0 30px var(--primary); 
-            top: 0; left: 0; z-index: 10; display: none; 
-            will-change: top;
-        }
-        .visual-overlay-text {
-            position: absolute; bottom: 15px; left: 10px; right: 10px; z-index: 20;
-            color: var(--primary); font-weight: 800; font-size: 10px; text-align: center;
-            letter-spacing: 1px; background: rgba(0,0,0,0.7); padding: 6px; border-radius: 4px;
-            text-transform: uppercase;
+        .img-reveal { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 2; clip-path: inset(0 0 100% 0); will-change: clip-path; }
+        .scanning-line { position: absolute; width: 100%; height: 4px; background: var(--secondary); box-shadow: 0 0 15px var(--secondary), 0 0 30px var(--primary); top: 0; left: 0; z-index: 10; display: none; will-change: top; }
+        .visual-overlay-text { position: absolute; bottom: 15px; left: 10px; right: 10px; z-index: 20; color: var(--primary); font-weight: 800; font-size: 10px; text-align: center; letter-spacing: 1px; background: rgba(0,0,0,0.7); padding: 6px; border-radius: 4px; text-transform: uppercase; }
+
+        /* ---------- SECTION & SILHOUETTE ---------- */
+        section { position: relative; padding: 80px 5%; width: 100%; overflow: hidden; }
+        .bg-silhouette {
+            position: absolute; right: -50px; bottom: -50px; font-size: 300px;
+            color: rgba(255,255,255,0.04); /* Opacity 0.04 for subtle look */
+            z-index: -1; pointer-events: none;
         }
 
-        /* ---------- SECTIONS STYLING ---------- */
-        section { padding: 80px 5%; width: 100%; }
-        h3 { font-size: clamp(26px, 4vw, 42px); margin-bottom: 10px; color: #fff; font-weight: 800; }
-        .section-desc { color: var(--text-gray); margin-bottom: 40px; font-size: 15px; max-width: 700px; }
-
+        /* ---------- CARDS & BUTTONS ---------- */
         .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; }
         .card { 
             background: var(--card-bg); padding: 30px; border-radius: 20px; 
             border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; 
-            position: relative; display: flex; flex-direction: column;
-            text-decoration: none; color: inherit; height: 100%;
+            display: flex; flex-direction: column; text-decoration: none; color: inherit; height: 100%;
+            backdrop-filter: blur(10px);
         }
-        .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1); }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .card i.main-icon { font-size: 40px; margin-bottom: 20px; color: var(--secondary); }
         .card h4 { font-size: 20px; margin-bottom: 12px; color: var(--primary); }
-        .card p { font-size: 14px; color: #cbd5e1; flex-grow: 1; }
-        .card ul { list-style: none; margin-top: 15px; }
-        .card li { font-size: 13px; margin-bottom: 8px; display: flex; align-items: center; color: #cbd5e1; }
-        .card li i { color: var(--primary); margin-right: 10px; font-size: 12px; }
-        .price { font-weight: 900; margin-top: 15px; display: block; font-size: 18px; color: #fff; }
-        .locked { opacity: 0.5; cursor: not-allowed; }
-        .fa-lock { position: absolute; top: 20px; right: 20px; color: #f6ad55; }
+        .card p { font-size: 14px; color: #cbd5e1; flex-grow: 1; margin-bottom: 15px; }
+        
+        .btn-card {
+            display: inline-block; padding: 10px 20px; border-radius: 8px;
+            background: rgba(255,255,255,0.1); color: #fff; text-decoration: none !important;
+            font-weight: 600; font-size: 13px; text-align: center; transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-card:hover { background: var(--primary); color: #000; border-color: var(--primary); }
+        .btn-card.pro { background: var(--primary); color: #000; }
 
-        footer { padding: 40px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); color: #64748b; font-size: 12px; }
+        /* ---------- POPUP ---------- */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+            display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px;
+        }
+        .modal-content {
+            background: var(--card-bg); padding: 30px; border-radius: 20px;
+            max-width: 400px; text-align: center; border: 1px solid var(--primary);
+        }
+        .modal-content h4 { color: var(--primary); margin-bottom: 15px; }
+        .btn-close { margin-top: 20px; cursor: pointer; color: var(--primary); font-weight: 700; border: 1px solid var(--primary); padding: 8px 20px; border-radius: 5px; display: inline-block; }
 
-        /* ---------- MOBILE RESPONSIVE LOGIC ---------- */
+        /* Burger Menu (Existing) */
+        .burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; margin-left: 15px; }
+        .burger span { width: 25px; height: 3px; background: var(--primary); border-radius: 2px; transition: 0.4s; }
+
         @media (max-width: 1024px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 120px; gap: 50px; }
-            .hero-overlay { background: linear-gradient(to bottom, var(--dark-bg) 60%, rgba(11, 15, 26, 0.6)); }
-            .hero-content p { margin: 0 auto 30px; }
-            .hero-buttons { justify-content: center; }
-
             .burger { display: flex; }
-            nav {
-                position: fixed; top: var(--nav-height); right: -100%; width: 280px; height: calc(100vh - var(--nav-height));
-                background: #0f172a; flex-direction: column; padding: 40px 20px; transition: 0.4s; 
-                border-left: 1px solid rgba(255,255,255,0.1); box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-            }
+            nav { position: fixed; top: var(--nav-height); right: -100%; width: 280px; height: calc(100vh - var(--nav-height)); background: #0f172a; flex-direction: column; padding: 40px 20px; transition: 0.4s; z-index: 100; }
             nav.active { right: 0; }
-            nav a { margin: 15px 0; font-size: 16px; width: 100%; margin-left: 0; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
-            .btn-sso { margin: 20px 0 0 0; width: 100%; text-align: center; }
-            
-            .burger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
-            .burger.active span:nth-child(2) { opacity: 0; }
-            .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -7px); }
+            nav a { margin: 15px 0; width: 100%; margin-left: 0; }
         }
+/* === BURGER ANIMATION === */
+.burger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 6px);
+}
 
-        @media (max-width: 480px) {
-            .hero { padding-left: 20px; padding-right: 20px; }
-            .hero-visual { aspect-ratio: 1/1; } /* Kotak di layar sangat kecil */
-            .section-desc { font-size: 14px; }
-            .card { padding: 20px; }
-        }
+.burger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -6px);
+}
+.burger span {
+    transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+/* === FOOTER UPGRADE === */
+.footer {
+    background: linear-gradient(180deg, rgba(11,15,26,0.95), #020617);
+    padding: 70px 5% 30px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-brand h4 {
+    color: var(--primary);
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.footer-brand p {
+    color: var(--text-gray);
+    font-size: 14px;
+    max-width: 320px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--primary);
+}
+
+.footer-bottom {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+}
+
     </style>
 </head>
 <body>
+
+    <div class="modal" id="protoModal">
+        <div class="modal-content">
+            <i class="fas fa-flask" style="font-size: 40px; color: var(--primary); margin-bottom: 15px;"></i>
+            <h4>Prototype Alert!</h4>
+            <p>Halaman ini adalah <b>Prototype</b> untuk keperluan presentasi Smart Coach AI. Beberapa fitur masih dalam tahap simulasi.</p>
+            <div class="btn-close" onclick="closeModal()">SAYA MENGERTI</div>
+        </div>
+    </div>
 
     <header>
         <h1>SMART COACH</h1>
@@ -169,9 +257,7 @@
                 <a href="#instruction">Instruction</a>
                 <a href="login.html" class="btn-sso">Sign Up / SSO</a>
             </nav>
-            <div class="burger" id="burger-menu">
-                <span></span><span></span><span></span>
-            </div>
+            <div class="burger" id="burger-menu"><span></span><span></span><span></span></div>
         </div>
     </header>
 
@@ -180,13 +266,20 @@
             <source src="Canon C200 - Cinematic Fitness Short.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
-        
+        <section class="hero">
+    <video class="hero-video-bg" autoplay loop muted playsinline>
+        <source src="Canon C200 - Cinematic Fitness Short.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-inner">
+
         <div class="hero-content">
             <h2>Train Like a Pro.<br>Powered by AI.</h2>
             <p>Platform latihan sepak bola masa depan berbasis <b>AI, Face ID Validation,</b> dan <b>Real-time Video Analysis</b>.</p>
             <div class="hero-buttons">
-                <a href="#training" class="btn-main">Start Training</a>
-                <a href="#features" class="btn-outline">Explore Features</a>
+                <a href="#training" class="btn-card pro" style="padding:14px 28px;border-radius:50px;">Start Training</a>
+                <a href="#features" class="btn-card" style="padding:14px 28px;border-radius:50px;">Explore Features</a>
             </div>
         </div>
 
@@ -199,124 +292,165 @@
             <div class="visual-item">
                 <img src="1a.jpg" class="img-base" id="img-right-base">
                 <img src="2a.jpg" class="img-reveal" id="img-right-reveal">
+                <div class="visual-overlay-text">
+                    <i class="fas fa-sync fa-spin"></i> AI SCANNING ACTIVE
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+            <div class="visual-item">
+                <img src="1a.jpg" class="img-base" id="img-right-base">
+                <img src="2a.jpg" class="img-reveal" id="img-right-reveal">
                 <div class="visual-overlay-text"><i class="fas fa-sync fa-spin"></i> AI SCANNING ACTIVE</div>
             </div>
         </div>
     </section>
 
     <section id="features">
+        <i class="fas fa-microchip bg-silhouette"></i>
         <h3>Core Platform Features</h3>
         <p class="section-desc">Sistem terintegrasi dari keamanan biometrik hingga pemantauan latihan berbasis visi komputer.</p>
         <div class="cards-grid">
             <div class="card">
+                <i class="fas fa-face-smile-beam main-icon"></i>
                 <h4>Smart Login & Face ID</h4>
                 <p>Login aman menggunakan AI facial validation untuk melindungi progres dan data atlet profesional Anda.</p>
             </div>
             <div class="card">
+                <i class="fas fa-video main-icon"></i>
                 <h4>AI Video Training</h4>
                 <p>Materi teknik & fisik dari pelatih pro dilengkapi fitur AI Q&A yang menjawab pertanyaan Anda secara instan.</p>
             </div>
             <div class="card">
+                <i class="fas fa-bolt main-icon"></i>
                 <h4>Real-time Monitoring</h4>
                 <p>AI memantau gerakan Anda via kamera untuk memberikan koreksi postur dan akurasi secara langsung.</p>
             </div>
         </div>
     </section>
 
-    <section id="training" style="background: rgba(0, 255, 136, 0.02);">
+    <section id="training" style="background: rgba(0, 255, 136, 0.05);">
+        <i class="fas fa-dumbbell bg-silhouette"></i>
         <h3>Training Camp System</h3>
-        <p class="section-desc">Pilih paket latihan yang sesuai. Paket Beginner terbuka secara gratis untuk memulai karir Anda.</p>
+        <p class="section-desc">Pilih paket latihan yang sesuai untuk karir profesional Anda.</p>
         <div class="cards-grid">
-            <a href="progress.html" class="card">
-                <h4 style="color: var(--accent-purple);">Beginner (Unlocked)</h4>
-                <ul>
-                    <li><i class="fas fa-check"></i> Video Coach Teknik Dasar</li>
-                    <li><i class="fas fa-check"></i> AI Chatbot Support</li>
-                    <li><i class="fas fa-check"></i> Daily Training Plan</li>
-                </ul>
-                <span class="price">FREE</span>
-            </a>
-            <div class="card locked">
-                <i class="fas fa-lock"></i>
-                <h4>Pro Player</h4>
-                <ul>
-                    <li><i class="fas fa-check"></i> AI Video Call Intensif</li>
-                    <li><i class="fas fa-check"></i> Teknik & Fisik Lanjutan</li>
-                </ul>
-                <span class="price">Rp149k / bln</span>
+            <div class="card">
+                <i class="fas fa-seedling main-icon" style="color: var(--accent-purple);"></i>
+                <h4 style="color: var(--accent-purple);">Beginner</h4>
+                <p>Akses gratis untuk teknik dasar dan dukungan chatbot AI harian.</p>
+                <a href="progress.html" class="btn-card">Try Now (FREE)</a>
             </div>
-            <div class="card locked">
-                <i class="fas fa-lock"></i>
+            <div class="card">
+                <i class="fas fa-star main-icon"></i>
+                <h4>Pro Player</h4>
+                <p>Video call intensif AI dan materi teknik tingkat lanjut.</p>
+                <a href="pay1.html" class="btn-card pro">Buy Now - Rp149k</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-trophy main-icon"></i>
                 <h4>Elite Academy</h4>
-                <ul>
-                    <li><i class="fas fa-check"></i> WO & Gym Training</li>
-                    <li><i class="fas fa-check"></i> Performance Prediction</li>
-                </ul>
-                <span class="price">Rp299k / bln</span>
+                <p>Prediksi performa dan program gym khusus atlet elit.</p>
+                <a href="pay2.html" class="btn-card pro">Buy Now - Rp299k</a>
             </div>
         </div>
     </section>
 
     <section id="nutrition">
+        <i class="fas fa-apple-whole bg-silhouette"></i>
         <h3>Eating Management</h3>
-        <p class="section-desc">Nutrisi adalah kunci performa. Kelola asupan kalori dan gizi Anda berbasis data harian.</p>
         <div class="cards-grid">
             <div class="card">
+                <i class="fas fa-chart-pie main-icon"></i>
                 <h4>Nutrition Analysis</h4>
-                <p>Analisis otomatis kebutuhan kalori harian berdasarkan intensitas latihan yang Anda jalani.</p>
+                <p>Analisis otomatis kebutuhan kalori harian berdasarkan intensitas latihan.</p>
+                <a href="#" class="btn-card">View Report</a>
             </div>
-            <a href="nuti.html" class="card">
+            <div class="card">
+                <i class="fas fa-utensils main-icon"></i>
                 <h4>Meal Guidance</h4>
-                <p>Panduan menu makanan sehat dan jadwal makan yang dioptimalkan untuk pemulihan atlet.</p>
-            </a>
-            <a href="expert.html" class="card">
+                <p>Panduan menu makanan sehat yang dioptimalkan untuk pemulihan.</p>
+                <a href="nuti.html" class="btn-card">View Menu</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-play-circle main-icon"></i>
                 <h4>Expert Video</h4>
-                <p>Edukasi gizi langsung dari pakar profesional untuk memaksimalkan energi di lapangan.</p>
-            </a>
+                <p>Edukasi gizi langsung dari pakar profesional di lapangan.</p>
+                <a href="expert.html" class="btn-card">View Video</a>
+            </div>
         </div>
     </section>
 
-    <section id="instruction" style="background: rgba(0, 204, 255, 0.02);">
+    <section id="instruction" style="background: rgba(0, 204, 255, 0.05);">
+        <i class="fas fa-shield-halved bg-silhouette"></i>
         <h3>Instruction & Prevention</h3>
-        <p class="section-desc">Pahami taktik posisi dan cara menjaga karir jangka panjang dengan pencegahan cedera.</p>
         <div class="cards-grid">
-            <a href="football.html" class="card">
+            <div class="card">
+                <i class="fas fa-map-signs main-icon"></i>
                 <h4>Position Guide</h4>
-                <p>Instruksi khusus posisi (Bek, Gelandang, Striker) dengan trik dari pemain profesional.</p>
-            </a>
-            <a href="injury.html" class="card">
+                <p>Instruksi khusus posisi (Bek, Gelandang, Striker) dari pemain pro.</p>
+                <a href="football.html" class="btn-card">View Guide</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-kit-medical main-icon"></i>
                 <h4>Injury Prevention</h4>
-                <p>Teknik pemanasan dan recovery yang benar untuk meminimalkan risiko cedera otot.</p>
-            </a>
-            <a href="ifib.html" class="card">
+                <p>Teknik pemanasan dan recovery yang benar untuk atlet.</p>
+                <a href="injury.html" class="btn-card">View Details</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-book-open main-icon"></i>
                 <h4>Football Rules</h4>
-                <p>Pemahaman mendalam mengenai peraturan resmi IFAB terbaru untuk kecerdasan taktis.</p>
-            </a>
+                <p>Pemahaman mendalam mengenai peraturan resmi IFAB terbaru.</p>
+                <a href="ifib.html" class="btn-card">View Rules</a>
+            </div>
         </div>
     </section>
 
-    <footer>
-        <p>© 2026 Smart Coach AI Football Platform — Built for Future Athletes</p>
-    </footer>
+ <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h4>SMART COACH AI</h4>
+            <p>AI Football Training Platform for Future Athletes.</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#training">Training</a>
+            <a href="#nutrition">Nutrition</a>
+            <a href="#instruction">Instruction</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 Smart Coach AI —  Built for Future Athletes
+    </div>
+</footer>
+
 
     <script>
-        // --- MOBILE MENU LOGIC ---
+        // Modal Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('protoModal').style.display = 'flex';
+            }, 1000);
+            runScan(); // Run scanner on load
+        });
+
+        function closeModal() {
+            document.getElementById('protoModal').style.display = 'none';
+        }
+
+        // Navbar Logic
         const burger = document.getElementById('burger-menu');
         const navMenu = document.getElementById('nav-menu');
-
         burger.addEventListener('click', () => {
             burger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
 
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                burger.classList.remove('active');
-                navMenu.classList.remove('active');
-            });
-        });
-
-        // --- SCANNING ENGINE (FIXED FOR HP) ---
+        // --- SCANNING ENGINE (RETAINED FROM ORIGINAL) ---
         const scanner = document.getElementById('scanner');
         const imgLeftBase = document.getElementById('img-left-base');
         const imgLeftReveal = document.getElementById('img-left-reveal');
@@ -325,54 +459,37 @@
 
         const imagesLeft = ['1b.jpg', '2b.jpg', '3b.jpg', '4b.webp', '5b.jpeg'];
         const imagesRight = ['1a.jpg', '2a.jpg', '3a.jpg', '4a.webp', '5a.webp'];
-
         let currentIndex = 0;
         let isScanning = false;
 
         function runScan() {
             if (isScanning) return;
             isScanning = true;
-
             let nextIndex = (currentIndex + 1) % imagesLeft.length;
-            
-            // Set source gambar reveal sebelum animasi mulai
             imgLeftReveal.src = imagesLeft[nextIndex];
             imgRightReveal.src = imagesRight[nextIndex];
-
             scanner.style.display = 'block';
             let start = null;
-            const duration = 2800; // Durasi laser turun
+            const duration = 2800;
 
             function animate(timestamp) {
                 if (!start) start = timestamp;
                 let progress = timestamp - start;
                 let ratio = Math.min(progress / duration, 1);
-
-                // Perhitungan posisi dalam persen agar akurat di semua ukuran layar
                 let percentage = ratio * 100;
-                
-                // Gerakkan laser
                 scanner.style.top = percentage + '%';
-                
-                // Sinkronkan clip-path (membuka gambar dari atas ke bawah)
-                // inset(top right bottom left)
                 let clipBottom = 100 - percentage;
                 imgLeftReveal.style.clipPath = `inset(0 0 ${clipBottom}% 0)`;
                 imgRightReveal.style.clipPath = `inset(0 0 ${clipBottom}% 0)`;
-
                 if (ratio < 1) {
                     requestAnimationFrame(animate);
                 } else {
-                    // Selesai animasi
                     setTimeout(() => {
                         imgLeftBase.src = imagesLeft[nextIndex];
                         imgRightBase.src = imagesRight[nextIndex];
-                        
-                        // Reset clip path untuk scan berikutnya
                         imgLeftReveal.style.clipPath = 'inset(0 0 100% 0)';
                         imgRightReveal.style.clipPath = 'inset(0 0 100% 0)';
                         scanner.style.display = 'none';
-                        
                         currentIndex = nextIndex;
                         isScanning = false;
                     }, 400);
@@ -380,15 +497,7 @@
             }
             requestAnimationFrame(animate);
         }
-
-        // Jalankan loop otomatis
         setInterval(runScan, 6000);
-        
-        // Jalankan pertama kali saat load
-        window.addEventListener('load', () => {
-            setTimeout(runScan, 1500);
-        });
     </script>
 </body>
 </html>
-
