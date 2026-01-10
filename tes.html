@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>AI Diagnostic & Planning | Smart Coach AI</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+            --dark-bg: #0b0f1a;
+            --card-bg: rgba(18, 23, 42, 0.9);
+            --text-gray: #94a3b8;
+            --nav-height: 70px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--dark-bg); color: #ffffff; line-height: 1.6; overflow-x: hidden; }
+
+        /* ---------- NAVBAR (Consistent) ---------- */
+        header {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height);
+            background: rgba(11, 15, 26, 0.95); backdrop-filter: blur(15px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        header h1 { font-size: 18px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+        nav a { margin-left: 20px; text-decoration: none; color: #ffffff; font-weight: 500; font-size: 14px; }
+        .btn-sso { margin-left: 20px; padding: 8px 18px; border-radius: 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; font-weight: 700; text-decoration: none; font-size: 13px; }
+
+        /* ---------- ASSESSMENT LAYOUT ---------- */
+        .container {
+            margin-top: var(--nav-height);
+            padding: 40px 5%;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 30px;
+            max-width: 1400px;
+            margin-inline: auto;
+        }
+
+        @media (max-width: 1024px) { .container { grid-template-columns: 1fr; } }
+
+        /* --- Chat/Diagnostic Area --- */
+        .assessment-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .chat-messages {
+            flex-grow: 1; padding: 25px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 20px;
+            background: radial-gradient(circle at top right, rgba(0,255,136,0.02), transparent);
+        }
+
+        .msg { max-width: 85%; padding: 15px 20px; border-radius: 15px; font-size: 14px; line-height: 1.5; }
+        .msg.ai { background: rgba(255,255,255,0.05); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid rgba(0, 255, 136, 0.2); }
+        .msg.user { background: rgba(0, 204, 255, 0.1); align-self: flex-end; border-bottom-right-radius: 2px; border: 1px solid var(--secondary); color: var(--secondary); }
+
+        /* Options/Buttons in Chat */
+        .option-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .opt-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; padding: 10px 18px; border-radius: 20px; cursor: pointer;
+            font-size: 13px; transition: 0.3s;
+        }
+        .opt-btn:hover { border-color: var(--primary); background: rgba(0, 255, 136, 0.1); }
+
+        /* --- Sidebar Recommendation --- */
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .card-res {
+            background: var(--card-bg); padding: 25px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;
+            display: none; /* Hidden until assessment finish */
+        }
+        .card-res.active { display: block; animation: slideIn 0.5s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        .card-res h4 { color: var(--primary); font-size: 14px; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+
+        .pos-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #000; padding: 5px 15px; border-radius: 5px; font-weight: 900; font-size: 18px;
+            display: inline-block; margin-bottom: 10px;
+        }
+
+        .schedule-list { list-style: none; margin-top: 15px; }
+        .schedule-item {
+            display: flex; gap: 15px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .day { font-weight: 700; color: var(--secondary); min-width: 45px; font-size: 12px; }
+        .activity { font-size: 12px; color: #cbd5e1; }
+
+        .loading-ai { font-style: italic; color: var(--text-gray); font-size: 12px; display: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SMART COACH</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="index.html#training">Training</a>
+            <a href="#" class="btn-sso">My Profile</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="assessment-section">
+            <div class="chat-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-robot" style="color: var(--primary); font-size: 20px;"></i>
+                    <div>
+                        <p style="font-weight: 700; font-size: 14px;">AI Diagnostic Coach</p>
+                        <p id="ai-status" style="font-size: 11px; color: var(--primary);">System Online</p>
+                    </div>
+                </div>
+                <div id="progress-text" style="font-size: 12px; color: var(--text-gray);">Question 1 of 3</div>
+            </div>
+
+            <div class="chat-messages" id="chatContainer">
+                <div class="msg ai" id="q1">
+                    Selamat datang di tahap Diagnostik. Mari tentukan profil atletmu.<br><br>
+                    <strong>Pertanyaan 1:</strong> Apa keunggulan fisik terbesarmu saat di lapangan?
+                    <div class="option-container">
+                        <button class="opt-btn" onclick="nextStep(1, 'Speed & Sprint', 'speed')">Kecepatan Lari (Sprint)</button>
+                        <button class="opt-btn" onclick="nextStep(1, 'Endurance & Stamina', 'stamina')">Daya Tahan (Stamina)</button>
+                        <button class="opt-btn" onclick="nextStep(1, 'Physical Strength', 'power')">Kekuatan Fisik (Body Balance)</button>
+                    </div>
+                </div>
+            </div>
+            <div id="ai-loading" class="loading-ai" style="padding: 10px 25px;"><i class="fas fa-spinner fa-spin"></i> AI is calculating your profile...</div>
+        </section>
+
+        <aside class="sidebar">
+            <div class="card-res" id="result-pos">
+                <h4><i class="fas fa-map-marker-alt"></i> Recommended Position</h4>
+                <div id="pos-name" class="pos-badge">ANALYZING...</div>
+                <p id="pos-desc" style="font-size: 12px; color: var(--text-gray);">Berdasarkan data fisik dan teknis, Anda sangat cocok mengisi posisi ini untuk memaksimalkan potensi tim.</p>
+            </div>
+
+            <div class="card-res" id="result-schedule">
+                <h4><i class="fas fa-calendar-alt"></i> Training Schedule (Weekly)</h4>
+                <div class="schedule-list" id="schedule-content">
+                    </div>
+                <a href="index.html#training" class="btn-sso" style="display: block; text-align: center; margin-top: 20px; margin-left: 0;">Confirm & Start Plan</a>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        let userData = {
+            physical: '',
+            technical: '',
+            mentality: ''
+        };
+
+        function nextStep(step, label, value) {
+            const chat = document.getElementById('chatContainer');
+            const loader = document.getElementById('ai-loading');
+            const progText = document.getElementById('progress-text');
+
+            // Add user bubble
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg user';
+            userMsg.innerText = label;
+            chat.appendChild(userMsg);
+
+            loader.style.display = 'block';
+
+            setTimeout(() => {
+                loader.style.display = 'none';
+                if (step === 1) {
+                    userData.physical = value;
+                    progText.innerText = "Question 2 of 3";
+                    addAiMsg(`<strong>Pertanyaan 2:</strong> Dalam situasi permainan, apa tugas yang paling kamu sukai?`, [
+                        {text: 'Mencetak Gol & Finishing', val: 'finish', key: 2},
+                        {text: 'Mengatur Ritme & Passing', val: 'playmake', key: 2},
+                        {text: 'Menghalau Serangan Lawan', val: 'defend', key: 2}
+                    ]);
+                } else if (step === 2) {
+                    userData.technical = value;
+                    progText.innerText = "Question 3 of 3";
+                    addAiMsg(`<strong>Pertanyaan 3:</strong> Bagaimana caramu mengambil keputusan saat ditekan lawan?`, [
+                        {text: 'Tenang & Cari Ruang Kosong', val: 'calm', key: 3},
+                        {text: 'Agresif & Melawan Balik', val: 'aggro', key: 3},
+                        {text: 'Langsung Oper ke Teman', val: 'simple', key: 3}
+                    ]);
+                } else if (step === 3) {
+                    userData.mentality = value;
+                    progText.innerText = "Assessment Complete";
+                    showFinalResult();
+                }
+                chat.scrollTop = chat.scrollHeight;
+            }, 800);
+        }
+
+        function addAiMsg(text, options) {
+            const chat = document.getElementById('chatContainer');
+            const div = document.createElement('div');
+            div.className = 'msg ai';
+            div.innerHTML = text;
+
+            if (options) {
+                const optCont = document.createElement('div');
+                optCont.className = 'option-container';
+                options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.innerText = opt.text;
+                    btn.onclick = () => nextStep(opt.key, opt.text, opt.val);
+                    optCont.appendChild(btn);
+                });
+                div.appendChild(optCont);
+            }
+            chat.appendChild(div);
+        }
+
+        function showFinalResult() {
+            addAiMsg("<strong>Deep Scan Berhasil!</strong><br>Digital Twin kamu telah diperbarui. Lihat panel sebelah kanan untuk penempatan posisi dan jadwal latihan yang telah saya optimalkan.");
+            
+            // Logic Penentuan Posisi (Sederhana)
+            let finalPos = "Midfielder";
+            let desc = "Pemain serbabisa yang mengatur aliran bola.";
+            let schedule = "";
+
+            if (userData.physical === 'speed' && userData.technical === 'finish') {
+                finalPos = "Forward / Winger";
+                desc = "Gunakan kecepatanmu untuk memecah lini pertahanan lawan.";
+                schedule = `
+                    <div class="schedule-item"><div class="day">SENIN</div><div class="activity">Sprint Drill & Finishing Practice</div></div>
+                    <div class="schedule-item"><div class="day">SELASA</div><div class="activity">Gym: Lower Body Explosiveness</div></div>
+                    <div class="schedule-item"><div class="day">RABU</div><div class="activity">Rest & Recovery</div></div>
+                    <div class="schedule-item"><div class="day">KAMIS</div><div class="activity">1v1 Attacking Scenarios</div></div>
+                `;
+            } else if (userData.physical === 'stamina' && userData.technical === 'defend') {
+                finalPos = "Defensive Midfielder";
+                desc = "Jangkar tim yang memutus serangan lawan sebelum masuk kotak penalti.";
+                schedule = `
+                    <div class="schedule-item"><div class="day">SENIN</div><div class="activity">Long Distance Running (Stamina)</div></div>
+                    <div class="schedule-item"><div class="day">SELASA</div><div class="activity">Interception & Tactical Positioning</div></div>
+                    <div class="schedule-item"><div class="day">RABU</div><div class="activity">Upper Body Strength</div></div>
+                    <div class="schedule-item"><div class="day">KAMIS</div><div class="activity">Zonal Marking Drills</div></div>
+                `;
+            } else {
+                finalPos = "Playmaker / AMF";
+                desc = "Visi bermainmu adalah kunci kreativitas tim.";
+                schedule = `
+                    <div class="schedule-item"><div class="day">SENIN</div><div class="activity">Short & Long Passing Accuracy</div></div>
+                    <div class="schedule-item"><div class="day">SELASA</div><div class="activity">Vision & Scanning Drill (AI Video)</div></div>
+                    <div class="schedule-item"><div class="day">RABU</div><div class="activity">Agility & Footwork</div></div>
+                    <div class="schedule-item"><div class="day">KAMIS</div><div class="activity">Set Piece Practice</div></div>
+                `;
+            }
+
+            document.getElementById('pos-name').innerText = finalPos;
+            document.getElementById('pos-desc').innerText = desc;
+            document.getElementById('schedule-content').innerHTML = schedule;
+
+            document.getElementById('result-pos').classList.add('active');
+            document.getElementById('result-schedule').classList.add('active');
+        }
+    </script>
+</body>
+</html>
