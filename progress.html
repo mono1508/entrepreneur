@@ -1,28 +1,11 @@
-
 <!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Coach - Training Session</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <title>Smart Coach - Full Experience</title>
+  
   <style>
-.suggestion-chip {
-  background: #21262d;
-  border: 1px solid var(--border);
-  color: var(--accent);
-  padding: 5px 12px;
-  border-radius: 15px;
-  font-size: 11px;
-  cursor: pointer;
-  transition: 0.2s;
-  white-space: nowrap;
-}
-.suggestion-chip:hover {
-  background: var(--accent);
-  color: #000;
-}
     :root {
       --bg: #0d1117; 
       --card: #161b22; 
@@ -34,110 +17,91 @@
       --sidebar-width: 300px;
     }
 
-    /* Reset & Base */
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body { 
       font-family: "Segoe UI", Roboto, sans-serif; 
       background: var(--bg); color: var(--text);
       display: flex; flex-direction: column; height: 100vh; overflow: hidden;
     }
 
-    /* --- HEADER (Nav Bar disamakan) --- */
+    /* --- HEADER (GLASSMORPHISM) --- */
     header { 
-      background: var(--card); 
+      background: rgba(22, 27, 34, 0.95);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border); 
-      height: 60px; 
+      height: 65px; 
       display: flex; 
       align-items: center; 
-      z-index: 1000; 
-      padding: 0 20px;
+      position: sticky; 
+      top: 0; 
+      z-index: 2000;
+      padding: 0 24px;
+      flex-shrink: 0;
     }
     .nav-wrapper { width: 100%; display: flex; justify-content: space-between; align-items: center; }
     .nav-left { display: flex; align-items: center; gap: 15px; }
-    .menu-toggle { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
-    .logo { font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+    .menu-toggle { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+    .logo { font-weight: 900; color: var(--accent); letter-spacing: 1.5px; font-size: 1.2rem; }
     .course-name { font-size: 0.85rem; color: var(--muted); border-left: 1px solid var(--border); padding-left: 15px; margin-left: 5px; }
     
     #nav-menu { display: flex; align-items: center; gap: 20px; }
-    #nav-menu a { text-decoration: none; color: #fff; font-size: 14px; font-weight: 500; transition: 0.3s; }
-    #nav-menu a:hover { color: var(--accent); }
+    #nav-menu a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 600; transition: 0.3s; }
     .btn-sso { 
-      padding: 8px 18px; 
-      border-radius: 30px; 
+      padding: 10px 22px; border-radius: 50px; 
       background: linear-gradient(135deg, var(--accent), var(--secondary)); 
-      color: #000 !important; 
-      font-weight: 700; 
-      text-decoration: none;
-      font-size: 13px;
+      color: #000 !important; font-weight: 800; text-decoration: none; font-size: 12px;
     }
 
+    /* --- LAYOUT --- */
     .wrapper { display: flex; flex: 1; overflow: hidden; position: relative; }
 
-    /* --- SIDEBAR (Module List disamakan) --- */
+    /* --- SIDEBAR --- */
     aside.sidebar { 
-      width: var(--sidebar-width); 
-      background: var(--card); 
-      border-right: 1px solid var(--border); 
-      transition: 0.3s ease; 
-      flex-shrink: 0; 
-      display: flex;
-      flex-direction: column;
+      width: var(--sidebar-width); background: var(--card); border-right: 1px solid var(--border); 
+      transition: 0.3s ease; flex-shrink: 0; display: flex; flex-direction: column;
     }
     aside.sidebar.closed { margin-left: calc(-1 * var(--sidebar-width)); }
-    
-    .sidebar-header { padding: 16px; font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; border-bottom: 1px solid var(--border); }
-    
-    .progress-container { padding: 20px 16px; background: rgba(0,0,0,0.2); }
-    .progress-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
-    .progress-bar-bg { height: 6px; background: #30363d; border-radius: 10px; }
-    .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 10px; transition: 0.5s; }
-
+    .sidebar-header { padding: 20px; font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; }
     .module-list { overflow-y: auto; flex: 1; }
-    .module-title { padding: 14px 16px; background: rgba(255,255,255,0.03); font-size: 14px; font-weight: 600; }
-    
-    .sub-item { 
-      padding: 10px 16px 10px 30px; 
-      font-size: 13px; 
-      color: var(--muted); 
-      cursor: pointer; 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-      border-left: 3px solid transparent;
-      transition: 0.2s;
-    }
-    .sub-item:hover { background: rgba(255,255,255,0.02); }
-    .sub-item.active { color: #fff; border-left-color: var(--accent); background: rgba(0,255,136,0.05); }
-    
-    .check-circle { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; }
-    .check-circle.done { background: var(--accent); border-color: var(--accent); position: relative; }
-    .check-circle.done::after { content: '✓'; color: #000; font-size: 10px; position: absolute; left: 3px; top: -1px; font-weight: 900; }
+    .module-title { padding: 14px 20px; background: rgba(255,255,255,0.03); font-size: 13px; font-weight: 700; }
+    .sub-item { padding: 12px 20px 12px 40px; font-size: 13px; color: var(--muted); cursor: pointer; border-left: 3px solid transparent; }
+    .sub-item.active { color: #fff; background: rgba(0,255,136,0.05); border-left-color: var(--accent); }
 
-    /* --- CONTENT --- */
-    main.content { flex: 1; display: grid; grid-template-columns: 1fr 350px; gap: 24px; padding: 24px; overflow-y: auto; }
-    .video-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; height: fit-content; }
-    .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; margin-bottom: 15px; overflow: hidden; }
-
-    /* --- CONTROLS --- */
-    .video-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); gap: 12px; }
-    .nav-btn { padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    /* --- CONTENT AREA --- */
+    main.content { flex: 1; display: grid; grid-template-columns: 1fr 380px; gap: 24px; padding: 24px; overflow-y: auto; }
+    .video-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; height: fit-content; }
+    .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+    
+    .video-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .nav-btn { padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; transition: 0.2s; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
     .btn-primary { background: var(--accent); border: none; color: #000; }
     .btn-insight { color: var(--secondary); border: 1px solid var(--secondary); background: transparent; }
 
-    /* --- CHAT --- */
-    .chat-container { background: var(--card); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; height: 600px; position: sticky; top: 0; }
-    .chat-header { padding: 15px; border-bottom: 1px solid var(--border); font-weight: bold; color: var(--accent); }
-    #chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .msg { max-width: 85%; padding: 10px; border-radius: 10px; font-size: 13px; }
+    /* --- CHAT SYSTEM --- */
+    .chat-container { 
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px; 
+      display: flex; flex-direction: column; height: 600px; 
+      max-height: calc(100vh - 120px); position: sticky; top: 0; overflow: hidden;
+    }
+    #chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+    .msg { max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 13.5px; line-height: 1.5; }
     .msg.ai { background: #21262d; align-self: flex-start; border-left: 3px solid var(--accent); }
-    .msg.user { background: var(--accent); color: #000; align-self: flex-end; }
-    .input-box { display: flex; gap: 8px; padding: 15px; border-top: 1px solid var(--border); }
-    .input-box input { flex: 1; background: #0d1117; border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 6px; }
+    .msg.user { background: var(--accent); color: #000; align-self: flex-end; font-weight: 500; }
 
-    @media (max-width: 1100px) { 
-      main.content { grid-template-columns: 1fr; } 
-      aside.sidebar { position: absolute; z-index: 1001; height: 100%; }
+    #suggestion-container { display: flex; gap: 8px; padding: 12px; overflow-x: auto; border-top: 1px solid var(--border); scrollbar-width: none; flex-shrink: 0; }
+    #suggestion-container::-webkit-scrollbar { display: none; }
+    .sug-btn { background: #21262d; border: 1px solid var(--border); color: var(--accent); padding: 8px 16px; border-radius: 20px; font-size: 12px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+    .sug-btn:hover { background: var(--accent); color: #000; }
+
+    .input-box { display: flex; gap: 10px; padding: 18px; border-top: 1px solid var(--border); }
+    .input-box input { flex: 1; background: #0d1117; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 8px; }
+
+    @media (max-width: 1100px) {
+      main.content { grid-template-columns: 1fr; }
+      aside.sidebar { position: fixed; z-index: 3000; height: 100%; }
+      .chat-container { height: 500px; position: static; }
     }
   </style>
 </head>
@@ -151,10 +115,9 @@
         <div class="course-name">M1: Push-Up Fundamentals</div>
       </div>
       <nav id="nav-menu">
-        <a href="index.html#training">Training</a>
-        <a href="index.html#nutrition">Nutrition</a>
-        <a href="index.html#instruction">Instruction</a>
-        <a href="profile.html" class="btn-sso">My Profile</a>
+        <a href="#">Training</a>
+        <a href="#">Nutrition</a>
+        <a href="profile.html" class="btn-sso">MY PROFILE</a>
       </nav>
     </div>
   </header>
@@ -162,222 +125,109 @@
   <div class="wrapper">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">Materi Latihan</div>
-      
-      <div class="progress-container">
-        <div class="progress-info">
-          <span>Progress</span>
-          <b id="progressPct">45%</b>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" style="width: 45%;"></div>
-        </div>
-      </div>
-
       <div class="module-list">
-        <div class="module">
-          <div class="module-title">Bab 1: Dasar</div>
-          <div class="sub-item">
-            <div class="check-circle done"></div>
-            <span>1.1 Posisi Tangan</span>
-          </div>
-          <div class="sub-item active">
-            <div class="check-circle"></div>
-            <span>1.2 Gerakan Turun</span>
-          </div>
-        </div>
-
-        <div class="module">
-          <div class="module-title">Bab 2: Form Lanjutan</div>
-          <div class="sub-item">
-            <div class="check-circle"></div>
-            <span>2.1 Kontrol Core</span>
-          </div>
-          <div class="sub-item">
-            <div class="check-circle"></div>
-            <span>2.2 Eksplosivitas</span>
-          </div>
-        </div>
+        <div class="module-title">Bab 1: Dasar</div>
+        <div class="sub-item">1.1 Posisi Tangan</div>
+        <div class="sub-item active">1.2 Gerakan Turun</div>
       </div>
     </aside>
 
     <main class="content">
       <div class="video-card">
         <div class="video-box">
-           <iframe width="100%" height="100%" src="https://www.youtube.com/embed/IODxDxX7oi4" frameborder="0" allowfullscreen></iframe>
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/IODxDxX7oi4" frameborder="0" allowfullscreen></iframe>
         </div>
         <h3>1.2 Mengatur Napas & Gerakan Turun</h3>
-        <p style="color:var(--muted); font-size:14px; margin-top:8px;">Pastikan siku membentuk sudut 45 derajat saat tubuh turun ke bawah untuk menjaga kesehatan bahu.</p>
-
+        <p style="color:var(--muted); margin-top:10px; font-size:14px;">Teknik napas yang benar membantu stabilitas otot core.</p>
+        
         <div class="video-controls">
-          <div style="display: flex; gap: 10px;">
-            <button class="nav-btn btn-outline">← Prev Practice</button>
-            <button class="nav-btn btn-primary" onclick="window.location.href='ai check.html'">Next Practice →</button>
+          <div style="display: flex; gap: 12px;">
+            <button class="nav-btn btn-outline">← Prev</button>
+            <button class="nav-btn btn-primary">Next Practice →</button>
           </div>
-          <a href="insight.html" class="nav-btn btn-insight">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-            View Insight
-          </a>
+          <button class="nav-btn btn-insight">Insights</button>
         </div>
       </div>
-<div class="chat-container">
-  <div class="chat-header">AI Training Assistant</div>
-  <div id="chat-messages">
-    <div class="msg ai">Halo! Ada kesulitan dengan teknik gerakan turun di video ini?</div>
-  </div>
-  
-  <div id="chat-suggestions" style="padding: 10px; display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border); background: rgba(0,0,0,0.1);">
-    </div>
 
-  <div class="input-box">
-    <input type="text" id="chatInput" placeholder="Tanya teknik...">
-    <button id="sendBtn" style="background:var(--accent);border:none;padding:8px 15px;border-radius:6px;cursor:pointer;font-weight:bold">Send</button>
+      <div class="chat-container">
+        <div class="chat-header" style="padding:15px; border-bottom:1px solid var(--border); color:var(--accent); font-weight:bold;">Coach AI Assistant</div>
+        <div id="chat-messages">
+          <div class="msg ai">Halo! Ada pertanyaan tentang teknik napas atau posisi siku?</div>
+        </div>
+        <div id="suggestion-container"></div>
+        <div class="input-box">
+          <input type="text" id="chatInput" placeholder="Tanya Coach...">
+          <button style="background:var(--accent); border:none; padding:10px 18px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="handleChat()">Send</button>
+        </div>
+      </div>
+    </main>
   </div>
-</div>    </main>
-  </div><script>
-    // --- SIDEBAR LOGIC ---
+
+  <script>
+    // --- SIDEBAR TOGGLE ---
     const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('closed');
-    });
+    document.getElementById('sidebarToggle').onclick = () => sidebar.classList.toggle('closed');
 
-    if (window.innerWidth < 992) {
-      sidebar.classList.add('closed');
-    }
-
-    // --- AI KNOWLEDGE DATABASE (50+ Logika) ---
-    const AI_KNOWLEDGE = {
-        // Dasar & Pernapasan
-        "napas": "Tarik napas saat turun, buang napas kuat saat mendorong tubuh ke atas.",
-        "nafas": "Gunakan ritme: hirup lewat hidung (turun), buang lewat mulut (naik).",
-        "hirup": "Hirup udara saat dada mendekati lantai untuk stabilitas otot inti.",
-        "hembus": "Hembuskan napas saat fase terberat (saat mendorong ke atas).",
-        
-        // Posisi & Teknik
-        "siku": "Jaga siku membentuk sudut 45 derajat. Jangan melebar ke samping (90 derajat) karena berisiko cedera.",
-        "bahu": "Pastikan bahu tidak naik ke arah telinga. Tekan bahu ke bawah (depresi skapula).",
-        "tangan": "Posisi tangan sedikit lebih lebar dari bahu. Jari-jari menghadap ke depan.",
-        "gelang tangan": "Jika sakit, gunakan push-up bar atau kepalkan tangan agar pergelangan tetap lurus.",
-        "pinggang": "Jangan biarkan pinggang merosot. Tubuh harus lurus seperti papan.",
-        "pantat": "Pantat tidak boleh nungging atau terlalu jatuh. Kunci otot glutes Anda.",
-        "perut": "Kunci otot perut (core) sepanjang gerakan untuk melindungi tulang belakang.",
-        "leher": "Pandangan lurus ke lantai, sekitar 15cm di depan tangan. Jangan menunduk.",
-        "kaki": "Rapatkan kaki untuk stabilitas lebih sulit, buka kaki untuk keseimbangan lebih mudah.",
-        
-        // Variasi & Otot
-        "otot": "Push-up melatih otot dada (pectoralis), bahu depan, dan triceps.",
-        "dada": "Gunakan posisi tangan agak lebar untuk lebih memicu kontraksi otot dada.",
-        "triceps": "Gunakan Diamond Push-up (tangan membentuk berlian) untuk fokus ke lengan belakang.",
-        "lengan": "Otot triceps bekerja paling keras di bagian akhir dorongan ke atas.",
-        "diamond": "Diamond push-up sangat efektif buat triceps tapi beban di siku lebih besar.",
-        "variasi": "Coba Wide Push-up untuk dada, Diamond untuk triceps, atau Pike untuk bahu.",
-        "pemula": "Mulai dengan knee push-up (tumpuan lutut) sampai kuat melakukan 10 reps sempurna.",
-        "berat": "Jika terlalu berat, lakukan push-up dengan tangan di atas meja/kursi (Incline).",
-        
-        // Tips & Masalah
-        "sakit": "Jika nyeri tajam di sendi, berhenti. Perbaiki form atau istirahat dulu.",
-        "nyeri": "Nyeri bahu biasanya karena siku terlalu flaring. Perkecil sudut sikunya.",
-        "bunyi": "Selama tidak sakit, sendi bunyi biasanya aman. Pastikan pemanasan cukup.",
-        "reps": "Coba 3 set. Lakukan repetisi sebanyak mungkin sampai form mulai berantakan.",
-        "set": "Istirahat 60-90 detik antar set agar otot punya energi untuk set berikutnya.",
-        "rutin": "Lakukan 3-4 kali seminggu. Otot butuh waktu 48 jam untuk recovery.",
-        "cepat": "Turun perlahan (2 detik), naik dengan ledakan (1 detik).",
-        "lambat": "Tempo lambat bagus untuk meningkatkan waktu di bawah tegangan (time under tension).",
-        "hasil": "Konsisten selama 4 minggu dan Anda akan melihat perubahan pada bentuk otot.",
-        "diet": "Protein adalah kunci. Konsumsi ayam, telur, atau tempe untuk bangun otot.",
-        "protein": "Butuh protein sekitar 1.6g per kg berat badan untuk hasil maksimal.",
-        "istirahat": "Tidur 7-9 jam adalah saat di mana otot Anda sebenarnya tumbuh.",
-        
-        // Greeting & Random
-        "halo": "Halo! Siap lanjut latihan? Ada bagian gerakan yang bikin bingung?",
-        "hi": "Hai! Tanya saya soal posisi siku, napas, atau variasi push-up.",
-        "thanks": "Sama-sama! Form over ego ya, jangan dipaksa kalau sudah capek.",
-        "terima kasih": "Senang membantu! Kabari kalau ada bagian yang sakit.",
-        "siapa": "Saya asisten Smart Coach. Tugas saya bantu teknik latihan Anda tetap benar.",
-        "keren": "Anda lebih keren kalau bisa konsisten latihan setiap hari!",
-        "tips": "Tips hari ini: Jangan menahan napas! Oksigen bikin otot lebih bertenaga.",
-        "pemanasan": "Selalu putar pergelangan tangan dan bahu sebelum mulai agar tidak cedera."
+    // --- AI CHAT LOGIC ---
+    const AI_DB = {
+      "napas": "Hirup saat turun, buang napas kuat saat mendorong naik.",
+      "siku": "Arahkan siku 45 derajat ke belakang, jangan lurus ke samping.",
+      "otot": "Push-up melatih dada, bahu depan, dan triceps.",
+      "tips": "Turun perlahan 3 detik untuk kontrol otot yang lebih baik."
     };
 
-    // Daftar Saran Cepat (Suggestions)
-    const SUGGESTIONS = [
-        "Cara atur napas?",
-        "Siku harus gimana?",
-        "Latih otot apa saja?",
-        "Tips buat pemula",
-        "Pinggang terasa sakit"
-    ];
+    const SUGGESTIONS = ["Cara atur napas?", "Siku harus gimana?", "Latih otot apa?", "Tips pemula"];
 
-    const chatMessages = document.getElementById('chat-messages');
-    const chatInput = document.getElementById('chatInput');
-    const suggestionContainer = document.createElement('div');
-
-    // Menambahkan styling & container suggestion secara dinamis
-    suggestionContainer.style = "padding: 10px; display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border);";
-    document.querySelector('.chat-container').insertBefore(suggestionContainer, document.querySelector('.input-box'));
-
-    function renderSuggestions() {
-        suggestionContainer.innerHTML = '';
-        SUGGESTIONS.forEach(text => {
-            const btn = document.createElement('button');
-            btn.innerText = text;
-            btn.style = "background:#21262d; border:1px solid var(--border); color:var(--accent); padding:5px 12px; border-radius:15px; font-size:11px; cursor:pointer; transition:0.2s;";
-            btn.onmouseover = () => btn.style.background = "var(--accent)";
-            btn.onmouseover = () => { btn.style.background = "var(--accent)"; btn.style.color = "#000"; };
-            btn.onmouseout = () => { btn.style.background = "#21262d"; btn.style.color = "var(--accent)"; };
-            btn.onclick = () => {
-                chatInput.value = text;
-                handleChat();
-            };
-            suggestionContainer.appendChild(btn);
-        });
+    function renderSug() {
+      const container = document.getElementById('suggestion-container');
+      if(!container) return;
+      container.innerHTML = '';
+      SUGGESTIONS.forEach(txt => {
+        const btn = document.createElement('button');
+        btn.className = 'sug-btn';
+        btn.innerText = txt;
+        btn.onclick = () => { document.getElementById('chatInput').value = txt; handleChat(); };
+        container.appendChild(btn);
+      });
     }
 
     function handleChat() {
-        const userVal = chatInput.value.trim();
-        if(!userVal) return;
+      const input = document.getElementById('chatInput');
+      const val = input.value.trim();
+      if(!val) return;
 
-        // User message
-        appendMsg('user', userVal);
-        chatInput.value = '';
+      appendMsg('user', val);
+      input.value = '';
 
-        // AI Thinking
-        const loadingId = 'ai-' + Date.now();
-        appendMsg('ai', '...', loadingId);
+      const aiId = 'ai-' + Date.now();
+      appendMsg('ai', '...', aiId);
 
-        setTimeout(() => {
-            const lowerVal = userVal.toLowerCase();
-            let response = "Maaf, saya tidak mengerti istilah itu. Coba tanya soal 'siku', 'napas', atau 'posisi tangan'.";
-
-            for (let key in AI_KNOWLEDGE) {
-                if (lowerVal.includes(key)) {
-                    response = AI_KNOWLEDGE[key];
-                    break;
-                }
-            }
-            document.getElementById(loadingId).innerText = response;
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 600);
+      setTimeout(() => {
+        let res = "Coach siap bantu! Coba tanya soal 'napas' atau 'siku'.";
+        for(let k in AI_DB) { if(val.toLowerCase().includes(k)) res = AI_DB[k]; }
+        document.getElementById(aiId).innerText = res;
+        scrollToBottom();
+      }, 600);
     }
 
-    function appendMsg(sender, text, id = null) {
-        const msg = document.createElement('div');
-        msg.className = `msg ${sender}`;
-        if(id) msg.id = id;
-        msg.innerText = text;
-        chatMessages.appendChild(msg);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+    function appendMsg(cls, txt, id) {
+      const m = document.createElement('div');
+      m.className = 'msg ' + cls;
+      if(id) m.id = id;
+      m.innerText = txt;
+      document.getElementById('chat-messages').appendChild(m);
+      scrollToBottom();
     }
 
-    // Event listener enter
-    chatInput.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') handleChat();
-    });
+    function scrollToBottom() {
+      const c = document.getElementById('chat-messages');
+      c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' });
+    }
 
-    // Jalankan saran saat startup
-    renderSuggestions();
-</script></body>
+    document.getElementById('chatInput').onkeypress = (e) => { if(e.key === 'Enter') handleChat(); };
+
+    // --- PASTIKAN SUGGESTION MUNCUL ---
+    document.addEventListener('DOMContentLoaded', renderSug);
+  </script>
+</body>
 </html>
-
-
