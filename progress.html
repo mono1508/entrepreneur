@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -7,6 +8,21 @@
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
+.suggestion-chip {
+  background: #21262d;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+.suggestion-chip:hover {
+  background: var(--accent);
+  color: #000;
+}
     :root {
       --bg: #0d1117; 
       --card: #161b22; 
@@ -203,21 +219,22 @@
           </a>
         </div>
       </div>
-
-      <div class="chat-container">
-        <div class="chat-header">AI Training Assistant</div>
-        <div id="chat-messages">
-          <div class="msg ai">Halo! Ada kesulitan dengan teknik gerakan turun di video ini?</div>
-        </div>
-        <div class="input-box">
-          <input type="text" id="chatInput" placeholder="Tanya teknik...">
-          <button style="background:var(--accent);border:none;padding:8px 15px;border-radius:6px;cursor:pointer;font-weight:bold" onclick="handleChat()">Send</button>
-        </div>
-      </div>
-    </main>
+<div class="chat-container">
+  <div class="chat-header">AI Training Assistant</div>
+  <div id="chat-messages">
+    <div class="msg ai">Halo! Ada kesulitan dengan teknik gerakan turun di video ini?</div>
   </div>
+  
+  <div id="chat-suggestions" style="padding: 10px; display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border); background: rgba(0,0,0,0.1);">
+    </div>
 
-  <script>
+  <div class="input-box">
+    <input type="text" id="chatInput" placeholder="Tanya teknik...">
+    <button id="sendBtn" style="background:var(--accent);border:none;padding:8px 15px;border-radius:6px;cursor:pointer;font-weight:bold">Send</button>
+  </div>
+</div>    </main>
+  </div><script>
+    // --- SIDEBAR LOGIC ---
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('sidebarToggle');
     
@@ -229,29 +246,138 @@
       sidebar.classList.add('closed');
     }
 
-    function handleChat() {
-      const input = document.getElementById('chatInput');
-      if(!input.value) return;
-      
-      const chat = document.getElementById('chat-messages');
-      const userMsg = document.createElement('div');
-      userMsg.className = 'msg user';
-      userMsg.innerText = input.value;
-      chat.appendChild(userMsg);
-      
-      input.value = '';
-      chat.scrollTop = chat.scrollHeight;
+    // --- AI KNOWLEDGE DATABASE (50+ Logika) ---
+    const AI_KNOWLEDGE = {
+        // Dasar & Pernapasan
+        "napas": "Tarik napas saat turun, buang napas kuat saat mendorong tubuh ke atas.",
+        "nafas": "Gunakan ritme: hirup lewat hidung (turun), buang lewat mulut (naik).",
+        "hirup": "Hirup udara saat dada mendekati lantai untuk stabilitas otot inti.",
+        "hembus": "Hembuskan napas saat fase terberat (saat mendorong ke atas).",
+        
+        // Posisi & Teknik
+        "siku": "Jaga siku membentuk sudut 45 derajat. Jangan melebar ke samping (90 derajat) karena berisiko cedera.",
+        "bahu": "Pastikan bahu tidak naik ke arah telinga. Tekan bahu ke bawah (depresi skapula).",
+        "tangan": "Posisi tangan sedikit lebih lebar dari bahu. Jari-jari menghadap ke depan.",
+        "gelang tangan": "Jika sakit, gunakan push-up bar atau kepalkan tangan agar pergelangan tetap lurus.",
+        "pinggang": "Jangan biarkan pinggang merosot. Tubuh harus lurus seperti papan.",
+        "pantat": "Pantat tidak boleh nungging atau terlalu jatuh. Kunci otot glutes Anda.",
+        "perut": "Kunci otot perut (core) sepanjang gerakan untuk melindungi tulang belakang.",
+        "leher": "Pandangan lurus ke lantai, sekitar 15cm di depan tangan. Jangan menunduk.",
+        "kaki": "Rapatkan kaki untuk stabilitas lebih sulit, buka kaki untuk keseimbangan lebih mudah.",
+        
+        // Variasi & Otot
+        "otot": "Push-up melatih otot dada (pectoralis), bahu depan, dan triceps.",
+        "dada": "Gunakan posisi tangan agak lebar untuk lebih memicu kontraksi otot dada.",
+        "triceps": "Gunakan Diamond Push-up (tangan membentuk berlian) untuk fokus ke lengan belakang.",
+        "lengan": "Otot triceps bekerja paling keras di bagian akhir dorongan ke atas.",
+        "diamond": "Diamond push-up sangat efektif buat triceps tapi beban di siku lebih besar.",
+        "variasi": "Coba Wide Push-up untuk dada, Diamond untuk triceps, atau Pike untuk bahu.",
+        "pemula": "Mulai dengan knee push-up (tumpuan lutut) sampai kuat melakukan 10 reps sempurna.",
+        "berat": "Jika terlalu berat, lakukan push-up dengan tangan di atas meja/kursi (Incline).",
+        
+        // Tips & Masalah
+        "sakit": "Jika nyeri tajam di sendi, berhenti. Perbaiki form atau istirahat dulu.",
+        "nyeri": "Nyeri bahu biasanya karena siku terlalu flaring. Perkecil sudut sikunya.",
+        "bunyi": "Selama tidak sakit, sendi bunyi biasanya aman. Pastikan pemanasan cukup.",
+        "reps": "Coba 3 set. Lakukan repetisi sebanyak mungkin sampai form mulai berantakan.",
+        "set": "Istirahat 60-90 detik antar set agar otot punya energi untuk set berikutnya.",
+        "rutin": "Lakukan 3-4 kali seminggu. Otot butuh waktu 48 jam untuk recovery.",
+        "cepat": "Turun perlahan (2 detik), naik dengan ledakan (1 detik).",
+        "lambat": "Tempo lambat bagus untuk meningkatkan waktu di bawah tegangan (time under tension).",
+        "hasil": "Konsisten selama 4 minggu dan Anda akan melihat perubahan pada bentuk otot.",
+        "diet": "Protein adalah kunci. Konsumsi ayam, telur, atau tempe untuk bangun otot.",
+        "protein": "Butuh protein sekitar 1.6g per kg berat badan untuk hasil maksimal.",
+        "istirahat": "Tidur 7-9 jam adalah saat di mana otot Anda sebenarnya tumbuh.",
+        
+        // Greeting & Random
+        "halo": "Halo! Siap lanjut latihan? Ada bagian gerakan yang bikin bingung?",
+        "hi": "Hai! Tanya saya soal posisi siku, napas, atau variasi push-up.",
+        "thanks": "Sama-sama! Form over ego ya, jangan dipaksa kalau sudah capek.",
+        "terima kasih": "Senang membantu! Kabari kalau ada bagian yang sakit.",
+        "siapa": "Saya asisten Smart Coach. Tugas saya bantu teknik latihan Anda tetap benar.",
+        "keren": "Anda lebih keren kalau bisa konsisten latihan setiap hari!",
+        "tips": "Tips hari ini: Jangan menahan napas! Oksigen bikin otot lebih bertenaga.",
+        "pemanasan": "Selalu putar pergelangan tangan dan bahu sebelum mulai agar tidak cedera."
+    };
 
-      setTimeout(() => {
-        const aiMsg = document.createElement('div');
-        aiMsg.className = 'msg ai';
-        aiMsg.innerText = "Saran AI: Tarik napas saat turun, dan buang napas saat mendorong tubuh ke atas.";
-        chat.appendChild(aiMsg);
-        chat.scrollTop = chat.scrollHeight;
-      }, 1000);
+    // Daftar Saran Cepat (Suggestions)
+    const SUGGESTIONS = [
+        "Cara atur napas?",
+        "Siku harus gimana?",
+        "Latih otot apa saja?",
+        "Tips buat pemula",
+        "Pinggang terasa sakit"
+    ];
+
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chatInput');
+    const suggestionContainer = document.createElement('div');
+
+    // Menambahkan styling & container suggestion secara dinamis
+    suggestionContainer.style = "padding: 10px; display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border);";
+    document.querySelector('.chat-container').insertBefore(suggestionContainer, document.querySelector('.input-box'));
+
+    function renderSuggestions() {
+        suggestionContainer.innerHTML = '';
+        SUGGESTIONS.forEach(text => {
+            const btn = document.createElement('button');
+            btn.innerText = text;
+            btn.style = "background:#21262d; border:1px solid var(--border); color:var(--accent); padding:5px 12px; border-radius:15px; font-size:11px; cursor:pointer; transition:0.2s;";
+            btn.onmouseover = () => btn.style.background = "var(--accent)";
+            btn.onmouseover = () => { btn.style.background = "var(--accent)"; btn.style.color = "#000"; };
+            btn.onmouseout = () => { btn.style.background = "#21262d"; btn.style.color = "var(--accent)"; };
+            btn.onclick = () => {
+                chatInput.value = text;
+                handleChat();
+            };
+            suggestionContainer.appendChild(btn);
+        });
     }
-  </script>
-</body>
+
+    function handleChat() {
+        const userVal = chatInput.value.trim();
+        if(!userVal) return;
+
+        // User message
+        appendMsg('user', userVal);
+        chatInput.value = '';
+
+        // AI Thinking
+        const loadingId = 'ai-' + Date.now();
+        appendMsg('ai', '...', loadingId);
+
+        setTimeout(() => {
+            const lowerVal = userVal.toLowerCase();
+            let response = "Maaf, saya tidak mengerti istilah itu. Coba tanya soal 'siku', 'napas', atau 'posisi tangan'.";
+
+            for (let key in AI_KNOWLEDGE) {
+                if (lowerVal.includes(key)) {
+                    response = AI_KNOWLEDGE[key];
+                    break;
+                }
+            }
+            document.getElementById(loadingId).innerText = response;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 600);
+    }
+
+    function appendMsg(sender, text, id = null) {
+        const msg = document.createElement('div');
+        msg.className = `msg ${sender}`;
+        if(id) msg.id = id;
+        msg.innerText = text;
+        chatMessages.appendChild(msg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Event listener enter
+    chatInput.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') handleChat();
+    });
+
+    // Jalankan saran saat startup
+    renderSuggestions();
+</script></body>
 </html>
 
 
