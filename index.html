@@ -107,7 +107,6 @@
     text-transform: uppercase; 
     letter-spacing: 1px; 
 }
-
 .club-scroller {
     text-align: center;
 }
@@ -117,28 +116,31 @@
     justify-content: center;
     gap: 25px;
     flex-wrap: wrap;
-    opacity: 0.4;
-    transition: 0.5s;
     margin-bottom: 25px;
 }
 
-.club-row:hover { opacity: 1; }
+/* Memastikan link tidak merusak layout */
+.club-row a {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
 
 .club-logo {
     width: 45px;
     height: 45px;
     object-fit: contain;
-    filter: grayscale(100%) brightness(2);
-    transition: 0.3s;
+    /* Menghapus filter grayscale agar selalu berwarna */
+    filter: none; 
+    transition: all 0.3s ease;
 }
 
-.club-logo:hover { 
-    filter: grayscale(0%) brightness(1); 
-    transform: scale(1.2); 
+/* Efek saat kursor mendekat */
+.club-row a:hover .club-logo {
+    transform: scale(1.2); /* Membesar */
+    filter: drop-shadow(0px 4px 10px rgba(255,255,255,0.2)); /* Tambah sedikit bayangan putih halus */
 }
 
 @media (max-width: 768px) {
-    .stat-highlight-box { grid-template-columns: repeat(2, 1fr); gap: 15px; }
     .club-row { gap: 15px; }
     .club-logo { width: 35px; height: 35px; }
 }
@@ -493,14 +495,14 @@
 
 
         <div class="hero-visual" id="hero-visual">
-            <div class="scanning-line" id="scanner" style="display: block; top: 95.594%;"></div>
+            <div class="scanning-line" id="scanner" style="display: block; top: 18.45%;"></div>
             <div class="visual-item">
-                <img src="4b.webp" class="img-base" id="img-left-base">
-                <img src="5b.jpeg" class="img-reveal" id="img-left-reveal" style="clip-path: inset(0px 0px 4.406%);">
+                <img src="3b.jpg" class="img-base" id="img-left-base">
+                <img src="4b.webp" class="img-reveal" id="img-left-reveal" style="clip-path: inset(0px 0px 81.55%);">
             </div>
             <div class="visual-item">
-                <img src="4a.webp" class="img-base" id="img-right-base">
-                <img src="5a.webp" class="img-reveal" id="img-right-reveal" style="clip-path: inset(0px 0px 4.406%);">
+                <img src="3a.jpg" class="img-base" id="img-right-base">
+                <img src="4a.webp" class="img-reveal" id="img-right-reveal" style="clip-path: inset(0px 0px 81.55%);">
                 <div class="visual-overlay-text">
                     <i class="fas fa-sync fa-spin"></i> AI SCANNING ACTIVE
                 </div>
@@ -585,60 +587,100 @@
             </div>
         </div>
     </div> <div class="pathway-wrapper">
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h4 style="color: #fff; font-size: 22px; font-weight: 800; margin-bottom: 10px;">Proven Pathway</h4>
-            <p style="color: var(--text-gray); font-size: 13px;">Hasil nyata dari integrasi teknologi AI dan kurikulum profesional.</p>
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h4 style="color: #fff; font-size: 22px; font-weight: 800; margin-bottom: 10px;">Proven Pathway</h4>
+        <p style="color: var(--text-gray); font-size: 13px;">Hasil nyata dari integrasi teknologi AI dan kurikulum profesional.</p>
+    </div>
+
+    <div class="stat-highlight-box">
+        <div class="stat-item">
+            <span class="stat-number" data-target="275">275+</span>
+            <span class="stat-label">Elite Players</span>
         </div>
-
-        <div class="stat-highlight-box">
-            <div class="stat-item">
-                <span class="stat-number" data-target="275">275+</span>
-                <span class="stat-label">Elite Players</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" data-target="270">270+</span>
-                <span class="stat-label">European Trials</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" data-target="65">65+</span>
-                <span class="stat-label">Contract Signed</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" data-target="2026">2026</span>
-                <span class="stat-label">Year Started</span>
-            </div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="270">270+</span>
+            <span class="stat-label">European Trials</span>
         </div>
-
-        <div class="club-scroller">
-            <p style="font-size: 11px; color: var(--secondary); letter-spacing: 2px; margin-bottom: 25px; font-weight: 800; text-transform: uppercase;">International Exposure Network</p>
-            <div class="club-row">
-                <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/4/47/FC_Barcelona_%28crest%29.svg/250px-FC_Barcelona_%28crest%29.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/e/eb/Manchester_City_FC_badge.svg/250px-Manchester_City_FC_badge.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/0/0c/Liverpool_FC.svg/250px-Liverpool_FC.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/FC_Bayern_M%C3%BCnchen_logo_%282024%29.svg/250px-FC_Bayern_M%C3%BCnchen_logo_%282024%29.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Juventus_FC_-_logo_black_%28Italy%2C_2020%29.svg/250px-Juventus_FC_-_logo_black_%28Italy%2C_2020%29.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/7/7a/Manchester_United_FC_crest.svg/250px-Manchester_United_FC_crest.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/f/f9/Atletico_Madrid_Logo_2024.svg/250px-Atletico_Madrid_Logo_2024.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/c/cc/Chelsea_FC.svg/250px-Chelsea_FC.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/f/f4/AV_Logo.png/250px-AV_Logo.png" class="club-logo">
-            </div>
-
-            <p style="font-size: 11px; color: var(--primary); letter-spacing: 2px; margin: 35px 0 25px; font-weight: 800; text-transform: uppercase;">Liga Indonesia Network</p>
-            <div class="club-row">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/0/0d/Logo_Persib_Bandung.png/330px-Logo_Persib_Bandung.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/9/94/Persija_Jakarta_logo.png/250px-Persija_Jakarta_logo.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/a/a1/Persebaya_logo.svg/250px-Persebaya_logo.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/5e/Bali_United_logo.svg/250px-Bali_United_logo.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/b/b8/Logo_PSM_Makasar_Baru.png/250px-Logo_PSM_Makasar_Baru.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/d/d6/Persis_Solo_logo.svg/250px-Persis_Solo_logo.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/4/4d/Logo_Borneo_FC.svg/250px-Logo_Borneo_FC.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/f/f5/PSIS_logo.svg/250px-PSIS_logo.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/c/c9/PSS_Sleman_logo.svg/250px-PSS_Sleman_logo.svg.png" class="club-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/8/8a/Madura_United_FC.png/250px-Madura_United_FC.png" class="club-logo">
-            </div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="65">65+</span>
+            <span class="stat-label">Contract Signed</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="2026">2026</span>
+            <span class="stat-label">Year Started</span>
         </div>
     </div>
+
+    <div class="club-scroller">
+        <p style="font-size: 11px; color: var(--secondary); letter-spacing: 2px; margin-bottom: 25px; font-weight: 800; text-transform: uppercase;">International Exposure Network</p>
+        <div class="club-row">
+            <a href="https://en.wikipedia.org/wiki/Real_Madrid_CF" target="_blank" title="Real Madrid CF">
+                <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" class="club-logo" alt="Logo Real Madrid CF - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/FC_Barcelona" target="_blank" title="FC Barcelona">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/4/47/FC_Barcelona_%28crest%29.svg/250px-FC_Barcelona_%28crest%29.svg.png" class="club-logo" alt="Logo FC Barcelona - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/Manchester_City_F.C." target="_blank" title="Manchester City">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/e/eb/Manchester_City_FC_badge.svg/250px-Manchester_City_FC_badge.svg.png" class="club-logo" alt="Logo Manchester City - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/Liverpool_F.C." target="_blank" title="Liverpool FC">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/0/0c/Liverpool_FC.svg/250px-Liverpool_FC.svg.png" class="club-logo" alt="Logo Liverpool FC - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/FC_Bayern_Munich" target="_blank" title="Bayern München">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/FC_Bayern_M%C3%BCnchen_logo_%282024%29.svg/250px-FC_Bayern_M%C3%BCnchen_logo_%282024%29.svg.png" class="club-logo" alt="Logo FC Bayern München - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/Juventus_FC" target="_blank" title="Juventus FC">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Juventus_FC_-_logo_black_%28Italy%2C_2020%29.svg/250px-Juventus_FC_-_logo_black_%28Italy%2C_2020%29.svg.png" class="club-logo" alt="Logo Juventus FC - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/Manchester_United_F.C." target="_blank" title="Manchester United">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/7/7a/Manchester_United_FC_crest.svg/250px-Manchester_United_FC_crest.svg.png" class="club-logo" alt="Logo Manchester United - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/Atlético_Madrid" target="_blank" title="Atlético Madrid">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/f/f9/Atletico_Madrid_Logo_2024.svg/250px-Atletico_Madrid_Logo_2024.svg.png" class="club-logo" alt="Logo Atlético Madrid - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/Chelsea_F.C." target="_blank" title="Chelsea FC">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/c/cc/Chelsea_FC.svg/250px-Chelsea_FC.svg.png" class="club-logo" alt="Logo Chelsea FC - Klik untuk Wikipedia">
+            </a>
+            <a href="https://en.wikipedia.org/wiki/Aston_Villa_F.C." target="_blank" title="Aston Villa FC">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/f/f4/AV_Logo.png/250px-AV_Logo.png" class="club-logo" alt="Logo Aston Villa FC - Klik untuk Wikipedia">
+            </a>
+        </div>
+
+        <p style="font-size: 11px; color: var(--primary); letter-spacing: 2px; margin: 35px 0 25px; font-weight: 800; text-transform: uppercase;">Liga Indonesia Network</p>
+        <div class="club-row">
+            <a href="https://id.wikipedia.org/wiki/Persib_Bandung" target="_blank" title="Persib Bandung">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/0/0d/Logo_Persib_Bandung.png/330px-Logo_Persib_Bandung.png" class="club-logo" alt="Logo Persib Bandung - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/Persija_Jakarta" target="_blank" title="Persija Jakarta">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/9/94/Persija_Jakarta_logo.png/250px-Persija_Jakarta_logo.png" class="club-logo" alt="Logo Persija Jakarta - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/Persebaya_Surabaya" target="_blank" title="Persebaya Surabaya">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/a/a1/Persebaya_logo.svg/250px-Persebaya_logo.svg.png" class="club-logo" alt="Logo Persebaya Surabaya - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/Bali_United_F.C." target="_blank" title="Bali United">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/5e/Bali_United_logo.svg/250px-Bali_United_logo.svg.png" class="club-logo" alt="Logo Bali United - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/PSM_Makassar" target="_blank" title="PSM Makassar">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/b/b8/Logo_PSM_Makasar_Baru.png/250px-Logo_PSM_Makasar_Baru.png" class="club-logo" alt="Logo PSM Makassar - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/Persis_Solo" target="_blank" title="Persis Solo">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/d/d6/Persis_Solo_logo.svg/250px-Persis_Solo_logo.svg.png" class="club-logo" alt="Logo Persis Solo - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/Borneo_FC_Samarinda" target="_blank" title="Borneo FC">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/4/4d/Logo_Borneo_FC.svg/250px-Logo_Borneo_FC.svg.png" class="club-logo" alt="Logo Borneo FC - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/PSIS_Semarang" target="_blank" title="PSIS Semarang">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/f/f5/PSIS_logo.svg/250px-PSIS_logo.svg.png" class="club-logo" alt="Logo PSIS Semarang - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/PSS_Sleman" target="_blank" title="PSS Sleman">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/c/c9/PSS_Sleman_logo.svg/250px-PSS_Sleman_logo.svg.png" class="club-logo" alt="Logo PSS Sleman - Klik untuk Wikipedia">
+            </a>
+            <a href="https://id.wikipedia.org/wiki/Madura_United_FC" target="_blank" title="Madura United">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/8/8a/Madura_United_FC.png/250px-Madura_United_FC.png" class="club-logo" alt="Logo Madura United - Klik untuk Wikipedia">
+            </a>
+        </div>
+    </div>
+</div>
 </section>
             <section id="training" style="background: rgba(0, 255, 136, 0.05);">
     <i class="fas fa-dumbbell bg-silhouette"></i>
@@ -984,5 +1026,6 @@
 
 </section></section>
 
-</body></html>
 
+
+</body></html>
