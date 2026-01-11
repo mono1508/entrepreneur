@@ -25,6 +25,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+    
+        .form-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 15px 30px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
+            color: #fff; text-decoration: none; font-weight: 600; transition: 0.3s;
+        }
+        .form-btn:hover { background: var(--primary); color: #000; border-color: var(--primary); transform: translateY(-3px); }
         :root {
             --primary: #00ff88;
             --secondary: #00ccff;
@@ -495,14 +503,14 @@
 
 
         <div class="hero-visual" id="hero-visual">
-            <div class="scanning-line" id="scanner" style="display: block; top: 18.45%;"></div>
+            <div class="scanning-line" id="scanner" style="display: block; top: 100%;"></div>
             <div class="visual-item">
-                <img src="3b.jpg" class="img-base" id="img-left-base">
-                <img src="4b.webp" class="img-reveal" id="img-left-reveal" style="clip-path: inset(0px 0px 81.55%);">
+                <img src="4b.webp" class="img-base" id="img-left-base">
+                <img src="5b.jpeg" class="img-reveal" id="img-left-reveal" style="clip-path: inset(0px 0px 100%);">
             </div>
             <div class="visual-item">
-                <img src="3a.jpg" class="img-base" id="img-right-base">
-                <img src="4a.webp" class="img-reveal" id="img-right-reveal" style="clip-path: inset(0px 0px 81.55%);">
+                <img src="4a.webp" class="img-base" id="img-right-base">
+                <img src="5a.webp" class="img-reveal" id="img-right-reveal" style="clip-path: inset(0px 0px 100%);">
                 <div class="visual-overlay-text">
                     <i class="fas fa-sync fa-spin"></i> AI SCANNING ACTIVE
                 </div>
@@ -829,7 +837,7 @@
                 <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);" onmouseover="this.style.color='var(--primary)'; this.style.borderColor='var(--primary)'" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)'">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);" onmouseover="this.style.color='var(--secondary)'; this.style.borderColor='var(--secondary)'" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)'">
+                <a href="#" style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgb(255, 255, 255); transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.1);" onmouseover="this.style.color='var(--secondary)'; this.style.borderColor='var(--secondary)'" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)'">
                     <i class="fab fa-tiktok"></i>
                 </a>
                 <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);" onmouseover="this.style.color='#1DA1F2'; this.style.borderColor='#1DA1F2'" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)'">
@@ -872,6 +880,9 @@
             <p style="color: #94a3b8; font-size: 14px;">
                 <i class="fab fa-whatsapp" style="color: var(--primary); margin-right: 10px;"></i> +62 899-4870-802
             </p>
+    <br><a href="https://forms.gle/ZzWKBTA9pv8Nzo9b8" target="_blank" class="form-btn">
+                    <i class="fab fa-google"></i> Isi Kritik &amp; Saran
+                </a>
         </div>
 
     </div>
