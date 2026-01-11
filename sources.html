@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Resources | Smart Coach AI</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+            --dark-bg: #0b0f1a;
+            --card-bg: rgba(18, 23, 42, 0.8);
+            --text-gray: #94a3b8;
+            --nav-height: 70px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--dark-bg); color: #ffffff; line-height: 1.6; overflow-x: hidden; }
+        html { scroll-behavior: smooth; }
+
+        /* --- NAVBAR & BURGER (AMANKAN) --- */
+        header {
+            position: fixed; top: 0; width: 100%; height: var(--nav-height);
+            background: rgba(11, 15, 26, 0.95); backdrop-filter: blur(15px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        header h1 { font-size: 18px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+        
+        nav { display: flex; align-items: center; }
+        nav a { margin-left: 20px; text-decoration: none; color: #ffffff; font-weight: 500; font-size: 14px; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
+        .btn-sso { margin-left: 20px; padding: 8px 18px; border-radius: 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; font-weight: 700; text-decoration: none; font-size: 13px; }
+
+        .burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .burger span { width: 25px; height: 3px; background: var(--primary); border-radius: 2px; transition: 0.4s; }
+
+        /* --- SECTION STYLE --- */
+        section { padding: 120px 5% 40px; width: 100%; position: relative; }
+        .bg-silhouette {
+            position: absolute; right: -20px; bottom: -20px; font-size: 250px;
+            color: rgba(255,255,255,0.03); z-index: -1; pointer-events: none;
+        }
+        
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h3 { font-size: clamp(28px, 5vw, 40px); font-weight: 900; color: var(--primary); }
+
+        /* FAQ STYLE (ACCORDION) */
+        .faq-container { max-width: 900px; margin: 0 auto; }
+        .faq-item {
+            background: var(--card-bg); border-radius: 15px; margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
+        }
+        .faq-header {
+            padding: 22px; cursor: pointer; display: flex; justify-content: space-between;
+            align-items: center; transition: 0.3s;
+        }
+        .faq-header h5 { font-size: 15px; font-weight: 600; color: #fff; padding-right: 10px; }
+        .faq-header i { color: var(--primary); transition: 0.3s; font-size: 12px; }
+        .faq-content {
+            max-height: 0; padding: 0 22px; color: var(--text-gray); font-size: 14px;
+            transition: all 0.3s ease-out; overflow: hidden; opacity: 0;
+        }
+        .faq-item.active .faq-content { max-height: 300px; padding-bottom: 22px; opacity: 1; }
+        .faq-item.active .faq-header i { transform: rotate(180deg); }
+
+        /* DETAIL CARDS */
+        .detail-card {
+            background: var(--card-bg); padding: 40px; border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.08); margin-bottom: 40px;
+            max-width: 1000px; margin-left: auto; margin-right: auto;
+        }
+        .detail-card h4 { color: var(--secondary); margin-bottom: 20px; font-size: 22px; display: flex; align-items: center; gap: 15px; }
+        .detail-card p { color: #cbd5e1; margin-bottom: 15px; text-align: justify; font-size: 15px; }
+
+        /* --- FOOTER IDENTIK HOME --- */
+        .footer { background: #050810; padding: 70px 5% 30px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .footer-brand h4 { color: var(--primary); font-weight: 900; margin-bottom: 20px; font-size: 22px; }
+        .footer-brand p { color: #94a3b8; font-size: 14px; line-height: 1.8; margin-bottom: 25px; max-width: 320px; }
+        .social-links { display: flex; gap: 15px; }
+        .social-icon {
+            width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: #fff;
+            transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); text-decoration: none;
+        }
+        .social-icon:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
+        .footer-bottom { margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .partner-logos { display: flex; justify-content: center; gap: 25px; align-items: center; margin-bottom: 20px; opacity: 0.6; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 1024px) {
+            .burger { display: flex; }
+            nav { 
+                position: fixed; top: var(--nav-height); right: -100%; width: 280px; 
+                height: calc(100vh - var(--nav-height)); background: #0f172a; 
+                flex-direction: column; padding: 40px 20px; transition: 0.4s; z-index: 100;
+            }
+            nav.active { right: 0; }
+            nav a { margin: 15px 0; width: 100%; margin-left: 0; }
+            .detail-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" style="text-decoration: none;"><h1>SMART COACH</h1></a>
+        <nav id="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="#faq">FAQ</a>
+            <a href="#privacy">Privacy</a>
+            <a href="#terms">Terms</a>
+            <a href="login.html" class="btn-sso">Sign Up / SSO</a>
+        </nav>
+        <div class="burger" id="burger-menu"><span></span><span></span><span></span></div>
+    </header>
+
+    <section id="faq">
+        <i class="fas fa-question-circle bg-silhouette"></i>
+        <div class="section-title">
+            <h3>Frequently Asked Questions</h3>
+            <p style="color: var(--text-gray);">Segala hal yang perlu Anda ketahui tentang Smart Coach AI.</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item active">
+                <div class="faq-header"><h5>1. Apa itu Smart Coach AI?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Smart Coach AI adalah platform sports-tech pertama di Indonesia yang menggunakan Artificial Intelligence untuk menganalisis teknik sepak bola atlet secara real-time berdasarkan standar FIFA dan kurikulum PSSI.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>2. Bagaimana cara kerja sensor AI pada kamera?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Sistem kami menggunakan Computer Vision untuk melacak 33 titik koordinat tubuh. Anda cukup meletakkan HP sejauh 2-3 meter saat berlatih, dan AI akan menilai postur serta akurasi gerakan Anda.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>3. Apakah aplikasi ini berbayar?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Kami menyediakan versi Freemium untuk materi dasar. Namun, untuk akses Kurikulum Pro, Sertifikat Japres, dan evaluasi pelatih berlisensi, diperlukan paket langganan bulanan.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>4. Bagaimana cara klaim sertifikat untuk Jalur Prestasi?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Setelah menyelesaikan modul kurikulum, Anda harus lulus ujian evaluasi AI. Sertifikat digital dengan QR Code resmi Kemenpora akan muncul di menu 'Achievements' dan siap diunduh.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>5. Apakah data video saya aman di server?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Sangat aman. Kami memproses data biometrik secara lokal di HP Anda (Edge Processing). Video hanya akan dikirim ke server jika Anda meminta 'Review Manual' dari pelatih manusia kami.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>6. Perangkat apa yang direkomendasikan?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Minimal Android 10 atau iOS 13 dengan RAM minimal 4GB agar proses rendering AI tidak mengalami lag atau delay.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>7. Apakah pelatih SSB bisa menggunakan platform ini?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Tentu. Kami memiliki fitur 'Coach Dashboard' yang memungkinkan pelatih memantau progres seluruh siswanya secara kolektif melalui data statistik AI.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>8. Apa bedanya dengan tutorial bola di YouTube?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">YouTube hanya satu arah. Smart Coach AI memberikan feedback instan; jika kaki Anda salah posisi, AI akan langsung memberitahu koreksinya saat itu juga.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>9. Bagaimana jika terjadi error saat deteksi wajah?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Pastikan pencahayaan cukup dan wajah tidak tertutup aksesori. Jika tetap gagal, Anda bisa menggunakan metode login cadangan via email verifikasi.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-header"><h5>10. Di mana saya bisa menghubungi layanan pelanggan?</h5><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-content">Tim support kami tersedia melalui fitur Live Chat di aplikasi atau email ke support@smartcoach.id setiap hari pukul 09.00 - 21.00 WIB.</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="privasi" style="background: rgba(0, 255, 136, 0.02);">
+        <i class="fas fa-user-shield bg-silhouette"></i>
+        <div class="section-title">
+            <h3>Kebijakan Privasi</h3>
+            <p style="color: var(--text-gray);">Komitmen Smart Coach AI menjaga kedaulatan data atlet Indonesia.</p>
+        </div>
+        <div class="detail-card">
+            <h4><i class="fas fa-fingerprint"></i> Integritas & Keamanan Biometrik</h4>
+            <p>Sebagai platform yang mengedepankan teknologi, Smart Coach AI berkomitmen untuk tidak hanya mengembangkan bakat, tetapi juga melindungi identitas digital Anda. Kami menggunakan enkripsi standar militer (AES-256) untuk menyimpan data statistik performa.</p>
+            <p>Visi brand kami adalah menciptakan lingkungan digital yang sehat, di mana setiap perkembangan karier atlet terpantau secara privat hingga mereka siap untuk dipublikasikan ke pencari bakat profesional melalui fitur 'Scout Mode' yang bisa diaktifkan oleh pengguna.</p>
+        </div>
+    </section>
+
+    <section id="syarat">
+        <i class="fas fa-file-contract bg-silhouette" style="left: -20px; right: auto;"></i>
+        <div class="section-title">
+            <h3>Syarat & Ketentuan</h3>
+        </div>
+        <div class="detail-card">
+            <h4><i class="fas fa-balance-scale"></i> Standar Operasional & Etika</h4>
+            <p>Smart Coach AI adalah sarana pendukung latihan, bukan pengganti aktivitas fisik di lapangan. Pengguna diwajibkan melakukan pemanasan sebelum memulai sesi AI. Segala bentuk manipulasi data menggunakan AI generatif atau video palsu untuk mendapatkan sertifikat akan mengakibatkan penutupan akun secara permanen tanpa pengembalian dana.</p>
+            <p>Kami berhak memperbarui kurikulum latihan sewaktu-waktu mengikuti perkembangan tren sepak bola modern dan regulasi terbaru dari federasi sepak bola (PSSI/FIFA).</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h4>SMART COACH AI</h4>
+                <p>Pelopor Sports-Tech di Indonesia yang menggabungkan kecerdasan buatan dengan standar FIFA untuk mencetak atlet sepak bola masa depan secara saintifik.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 style="color: #fff; font-size: 18px; margin-bottom: 20px;">Resources</h4>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 12px;"><a href="#faq" style="color: #94a3b8; text-decoration: none; font-size: 14px;">Pusat Bantuan</a></li>
+                    <li style="margin-bottom: 12px;"><a href="#privacy" style="color: #94a3b8; text-decoration: none; font-size: 14px;">Kebijakan Privasi</a></li>
+                    <li style="margin-bottom: 12px;"><a href="#terms" style="color: #94a3b8; text-decoration: none; font-size: 14px;">Syarat & Ketentuan</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: #fff; font-size: 18px; margin-bottom: 20px;">Office</h4>
+                <p style="color: #94a3b8; font-size: 14px;">Digital Hub, BSD City<br>Tangerang, Banten 15345</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="partner-logos">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/8/83/Logo_PSSI.png/250px-Logo_PSSI.png" height="30" style="filter: grayscale(1) brightness(1.5);">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Logo_Kementerian_Pemuda_dan_Olahraga_RI_%282025%29.png/250px-Logo_Kementerian_Pemuda_dan_Olahraga_RI_%282025%29.png" height="30" style="filter: grayscale(1) brightness(1.5);">
+            </div>
+            <p style="color: #64748b; font-size: 13px;">© 2026 Smart Coach AI. Powered by <b>Sports Science Indonesia</b>.</p>
+        </div>
+    </footer>
+
+    <script>
+        // BURGER MENU
+        const burger = document.getElementById('burger-menu');
+        const nav = document.getElementById('nav-menu');
+        burger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            burger.classList.toggle('active');
+        });
+
+        // FAQ ACCORDION
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.querySelector('.faq-header').addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                faqItems.forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
