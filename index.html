@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<html lang="id"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Smart Coach Trainer | AI Football Platform</title>
-     <link rel="icon" type="image/png" href="favicon.png" />
+     <link rel="icon" type="image/png" href="favicon.png">
 
     <meta name="description" content="Smart Coach AI - Platform latihan sepak bola masa depan dengan Face ID Validation dan Real-time Video Analysis.">
     <script type="application/ld+json">
@@ -23,7 +21,7 @@
     </script>
 
     <link rel="icon" type="image/png" href="favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -311,12 +309,44 @@
     50% { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--primary)); }
     100% { transform: scale(1); filter: drop-shadow(0 0 0px var(--primary)); }
 }
+/* Styling agar responsif */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
 
+    /* Kartu lebar (Download App) otomatis jadi 1 kolom di HP */
+    .card-download {
+        grid-column: span 2;
+    }
+
+    @media (max-width: 850px) {
+        .card-download {
+            grid-column: span 1;
+        }
+        .download-flex {
+            flex-direction: column;
+            text-align: center;
+        }
+        .badge-group {
+            justify-content: center !important;
+        }
+    }
+
+    /* Efek hover halus */
+    .card {
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary) !important;
+    }
     </style>
 </head>
 <body>
 
-  <div class="modal" id="protoModal">
+  <div class="modal" id="protoModal" style="display: none;">
         <div class="modal-content" style="max-width: 450px; position: relative; border: 2px solid var(--primary); box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);">
             <div style="margin-bottom: 20px;">
                 <i class="fas fa-robot" style="font-size: 50px; color: var(--primary); animation: pulse 2s infinite;"></i>
@@ -361,12 +391,12 @@
     </header>
 
     <section class="hero">
-        <video class="hero-video-bg" autoplay loop muted playsinline>
+        <video class="hero-video-bg" autoplay="" loop="" muted="" playsinline="">
             <source src="Canon C200 - Cinematic Fitness Short.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
         <section class="hero">
-    <video class="hero-video-bg" autoplay loop muted playsinline>
+    <video class="hero-video-bg" autoplay="" loop="" muted="" playsinline="">
         <source src="Canon C200 - Cinematic Fitness Short.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
@@ -383,14 +413,14 @@
 
 
         <div class="hero-visual" id="hero-visual">
-            <div class="scanning-line" id="scanner"></div>
+            <div class="scanning-line" id="scanner" style="display: none; top: 100%;"></div>
             <div class="visual-item">
-                <img src="1b.jpg" class="img-base" id="img-left-base">
-                <img src="2b.jpg" class="img-reveal" id="img-left-reveal">
+                <img src="5b.jpeg" class="img-base" id="img-left-base">
+                <img src="5b.jpeg" class="img-reveal" id="img-left-reveal" style="clip-path: inset(0px 0px 100%);">
             </div>
             <div class="visual-item">
-                <img src="1a.jpg" class="img-base" id="img-right-base">
-                <img src="2a.jpg" class="img-reveal" id="img-right-reveal">
+                <img src="5a.webp" class="img-base" id="img-right-base">
+                <img src="5a.webp" class="img-reveal" id="img-right-reveal" style="clip-path: inset(0px 0px 100%);">
                 <div class="visual-overlay-text">
                     <i class="fas fa-sync fa-spin"></i> AI SCANNING ACTIVE
                 </div>
@@ -398,15 +428,7 @@
         </div>
 
     </div>
-</section>
 
-            <div class="visual-item">
-                <img src="1a.jpg" class="img-base" id="img-right-base">
-                <img src="2a.jpg" class="img-reveal" id="img-right-reveal">
-                <div class="visual-overlay-text"><i class="fas fa-sync fa-spin"></i> AI SCANNING ACTIVE</div>
-            </div>
-        </div>
-    </section>
 
     <section id="features">
         <i class="fas fa-microchip bg-silhouette"></i>
@@ -415,19 +437,78 @@
         <div class="cards-grid">
             <div class="card">
                 <i class="fas fa-face-smile-beam main-icon"></i>
-                <h4>Smart Login & Face ID</h4>
+                <h4>Smart Login &amp; Face ID</h4>
                 <p>Login aman menggunakan AI facial validation untuk melindungi progres dan data atlet profesional Anda.</p>
             </div>
             <div class="card">
                 <i class="fas fa-video main-icon"></i>
                 <h4>AI Video Training</h4>
-                <p>Materi teknik & fisik dari pelatih pro dilengkapi fitur AI Q&A yang menjawab pertanyaan Anda secara instan.</p>
+                <p>Materi teknik &amp; fisik dari pelatih pro dilengkapi fitur AI Q&amp;A yang menjawab pertanyaan Anda secara instan.</p>
             </div>
             <div class="card">
                 <i class="fas fa-bolt main-icon"></i>
                 <h4>Real-time Monitoring</h4>
                 <p>AI memantau gerakan Anda via kamera untuk memberikan koreksi postur dan akurasi secara langsung.</p>
+            </div><div class="features-grid">
+    <div class="card">
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div style="width: 55px; height: 55px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Logo_Kementerian_Pemuda_dan_Olahraga_RI_%282025%29.png/250px-Logo_Kementerian_Pemuda_dan_Olahraga_RI_%282025%29.png" alt="Kemenpora" style="width: 100%; height: auto; object-fit: contain;">
             </div>
+            <h4>Official Partner Kemenpora</h4>
+        </div>
+        <p>Terintegrasi dengan basis data atlet nasional. Sertifikat latihan dapat digunakan untuk pendaftaran <b>Jalur Prestasi (JAPRES)</b>.</p>
+        <div style="font-size: 11px; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Verified Standard</div>
+    </div>
+
+    <div class="card">
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div style="width: 55px; height: 55px; background: transparent; display: flex; align-items: center; justify-content: center;">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/8/83/Logo_PSSI.png/250px-Logo_PSSI.png" alt="PSSI" style="width: 100%; height: auto; object-fit: contain;">
+            </div>
+            <h4>PSSI Curriculum</h4>
+        </div>
+        <p>Materi latihan mengacu pada kurikulum <b>Filanesia</b>. Membantu persiapan seleksi tim nasional maupun klub profesional.</p>
+        <div style="font-size: 11px; color: #ff4d4d; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">National Pathway</div>
+    </div>
+
+    <div class="card">
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div style="width: 55px; height: 55px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 8px;">
+                <img src="https://internationalsocceracademy.com/wp-content/uploads/2020/07/InternationalSoccerAcademy-badge-logotext-TM-bluewhite-258x60-1.png" alt="Intl Academy" style="width: 100%; height: auto; filter: brightness(0) invert(1);">
+            </div>
+            <h4>Global Network</h4>
+        </div>
+        <p>Bekerja sama dengan <b>International Soccer Academy</b> untuk program scouting dan akses trial ke akademi elit luar negeri.</p>
+        <div style="font-size: 11px; color: var(--secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Global Connection</div>
+    </div>
+
+    <div class="card card-download" style="background: linear-gradient(135deg, rgba(18, 23, 42, 0.95), rgba(0, 255, 136, 0.05)); border: 1px solid rgba(0, 255, 136, 0.3);">
+        <div class="download-flex" style="display: flex; flex-wrap: wrap; align-items: center; gap: 30px; width: 100%;">
+            
+            <div style="flex: 1; min-width: 250px;">
+                <h4 style="color: var(--primary); font-size: 24px; margin-bottom: 10px;">Get The App Now</h4>
+                <p style="margin-bottom: 0;">Mulai transformasi latihanmu dengan teknologi AI. Tersedia gratis di platform utama.</p>
+            </div>
+
+            <div class="badge-group" style="flex: 1.5; display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-start;">
+                <a href="#" style="height: 45px; transition: 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/2560px-Google_Play_Store_badge_EN.svg.png" alt="Play Store" style="height: 100%;">
+                </a>
+
+                <a href="#" style="height: 45px; transition: 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/2560px-Download_on_the_App_Store_Badge.svg.png" alt="App Store" style="height: 100%;">
+                </a>
+
+                <a href="#" style="height: 45px; transition: 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="HUAWEI.PNG" alt="AppGallery" style="height: 100%;">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
         </div>
     </section>
 
@@ -462,7 +543,7 @@
                     <i class="fas fa-check-circle"></i>
                     <div>
                         <b>Jalur Prestasi PORPROV</b>
-                        Akses eksklusif Japres & fasilitas elite.
+                        Akses eksklusif Japres &amp; fasilitas elite.
                     </div>
                 </li>
                 <li>
@@ -543,7 +624,7 @@
 
     <section id="instruction" style="background: rgba(0, 204, 255, 0.05);">
         <i class="fas fa-shield-halved bg-silhouette"></i>
-        <h3>Instruction & Prevention</h3>
+        <h3>Instruction &amp; Prevention</h3>
         <div class="cards-grid">
             <div class="card">
                 <i class="fas fa-map-signs main-icon"></i>
@@ -566,26 +647,77 @@
         </div>
     </section>
 
- <footer class="footer">
-    <div class="footer-content">
+<footer class="footer" style="padding-top: 80px; background: #050810;">
+    <div class="footer-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; align-items: flex-start;">
+        
         <div class="footer-brand">
-            <h4>SMART COACH AI</h4>
-            <p>AI Football Training Platform for Future Athletes.</p>
+            <h4 style="font-size: 22px; color: var(--primary); margin-bottom: 20px;">SMART COACH AI</h4>
+            <p style="line-height: 1.8; color: #94a3b8; font-size: 14px; margin-bottom: 25px;">
+                Pelopor Sports-Tech di Indonesia yang menggabungkan kecerdasan buatan dengan standar FIFA untuk mencetak atlet sepak bola masa depan secara saintifik.
+            </p>
+            <div style="display: flex; gap: 15px;">
+                <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);" onmouseover="this.style.color='var(--primary)'; this.style.borderColor='var(--primary)'" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)'">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);" onmouseover="this.style.color='var(--secondary)'; this.style.borderColor='var(--secondary)'" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)'">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);" onmouseover="this.style.color='#1DA1F2'; this.style.borderColor='#1DA1F2'" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)'">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);" onmouseover="this.style.color='#FF0000'; this.style.borderColor='#FF0000'" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)'">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
         </div>
 
-        <div class="footer-links">
-            <a href="#features">Features</a>
-            <a href="#training">Training</a>
-            <a href="#nutrition">Nutrition</a>
-            <a href="#instruction">Instruction</a>
+        <div>
+            <h5 style="color: #fff; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">Platform</h5>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 12px;"><a href="#features" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s;">AI Features</a></li>
+                <li style="margin-bottom: 12px;"><a href="#training" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s;">Training Camp</a></li>
+                <li style="margin-bottom: 12px;"><a href="tes.html" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s;">AI Diagnostic Assessment</a></li>
+                <li style="margin-bottom: 12px;"><a href="#nutrition" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s;">Nutrition Plan</a></li>
+            </ul>
         </div>
+
+        <div>
+            <h5 style="color: #fff; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">Bantuan</h5>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 12px;"><a href="#instruction" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s;">Panduan Posisi</a></li>
+                <li style="margin-bottom: 12px;"><a href="#" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s;">Pusat Bantuan</a></li>
+                <li style="margin-bottom: 12px;"><a href="#" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s;">Kebijakan Privasi</a></li>
+                <li style="margin-bottom: 12px;"><a href="#" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s;">Syarat & Ketentuan</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h5 style="color: #fff; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">Hubungi Kami</h5>
+            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 10px;">
+                <i class="fas fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> support@smartcoach.ai
+            </p>
+            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 10px;">
+                <i class="fas fa-location-dot" style="color: var(--primary); margin-right: 10px;"></i> Jakarta, Indonesia
+            </p>
+            <p style="color: #94a3b8; font-size: 14px;">
+                <i class="fab fa-whatsapp" style="color: var(--primary); margin-right: 10px;"></i> +62 812-3456-7890
+            </p>
+        </div>
+
     </div>
 
-    <div class="footer-bottom">
-        © 2026 Smart Coach AI —  Built for Future Athletes
+    <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 50px 0 30px;">
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; padding-bottom: 20px;">
+        <p style="font-size: 13px; color: #64748b;">
+            © 2026 Smart Coach AI. All Rights Reserved. Built for the future of Indonesian Football.
+        </p>
+        <div style="display: flex; gap: 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/id/thumb/0/05/Logo_PSSI.svg/1200px-Logo_PSSI.svg.png" style="height: 25px; filter: grayscale(1); opacity: 0.5;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Logo_Kemenpora_baru.png/600px-Logo_Kemenpora_baru.png" style="height: 25px; filter: grayscale(1); opacity: 0.5;">
+        </div>
     </div>
 </footer>
-
 
     <script>
         // Modal Logic
@@ -657,8 +789,6 @@
         }
         setInterval(runScan, 6000);
     </script>
-</body>
-</html>
 
 
 
@@ -667,3 +797,6 @@
 
 
 
+
+
+<deepl-input-controller translate="no"></deepl-input-controller></body></html>
